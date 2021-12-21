@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ClientInfo>
+	<ProviderUrl></ProviderUrl>
+	<jndiServerName></jndiServerName>
+	<jndiServerPort></jndiServerPort>
+	<JndiContextFactory></JndiContextFactory>
+	<ClientLookUpName>ejb:/ldap_ejb/NGOLDAPClientServiceHandlerBean!com.newgen.omni.jts.ldap.txn.NGOLDAPClientServiceHandlerHome</ClientLookUpName>
+	<UrlPackagePrefix>org.jboss.ejb.client.naming</UrlPackagePrefix>
+</ClientInfo>

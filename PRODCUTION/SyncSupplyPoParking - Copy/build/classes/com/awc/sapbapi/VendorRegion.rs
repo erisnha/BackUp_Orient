@@ -1,0 +1,1 @@
+com.awc.sapBapi.VendorRegion

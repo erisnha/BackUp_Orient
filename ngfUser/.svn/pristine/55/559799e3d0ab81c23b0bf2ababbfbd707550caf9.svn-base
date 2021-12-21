@@ -1,0 +1,340 @@
+package com.newgen.common;
+
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.context.FormContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class General implements Serializable {
+
+    FormReference formObject = null;
+    FormConfig formConfig = null;
+    String Query = null, assign = null;
+    List<List<String>> result;
+    List<List<String>> temparray;
+    Calendar c = Calendar.getInstance();
+    Date currentDate = new Date();
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    List<List<String>> docarray, docarrayid, userarray;
+
+    public void setAssigned(String valuedata, String assignFieldID) {
+
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.println(valuedata);
+        userarray = formObject.getDataFromDataSource(valuedata);
+        formObject.clear(assignFieldID);
+        for (int i = 0; i < userarray.size(); i++) {
+            String usertemp = userarray.get(i).get(0);
+
+            formObject.addItem(assignFieldID, usertemp);
+        }
+
+    }
+
+    public void getDocIndex(String pid, String pName) {
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        String docindex = null;
+        Query = "select var_rec_1 from WFINSTRUMENTTABLE where processinstanceID='" + pid + "'";
+        System.out.println("first query-----" + Query);
+        temparray = formObject.getDataFromDataSource(Query);
+        String parentfolderindex = temparray.get(0).get(0);
+
+        Query = "select documentindex from pdbdocumentcontent where parentfolderindex =" + parentfolderindex + " ";
+        System.out.println("Second query-----" + Query);
+        temparray = formObject.getDataFromDataSource(Query);
+        for (int i = 0; i < temparray.size(); i++) {
+            if (i == 0) {
+                docindex = temparray.get(i).get(0);
+            } else {
+                docindex = docindex + "," + temparray.get(i).get(0);
+            }
+        }
+        String doccname = null, docidfinal;
+        Query = "select docname from documenttypedeftable where processdefid = 2 OR processdefid=7 OR processdefid=3 OR processdefid=12 OR processdefid =14 OR processdefid =18 OR processdefid =19 OR processdefid =21";
+        docarray = formObject.getDataFromDataSource(Query);
+        for (int i = 0; i < docarray.size(); i++) {
+            doccname = docarray.get(i).get(0);
+            System.out.println(doccname);
+            Query = "select MAX(documentindex) from pdbdocument where documentindex in (" + docindex + ") and name='" + doccname + "'";
+            docarrayid = formObject.getDataFromDataSource(Query);
+            System.out.println("Third query-----" + Query);
+            docidfinal = docarrayid.get(0).get(0);
+            System.out.println("doc final value-->" + docidfinal);
+            if (docidfinal != null) {
+                System.out.println("Coming inisde if--->");
+                setDocIndex(docidfinal, doccname, pName);
+            } else {
+                System.out.println("inside else of  document index");
+            }
+        }
+
+        System.out.println("Document Index-----" + docindex);
+
+        // docname query(done by chetan)
+    }
+
+    public void setDocIndex(String docidfinal, String doccname, String pName) {
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        temparray = formObject.getDataFromDataSource(Query);
+        System.out.println("coming inside set doc function" + doccname);
+        // reduce if code
+        if (pName.equalsIgnoreCase("AgencyAuthorisation")) {
+            if (doccname.equalsIgnoreCase("governmentidproof")) {
+                formObject.setNGValue("docidgovernmentidproof", docidfinal);
+                // formObject.setVisible("docidgovernmentidproof", false);
+            } else if (doccname.equalsIgnoreCase("ownedownershiptaxbill")) {
+                //
+                formObject.setNGValue("partnershipdeed", docidfinal);
+                formObject.setVisible("docidpartnershipdeed", false);
+            } else if (doccname.equalsIgnoreCase("publicmemorandumofassociation")) {
+                formObject.setNGValue("docidpublicmemorandumofassociation", docidfinal);
+                // formObject.setVisible("docidpublicmemorandumofassociation", false);
+            } else if (doccname.equalsIgnoreCase("pvtmemorandumofassociation")) {
+                //
+                formObject.setNGValue("docidpvtmemorandumofassociation", docidfinal);
+                formObject.setVisible("docidpvtmemorandumofassociation", false);
+            } else if (doccname.equalsIgnoreCase("ownedownershiptaxbill")) {
+                formObject.setNGValue("docidownedownershiptaxbill", docidfinal);
+                // formObject.setVisible("docidownedownershiptaxbill", false);
+            } else if (doccname.equalsIgnoreCase("ownedelectricitybill")) {
+                //
+                formObject.setNGValue("docidownedelectricitybill", docidfinal);
+                formObject.setVisible("docidownedelectricitybill", false);
+            } else if (doccname.equalsIgnoreCase("rentedownershiptaxbill")) {
+                formObject.setNGValue("docidrentedownershiptaxbill", docidfinal);
+                // formObject.setVisible("docidrentedownershiptaxbill", false);
+            } else if (doccname.equalsIgnoreCase("ownedrcbookproof")) {
+                //
+                formObject.setNGValue("docidownedrcbookproof", docidfinal);
+                formObject.setVisible("docidownedrcbookproof", false);
+            } else if (doccname.equalsIgnoreCase("rentedrcbookproof")) {
+                //
+                formObject.setNGValue("docidrentedrcbookproof", docidfinal);
+                formObject.setVisible("docidrentedrcbookproof", false);
+            } else if (doccname.equalsIgnoreCase("ownershipoccupancyrightsproof")) {
+                formObject.setNGValue("docidownershipoccupancyrightsproof", docidfinal);
+                // formObject.setVisible("docidownershipoccupancyrightsproof", false);
+            } else if (doccname.equalsIgnoreCase("branchownershipoccupancyrightsproof")) {
+                //
+                formObject.setNGValue("docidbranchownershipoccupancyrightsproof", docidfinal);
+                formObject.setVisible("docidbranchownershipoccupancyrightsproof", false);
+            } else if (doccname.equalsIgnoreCase("copyofauthorizationcertificate")) {
+                formObject.setNGValue("docidcopyofauthorizationcertificate", docidfinal);
+                // formObject.setVisible("docidcopyofauthorizationcertificate", false);
+            } else if (doccname.equalsIgnoreCase("listofmaintainedlift")) {
+                //
+                formObject.setNGValue("docidlistofmaintainedlift", docidfinal);
+                formObject.setVisible("docidlistofmaintainedlift", false);
+            } else if (doccname.equalsIgnoreCase("projectundertakenauthorisation")) {
+                formObject.setNGValue("docidprojectundertakenauthorisation", docidfinal);
+                // formObject.setVisible("docidprojectundertakenauthorisation", false);
+            } else if (doccname.equalsIgnoreCase("electricalcontractorlicense")) {
+                //
+                formObject.setNGValue("docidelectricalcontractorlicense", docidfinal);
+                formObject.setVisible("docidelectricalcontractorlicense", false);
+            } //start
+            else if (doccname.equalsIgnoreCase("iformverifiedbyauthority")) {
+                //
+                formObject.setNGValue("docidiformverifiedbyauthority", docidfinal);
+                formObject.setVisible("docidiformverifiedbyauthority", false);
+            } else if (doccname.equalsIgnoreCase("solvencycertificate5lakhs")) {
+                //
+                formObject.setNGValue("docidsolvencycertificate5lakhs", docidfinal);
+                formObject.setVisible("docidsolvencycertificate5lakhs", false);
+            } else if (doccname.equalsIgnoreCase("registrationfactoryact")) {
+                formObject.setNGValue("docidregistrationfactoryact", docidfinal);
+                // formObject.setVisible("docidregistrationfactoryact", false);
+            } else if (doccname.equalsIgnoreCase("recentcopybill")) {
+                //
+                System.out.println("Setting doc id");
+                System.out.println(docidfinal);
+                formObject.setNGValue("docidrecentcopybill", docidfinal);
+                formObject.setVisible("docidrecentcopybill", true);
+            } else if (doccname.equalsIgnoreCase("taxbillcopyforproof")) {
+                formObject.setNGValue("docidtaxbillcopyforproof", docidfinal);
+                // formObject.setVisible("docidtaxbillcopyforproof", false);
+            } else if (doccname.equalsIgnoreCase("companycatalogue")) {
+                //
+                formObject.setNGValue("docidcompanycatalogue", docidfinal);
+                formObject.setVisible("docidcompanycatalogue", false);
+            }
+
+        }
+
+        if (pName.equalsIgnoreCase("exemption_contractor")) {
+            if (!doccname.equalsIgnoreCase("birthproof")
+                    || !doccname.equalsIgnoreCase("birthproof")) {
+                String finaldoc = "docid" + doccname;
+                System.out.println("Value of final doc id------" + finaldoc);
+
+                formObject.setNGValue(finaldoc, docidfinal);
+            } else if (doccname.equalsIgnoreCase("supervisordeclaration")) {
+                formObject.setNGValue("docidsupervisordeclaration", docidfinal);
+
+            }
+
+        }
+        
+        if (pName.equalsIgnoreCase("eipa")) {
+
+            if (doccname.equalsIgnoreCase("electricitybill")) {
+                formObject.setNGValue("docidelectricitybill", docidfinal);
+                 formObject.setVisible("docidelectricitybill", false);
+           } else if (doccname.equalsIgnoreCase("electricitybill_insp")) {
+               
+              formObject.setNGValue("docidelectricitybill_insp", docidfinal);
+              formObject.setVisible("docidelectricitybill_insp", false);
+            } else if (doccname.equalsIgnoreCase("completioncertificate")) {              
+              formObject.setNGValue("docidcompletioncertificate", docidfinal);
+                formObject.setVisible("docidcompletioncertificate", false);
+            } else if (doccname.equalsIgnoreCase("workcompletionreport")) {
+                
+                formObject.setNGValue("docidworkcompletionreport", docidfinal);
+                formObject.setVisible("docidworkcompletionreport", false);
+            } 
+        }
+        
+        if (pName.equalsIgnoreCase("examinterstate")) {
+
+            if (doccname.equalsIgnoreCase("schoolleavingcerti")) {
+                formObject.setNGValue("docidschoolleavingcerti", docidfinal);
+                // formObject.setVisible("docidgovernmentidproof", false);
+            } else if (doccname.equalsIgnoreCase("permanentaddressproof")) {
+                //
+                formObject.setNGValue("docidpermanentaddressproof", docidfinal);
+                formObject.setVisible("docidpermanentaddressproof", false);
+            } else if (doccname.equalsIgnoreCase("temporarytaddressproof")) {
+                //
+                formObject.setNGValue("docidtemporarytaddressproof", docidfinal);
+                formObject.setVisible("docidtemporarytaddressproof", false);
+            } else if (doccname.equalsIgnoreCase("permitcopy")) {
+                //
+                formObject.setNGValue("docidpermitcopy", docidfinal);
+                formObject.setVisible("docidpermitcopy", false);
+            } else if (doccname.equalsIgnoreCase("exemptioncerti")) {
+                //
+                formObject.setNGValue("docidexemptioncerti", docidfinal);
+                formObject.setVisible("docidexemptioncerti", false);
+            } else if (doccname.equalsIgnoreCase("affidavit")) {
+                //
+                formObject.setNGValue("docidaffidavit", docidfinal);
+                formObject.setVisible("docidaffidavit", false);
+            } else if (doccname.equalsIgnoreCase("appointmentletter")) {
+                //
+                formObject.setNGValue("docidappointmentletter", docidfinal);
+                formObject.setVisible("docidappointmentletter", false);
+            } else if (doccname.equalsIgnoreCase("wiremanpermit")) {
+                //
+                formObject.setNGValue("docidwiremanpermit", docidfinal);
+                formObject.setVisible("docidwiremanpermit", false);
+            } else if (doccname.equalsIgnoreCase("formk")) {
+                //
+                formObject.setNGValue("docidformk", docidfinal);
+                formObject.setVisible("docidformk", false);
+            } else if (doccname.equalsIgnoreCase("forml")) {
+                //
+                formObject.setNGValue("docidforml", docidfinal);
+                formObject.setVisible("docidforml", false);
+            }
+             else if (doccname.equalsIgnoreCase("schoolleavingcertirepeter")) {
+                //
+                formObject.setNGValue("docidforml", docidfinal);
+                formObject.setVisible("docidforml", false);
+            }
+
+        }
+
+    }
+
+    public String getTQ(String tq) {
+        if (tq.equalsIgnoreCase("Diploma In Electrical Engineering")) {
+            return "DEE";
+        } else if (tq.equalsIgnoreCase("Degree In Electrical Engineering")) {
+            return "DEE";
+        } else if (tq.equalsIgnoreCase("Diploma In Electrical & Electronics Engineering")) {
+            return "DEEE";
+        } else if (tq.equalsIgnoreCase("Degree In Electrical & Electronics Engineering")) {
+            return "DEEE";
+        } else if (tq.equalsIgnoreCase("B.E/B.Tech In Electrical & Electronics Engineering")) {
+            return "BEEE";
+        } else if (tq.equalsIgnoreCase("B.E/B.Tech In Electrical Engineering")) {
+            return "BEE";
+        } else if (tq.equalsIgnoreCase("Electrician (NCVT)+ National Apprenticeship Certificate In Electrician + 1 Year Practical Experience")) {
+            return "NAC(E)";
+        } else if (tq.equalsIgnoreCase("Electric Service Technician + 2 Years Practical Experience")) {
+            return "EST";
+        } else if (tq.equalsIgnoreCase("Any Other Qualification Equivalent To Degree/Diploma In Electrical Engineering")) {
+            return "OQD(E)";
+        } else if (tq.equalsIgnoreCase("National Apprenticeship Certificate(Electrician)")) {
+            return "(NAC)(E)";
+        } else if (tq.equalsIgnoreCase("National Apprenticeship Certificate(Wireman)")) {
+            return "(NAC)(W)";
+        } else if (tq.equalsIgnoreCase("National Apprenticeship Certificate(Lineman)")) {
+            return "(NAC)(L)";
+        } else if (tq.equalsIgnoreCase("National Trade Certificate(Electrician)")) {
+            return "(NTC)(E)";
+        } else if (tq.equalsIgnoreCase("National Trade Certificate(Wireman)")) {
+            return "(NTC)(W)";
+        } else if (tq.equalsIgnoreCase("National Trade Certificate(Lineman)")) {
+            return "(NTC)(L)";
+        } else if (tq.equalsIgnoreCase("Electrical Installation,Wiring And Jointing From Technical Examination Board")) {
+            return "EIWJ";
+        } else if (tq.equalsIgnoreCase("Any Other Qualification Equivalent National Trade Or Apprenticeship Certificate")) {
+            return "(NAC)(E)";
+        } else {
+            return "na";
+        }
+
+    }
+
+    public String getExamType(String type) {
+        if (type.equalsIgnoreCase("SUPERVISOR GENERAL")) {
+            return "SG";
+        }
+        if (type.equalsIgnoreCase("SUPERVISOR MINES / MINES GENERAL")) {
+            return "MG";
+        }
+        if (type.equalsIgnoreCase("MINES EXEMPTION")) {
+            return "ME";
+        }
+        if (type.equalsIgnoreCase("SUPERVISOR ORAL / ORAL GENERAL (AGE >45 YEARS) NOTE: AGE WILL BE CONSIDRED AS OF LAST DATE OF SUBMISSION OF FORM")) {
+            return "OG";
+        } else {
+            return "";
+        }
+    }
+
+    public void setAssign(String assin_user) {
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+        result = formObject.getDataFromDataSource(assin_user);
+        formObject.clear("assigned_to");
+        for (int i = 0; i < result.size(); i++) {
+            assign = result.get(i).get(0);
+            formObject.addItem("assigned_to", assign);
+            System.out.println(assign);
+        }
+    }
+}

@@ -1,0 +1,490 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.newgen.permitliftnew;
+
+/**
+ *
+ * @author Rituraj
+ */
+
+
+import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.validator.ValidatorException;
+
+
+import com.newgen.common.General;
+import com.newgen.common.PicklistListenerHandler;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.component.PickList;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.event.ComponentEvent;
+import com.newgen.omniforms.event.FormEvent;
+import com.newgen.omniforms.listener.FormListener;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.awt.windows.WBufferStrategy;
+
+public class ceiced implements FormListener {
+
+    //FormReference objFormReference = null; //FormContext.getCurrentInstance().getFormReference();
+    FormReference formObject = null;
+    FormConfig formConfig = null;
+    String activityName = null;
+    String engineName = null;
+    String dropvalue1 = null;
+    String varname = null;
+    String sessionId = null;
+    String folderId = null;
+    String serverUrl = null;
+    String processInstanceId = null;
+    String workItemId = null;
+    String userName = null;
+    String processDefId = null;
+    String Query = null;
+    List<List<String>> result;
+    PickList objPicklist;
+    General objGeneral = null;
+    String assign = null;
+    String file_status = null;
+    String tick= null;
+    String tick2= null;
+   /* public Head(FormReference formObject) {
+        super();
+        System.out.println("In COnstructor");
+        this.formObject = formObject;
+    } */
+
+    @Override
+    public void continueExecution(String arg0, HashMap<String, String> arg1) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void eventDispatched(ComponentEvent pEvent) throws ValidatorException {
+        // TODO Auto-generated method stub
+        System.out.println("Value Change Event :" + pEvent);
+        System.out.println("pEvent.getType() :" + pEvent.getType());
+        System.out.println("pEvent.getType().name() :" + pEvent.getType().name());
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        objGeneral = new General();
+        if (pEvent.getType().name().equalsIgnoreCase("VALUE_CHANGED")) {
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("Combo3")) {
+                System.out.println("Inside language selection dropdown");
+                String language_select = formObject.getNGValue("combo3");
+                
+                }
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("ownername_a1_a16"))
+                  {       
+                      System.out.println("coming to ownernametableentry");
+                      varname = formObject.getNGValue("ownername_a1_a16");
+                      System.out.println("varname");
+                
+                    
+                    formObject.setNGValue("Text45",varname );//form_a16
+                  }
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("localagentname_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("localagentname_a1_a2");
+                
+                    
+                    formObject.setNGValue("Text29",varname );//form_a2
+                  }
+            if (pEvent.getSource().getName().equalsIgnoreCase("localagentaddress_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("localagentaddress_a1_a2");
+                
+                    formObject.setNGValue("Text30",varname );//form_a2
+                   }
+            if (pEvent.getSource().getName().equalsIgnoreCase("premiseaddr_a1_a2_a10_a12"))
+                  {       
+                    varname = formObject.getNGValue("premiseaddr_a1_a2_a10_a12");
+                    
+                    formObject.setNGValue("Text13",varname );//form_a10
+                    formObject.setNGValue("Text33",varname );//form_a2
+                    formObject.setNGValue("Text17",varname );//form_a12
+                    
+                  }
+            if (pEvent.getSource().getName().equalsIgnoreCase("lift_prev_instl_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("lift_prev_instl_a1_a2");
+                    
+                    formObject.setNGValue("Text26",varname );//form_a2
+                    
+                  }
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("instl_authname_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("instl_authname_a1_a2");
+                    
+                    formObject.setNGValue("Text31",varname );//form_a2
+                    
+                  }
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("instl_authaddr_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("instl_authaddr_a1_a2");
+                    
+                    formObject.setNGValue("Text37",varname );//form_a2
+                    
+                  }
+            if (pEvent.getSource().getName().equalsIgnoreCase("rtd_load_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("rtd_load_a1_a2");
+                    
+                    formObject.setNGValue("Text39",varname );//form_a2
+                    
+                  }
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("rtd_speed_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("rtd_load_a1_a2");
+                    
+                    formObject.setNGValue("Text35",varname );//form_a2
+                    
+                  }
+            if (pEvent.getSource().getName().equalsIgnoreCase("auth_num_a1_a2"))
+                  {       
+                    varname = formObject.getNGValue("auth_num_a1_a2");
+                    
+                    formObject.setNGValue("Text80",varname );//form_a2
+                    
+                  }
+            
+
+             
+             if (pEvent.getSource().getName().equalsIgnoreCase("Combo2")) {
+                System.out.println("coming inside if-----");
+                
+              dropvalue1 = formObject.getNGValue("Combo2");  
+                 System.out.println("coming up to here value :----- >"+dropvalue1);
+
+                 
+            if(dropvalue1.equalsIgnoreCase("lift Permission Form")){
+                     System.out.println("coming up to here ----- >"+dropvalue1);
+                    
+                     formObject.setSheetVisible("Tab1", 0, true);
+                     formObject.setSheetVisible("Tab1", 1, false);
+                     formObject.setSheetVisible("Tab1", 2, false);
+                     formObject.setSheetVisible("Tab1", 3, false);
+                     formObject.setSheetVisible("Tab1", 4, false);
+                     
+                     formObject.setNGValue("Label144", "Lift Permission Form");
+                    
+            } 
+            if(dropvalue1.equalsIgnoreCase("lift Alteration Form")){
+                     System.out.println("coming up to here ----- >"+dropvalue1);
+                     
+                     formObject.setSheetVisible("Tab1", 1, true);
+                     formObject.setSheetVisible("Tab1", 0, false);
+                     formObject.setSheetVisible("Tab1", 2, false);
+                     formObject.setSheetVisible("Tab1", 3, false);
+                     formObject.setSheetVisible("Tab1", 4, false);
+                     
+                     formObject.setNGValue("Label144", "Lift Alteration Form");
+            }
+            if(dropvalue1.equalsIgnoreCase("renewal Form")){
+                     System.out.println("coming up to here ----- >"+dropvalue1);
+                    
+                     formObject.setSheetVisible("Tab1", 2, true);
+                     formObject.setSheetVisible("Tab1", 0, false);
+                     formObject.setSheetVisible("Tab1", 1, false);
+                     formObject.setSheetVisible("Tab1", 3, false);
+                     formObject.setSheetVisible("Tab1", 4, false);
+                     
+                     formObject.setNGValue("Label144", "Lift Renewal Form");
+            }
+            
+            if(dropvalue1.equalsIgnoreCase("lift Repair Form")){
+                     System.out.println("coming up to here ----- >"+dropvalue1);
+                    
+                     formObject.setSheetVisible("Tab1", 3, true);
+                     formObject.setSheetVisible("Tab1", 0, false);
+                     formObject.setSheetVisible("Tab1", 1, false);
+                     formObject.setSheetVisible("Tab1", 2, false);
+                     formObject.setSheetVisible("Tab1", 4, false);
+                     
+                     formObject.setNGValue("Label144", "Lift Repair Form");
+            }
+            
+            if(dropvalue1.equalsIgnoreCase("Accident Report Form")){
+                     System.out.println("coming up to here ----- >"+dropvalue1);
+                    
+                     formObject.setSheetVisible("Tab1", 4, true);
+                     formObject.setSheetVisible("Tab1", 0, false);
+                     formObject.setSheetVisible("Tab1", 1, false);
+                     formObject.setSheetVisible("Tab1", 2, false);
+                     formObject.setSheetVisible("Tab1", 3, false);
+                     
+                     
+                     formObject.setNGValue("Label144", "Accident Report Form");
+            }
+                     
+            
+            }
+             /////CODE FOR FILE STATUS
+            if(pEvent.getSource().getName().equalsIgnoreCase("file_status")){
+                file_status = formObject.getNGValue("file_status");
+                    System.out.println("status values-------------->"+file_status);
+                        if(activityName.equalsIgnoreCase("StartEvent1")){ ///START EVENT
+                            if (file_status.equalsIgnoreCase("File In Processing")) {
+                                Query = "select username from ng_liftuser_details where roletype = 'JEI_AEI'";
+                                setAssign(Query);
+                            }
+                         }
+                        if(activityName.equalsIgnoreCase("AEI")){///JEI_AEI
+                            if (file_status.equalsIgnoreCase("File In Processing")) {
+                                Query = "select username from ng_liftuser_details where roletype = 'DYCEI'";
+                                setAssign(Query);
+                            }
+                        ///FOR RETURN FLOW        
+                            if ((file_status.equalsIgnoreCase("Document not Completed"))
+                                || (file_status.equalsIgnoreCase("Query Sent To Applicant"))) {
+                                Query = "select username from ng_liftuser_details where roletype = 'USER'";
+                                setAssign(Query);
+                            }
+                            
+                            if ((file_status.equalsIgnoreCase("Approved"))) {
+                                Query = "select username from ng_liftuser_details where roletype = 'Admin'";
+                                setAssign(Query);
+                            }
+                            
+                            if ((file_status.equalsIgnoreCase("Not Approved"))) {
+                                Query = "select username from ng_liftuser_details where roletype = 'Admin'";
+                                setAssign(Query);
+                            }
+                          }//JEI_AEI
+                
+                        if(activityName.equalsIgnoreCase("Field Inspector")){
+                            
+                            if (file_status.equalsIgnoreCase("File In Processing")) {
+                                Query = "select username from ng_liftuser_details where roletype = 'Div_Sub_Officer'";
+                                setAssign(Query);
+                           }//File In Processing
+                         
+                            if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                                Query = "select username from ng_liftuser_details where roletype = 'JEI_AEI'";
+                                setAssign(Query);
+                            }//Documents Not Completed
+                         
+                            if (file_status.equalsIgnoreCase("File In Processing/Inspection")) {
+                                Query = "select username from ng_liftuser_details where roletype = 'CEI_HEAD'";
+                                setAssign(Query);
+                            }//File In Processing/Inspection
+                                
+                        }//DYCEI
+                        
+                        if(activityName.equalsIgnoreCase("CEI")){
+                            if(file_status.equalsIgnoreCase("File In Processing")){
+                              Query = "select username from ng_liftuser_details where roletype = 'DYCEI'";
+                              setAssign(Query);
+                            }//File In Processing
+                         
+                        }//Div_Sub_Officer
+                        
+                    if (activityName.equalsIgnoreCase("Applicant")) {
+                        if (file_status.equalsIgnoreCase("Approved")) {
+                          Query = "select username from ng_liftuser_details where roletype = 'JEI_AEI'";
+                          setAssign(Query);
+                        }//Approved
+                        
+                        if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                          Query = "select username from ng_liftuser_details where roletype = 'JEI_AEI'";
+                          setAssign(Query);
+                        }//Documents Not Completed
+                        
+                        if (file_status.equalsIgnoreCase("Not Approved")) {
+                          Query = "select username from ng_liftuser_details where roletype = 'JEI_AEI'";
+                          setAssign(Query);
+                        }//Not Approved
+                    }//CEI_HEAD
+
+                  
+            }//file_status
+             
+        }//VALUE CHANGED
+
+        if (pEvent.getType().name().equalsIgnoreCase("MOUSE_CLICKED")) {
+         
+            if (pEvent.getSource().getName().equalsIgnoreCase("add")) {
+                formObject.NGAddListItem("ListView1", "<ListItem><SubItem>"+formObject.getNGValue("address")+"</SubItem></ListItem>");
+//                formObject.ExecuteExternalCommand("address", "address");
+            }
+            
+            
+        }
+            if (pEvent.getSource().getName().equalsIgnoreCase("btn_cghs_upload")) {
+//                formObject.NGDeleteRow();
+//            }
+            
+
+        }
+    }
+
+    @Override
+    public void formLoaded(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        System.out.println(" -------------------Intiation Workstep Loaded from formloaded.----------------");
+        // TODO Auto-generated method stub
+        System.out.println("form Loaded called");
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.println("formObject :" + formObject);
+        System.out.println("formConfig :" + formConfig);
+         try {
+
+            activityName = formObject.getWFActivityName();
+            System.out.println("#####################ActivityName##############################3" + activityName);
+            //capturing system fields----starts
+            engineName = formConfig.getConfigElement("EngineName");
+            sessionId = formConfig.getConfigElement("DMSSessionId");
+            folderId = formConfig.getConfigElement("FolderId");
+            serverUrl = formConfig.getConfigElement("ServletPath");
+            //ServletUrl = serverUrl + "/servlet/ExternalServlet";
+            processInstanceId = formConfig.getConfigElement("ProcessInstanceId");
+            workItemId = formConfig.getConfigElement("WorkitemId");
+            userName = formConfig.getConfigElement("UserName");
+            processDefId = formConfig.getConfigElement("ProcessDefId");
+            System.out.println("ProcessInstanceId===== " + processInstanceId);
+            System.out.println("Activityname=====" + activityName);
+            System.out.println("CabinetName====" + engineName);
+            System.out.println("sessionId====" + sessionId);
+            System.out.println("Username====" + userName);
+            System.out.println("workItemId====" + workItemId);
+            
+            if(formObject.getLVWRowCount("ListView1")==0){
+                formObject.NGAddListItem("ListView1", "<ListItem><SubItem> </SubItem> <SubItem></SubItem></ListItem>");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void formPopulated(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        try {
+            objGeneral = new General();
+            System.out.println("----------------------Intiation Workstep Loaded from form populated.---------------------------");
+            formObject = FormContext.getCurrentInstance().getFormReference();
+            formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+             System.out.println("printing my activity name------->"+activityName);
+             
+            if(activityName.equalsIgnoreCase("StartEvent1")){
+                formObject.addItem("file_status", "File In Processing");
+                 }
+            objGeneral.getDocIndex(processInstanceId,"eipa");
+               
+            boolean tickbox;
+            //varname = formObject.getNGValue("ownername_a1_a16");
+            tick = formObject.getNGValue("validChallan");
+            if (tick == null){
+                System.out.println("Checkbox FALSE");
+                formObject.setNGValue("false","checkbox");
+            }
+            else{
+                System.out.println("Checkbox TRUE");
+                formObject.setNGValue("true","checkbox"); 
+            }
+        }//try block 
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+
+        }//catch block
+    }//formPopulated
+
+    @Override
+    public void saveFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void saveFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+
+    }
+
+    @Override
+    public void submitFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+
+    }
+
+    @Override
+    public void submitFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.print("-------------------submitform started---------");
+        formObject.setNGValue("q_pstage", activityName);
+        formObject.setNGValue("q_pstatus", file_status);
+        System.out.println("value of file status---------" + file_status);
+//        if(activityName.equalsIgnoreCase("StartEvent1")){
+//           formObject.setNGValue("activity_name", activityName);
+//          
+//           }
+//        if(activityName.equalsIgnoreCase("JEI_AEI")){
+//            formObject.setNGValue("activity_name", activityName);
+//           
+//        }
+//        if(activityName.equalsIgnoreCase("DYCEI")){
+////            String val= formObject.getNGValue("activity_name");//to be deleted
+//            formObject.setNGValue("activity_name", activityName);
+//        }
+//        if(activityName.equalsIgnoreCase("Div_Sub_Officer")){
+//            formObject.setNGValue("activity_name", activityName);
+//        }
+//        if(activityName.equalsIgnoreCase("CEI_HEAD")){
+//            formObject.setNGValue("activity_name", activityName);
+//        }
+//        if(activityName.equalsIgnoreCase("Admin")){
+//            formObject.setNGValue("activity_name", activityName);
+//        }
+    }
+
+    @Override
+    public void initialize() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
+ public void setAssign(String assin_user){
+         formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        
+         result = formObject.getDataFromDataSource(assin_user);
+         formObject.clear("file_assign_to");
+                       for(int i=0;i<result.size();i++){
+                                assign = result.get(i).get(0);
+                                formObject.addItem("file_assign_to", assign);
+                                System.out.println(assign);
+                                 }
+    }
+}

@@ -1,0 +1,1737 @@
+package com.newgen.exemption_contractor;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.newgen.common.ElectricalTemplate;
+import com.newgen.common.General;
+import com.newgen.common.SupervisorTemplate;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.component.ListView;
+import com.newgen.omniforms.component.PickList;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.event.ComponentEvent;
+import com.newgen.omniforms.event.EventSource;
+import com.newgen.omniforms.event.FormEvent;
+import com.newgen.omniforms.excp.CustomExceptionHandler;
+import com.newgen.omniforms.listener.FormListener;
+import com.newgen.omniforms.util.Constant.EVENT;
+import com.newgen.omniforms.util.OFUtility;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.validator.ValidatorException;
+
+public class Head
+  implements FormListener
+{
+  FormReference formObject;
+  FormConfig formConfig;
+  String activityName;
+  String file_status;
+  String engineName;
+  String asigndfield;
+  String name_asign;
+  String sessionId;
+  String folderId;
+  String serverUrl;
+  String processInstanceId;
+  String workItemId;
+  String userName;
+  String processDefId;
+  String Query;
+  String Query1;
+  List<List<String>> result;
+  List<List<String>> temparray;
+  List<List<String>> arrayListnew2;
+  List<List<String>> valid;
+  List<List<String>> docarray1;
+  PickList objPicklist;
+  General objGeneral;
+  String candidate_type;
+  String value1;
+  String value2;
+  String value3;
+  String value4;
+  String lang_select;
+  String prevs_activity;
+  String docnameval;
+  String finaldocs;
+  String validfinal;
+  String docid;
+  String documentname;
+  String form_type;
+  String file_noforcertificate;
+  String comment_p1;
+  String comboID;
+  private Object temp;
+
+  public Head()
+  {
+    this.formObject = null;
+    this.formConfig = null;
+    this.activityName = null; this.file_status = null;
+    this.engineName = null;
+    this.asigndfield = null;
+    this.name_asign = null;
+    this.sessionId = null;
+    this.folderId = null;
+    this.serverUrl = null;
+    this.processInstanceId = null;
+    this.workItemId = null;
+    this.userName = null;
+    this.processDefId = null;
+    this.Query = null;
+    this.Query1 = null;
+    this.docarray1 = null;
+
+    this.objGeneral = null;
+    this.candidate_type = null; this.value1 = null; this.value2 = null; this.value3 = null; this.value4 = null;
+    this.lang_select = null; this.prevs_activity = null; this.docnameval = null; this.finaldocs = null; this.validfinal = null;
+    this.form_type = null;
+    this.file_noforcertificate = null;
+    this.comment_p1 = ""; this.comboID = null;
+  }
+
+  public void continueExecution(String arg0, HashMap<String, String> arg1)
+  {
+  }
+
+  public void eventDispatched(ComponentEvent pEvent)
+    throws ValidatorException
+  {
+    System.out.println("Value Change Event :" + pEvent);
+    System.out.println("pEvent.getType() :" + pEvent.getType());
+    System.out.println("pEvent.getType().name() :" + pEvent.getType().name());
+    this.formObject = FormContext.getCurrentInstance().getFormReference();
+    this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+    this.objGeneral = new General();
+    if (pEvent.getType().name().equalsIgnoreCase("VALUE_CHANGED"))
+    {
+      if (pEvent.getSource().getName().equalsIgnoreCase("fullname_a3_b_d_a4_e_f_g_j")) {
+        this.name_asign = this.formObject.getNGValue("fullname_a3_b_d_a4_e_f_g_j");
+
+        this.formObject.setNGValue("Text2", this.name_asign);
+        this.formObject.setNGValue("Text12", this.name_asign);
+        this.formObject.setNGValue("Text13", this.name_asign);
+        this.formObject.setNGValue("Text15", this.name_asign);
+      }
+
+      if (pEvent.getSource().getName().equalsIgnoreCase("technical_qualification")) {
+        String tech_qualification = this.formObject.getNGValue("technical_qualification");
+
+        if (this.candidate_type.equalsIgnoreCase("New Wireman Exemption"))
+        {
+          if ((tech_qualification.equalsIgnoreCase("National Apprenticeship Certificate(Electrician)")) || (tech_qualification.equalsIgnoreCase("National Apprenticeship Certificate(Wireman)")) || (tech_qualification.equalsIgnoreCase("National Apprenticeship Certificate(Lineman)")))
+          {
+            System.out.println("tech qualification in wireman-----------" + tech_qualification);
+
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+
+            this.formObject.setVisible("Label46", false);
+            this.formObject.setVisible("viewelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("validelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("Label49", false);
+            this.formObject.setVisible("viewelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("validelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("Label53", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+
+            this.formObject.setVisible("Label38", true);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", true);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", true);
+
+            this.formObject.setTop("Frame8", 120);
+            this.formObject.setHeight("Frame7", 97);
+            this.formObject.setTop("Frame10", 270);
+            this.formObject.setTop("Frame11", 380);
+            this.formObject.setHeight("Frame5", 490);
+            this.formObject.setTop("Frame15", 1430);
+            this.formObject.setTop("Frame16", 1510);
+            this.formObject.setTop("q_execon_comment1", 1640);
+
+            if (this.lang_select.equalsIgnoreCase("Gujarati")) {
+              this.formObject.setNGValue("Label38", "11.2 રાષ્ટ્રીય ઉમેદવારી પ્રમાણપત્ર (એ.ઈ.)");
+            }
+            else if (this.lang_select.equalsIgnoreCase("English")) {
+              this.formObject.setNGValue("Label38", "11.2 National apprenticeship certificate (ELE)");
+            }
+
+          }
+          else if ((tech_qualification.equalsIgnoreCase("National Trade Certificate(Electrician)")) || (tech_qualification.equalsIgnoreCase("National Trade Certificate(Wireman)")) || (tech_qualification.equalsIgnoreCase("National Trade Certificate(Lineman)")))
+          {
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label46", false);
+            this.formObject.setVisible("viewelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("validelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("Label49", false);
+            this.formObject.setVisible("viewelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("validelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("Label53", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+
+            this.formObject.setVisible("Label39", true);
+            this.formObject.setVisible("viewnationaltradecerti", true);
+            this.formObject.setVisible("validnationaltradecerti", true);
+            this.formObject.setTop("Label39", 64);
+            this.formObject.setTop("viewnationaltradecerti", 64);
+            this.formObject.setTop("validnationaltradecerti", 64);
+
+            this.formObject.setTop("Frame8", 120);
+            System.out.println("after settop---------------");
+            this.formObject.setHeight("Frame7", 97);
+            this.formObject.setTop("Frame10", 270);
+            this.formObject.setTop("Frame11", 380);
+            this.formObject.setHeight("Frame5", 490);
+            this.formObject.setTop("Frame15", 1430);
+            this.formObject.setTop("Frame16", 1510);
+            this.formObject.setTop("q_execon_comment1", 1640);
+          }
+          else if (tech_qualification.equalsIgnoreCase("Electrical Service Technician"))
+          {
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label49", false);
+            this.formObject.setVisible("viewelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("validelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("Label53", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+
+            this.formObject.setVisible("Label46", true);
+            this.formObject.setVisible("viewelectricalservicetechniciancerti", true);
+            this.formObject.setVisible("validelectricalservicetechniciancerti", true);
+            this.formObject.setTop("Label46", 64);
+            this.formObject.setTop("viewelectricalservicetechniciancerti", 64);
+            this.formObject.setTop("validelectricalservicetechniciancerti", 64);
+            this.formObject.setTop("Frame8", 120);
+            this.formObject.setHeight("Frame7", 97);
+            this.formObject.setTop("Frame10", 270);
+            this.formObject.setTop("Frame11", 380);
+            this.formObject.setTop("Frame15", 440);
+            this.formObject.setHeight("Frame5", 490);
+            this.formObject.setTop("Frame15", 1430);
+            this.formObject.setTop("Frame16", 1510);
+            this.formObject.setTop("q_execon_comment1", 1640);
+          }
+          else if (tech_qualification.equalsIgnoreCase("Electrical Installation,Wiring And Jointing From Technical Examination Board"))
+          {
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label46", false);
+            this.formObject.setVisible("viewelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("validelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("Label53", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+
+            this.formObject.setVisible("Label49", true);
+            this.formObject.setVisible("viewelectricalinstallationwiringjointing", true);
+            this.formObject.setVisible("validelectricalinstallationwiringjointing", true);
+            this.formObject.setTop("Label49", 64);
+            this.formObject.setTop("viewelectricalinstallationwiringjointing", 64);
+            this.formObject.setTop("validelectricalinstallationwiringjointing", 64);
+            this.formObject.setTop("Frame8", 120);
+            this.formObject.setHeight("Frame7", 97);
+            this.formObject.setTop("Frame10", 270);
+            this.formObject.setTop("Frame11", 380);
+            this.formObject.setTop("Frame15", 440);
+            this.formObject.setHeight("Frame5", 490);
+            this.formObject.setTop("Frame15", 1430);
+            this.formObject.setTop("Frame16", 1510);
+            this.formObject.setTop("q_execon_comment1", 1640);
+          }
+          else if (tech_qualification.equalsIgnoreCase("Any Other Qualification Equivalent National Trade Or Apprenticeship Certificate")) {
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label46", false);
+            this.formObject.setVisible("viewelectricalservicetechniciancerti", false);
+            this.formObject.setVisible("validelectricalservicetechniciancerti", false);
+
+            this.formObject.setVisible("Label49", false);
+            this.formObject.setVisible("viewelectricalinstallationwiringjointing", false);
+            this.formObject.setVisible("validelectricalinstallationwiringjointing", false);
+
+            this.formObject.setVisible("Label53", true);
+            this.formObject.setVisible("viewlastyearmarkssheet", true);
+            this.formObject.setVisible("validlastyearmarkssheet", true);
+            this.formObject.setTop("Label53", 64);
+            this.formObject.setTop("viewlastyearmarkssheet", 64);
+            this.formObject.setTop("validlastyearmarkssheet", 64);
+
+            this.formObject.setVisible("Label54", true);
+            this.formObject.setVisible("viewcertificate", true);
+            this.formObject.setVisible("validcertificate", true);
+            this.formObject.setTop("Label54", 85);
+            this.formObject.setTop("viewcertificate", 85);
+            this.formObject.setTop("validcertificate", 85);
+
+            this.formObject.setTop("Frame8", 140);
+            this.formObject.setHeight("Frame7", 120);
+            this.formObject.setTop("Frame10", 300);
+            this.formObject.setTop("Frame11", 410);
+            this.formObject.setHeight("Frame5", 520);
+            this.formObject.setTop("Frame15", 1460);
+            this.formObject.setTop("Frame16", 1540);
+            this.formObject.setTop("q_execon_comment1", 1670);
+          }
+
+        }
+
+        if (this.candidate_type.equalsIgnoreCase("New Supervisor Exemption")) {
+          System.out.println("value of candidate aftr selction--------------" + this.candidate_type);
+          if ((tech_qualification.equalsIgnoreCase("Diploma In Electrical Engineering")) || (tech_qualification.equalsIgnoreCase("Diploma In Electrical & Electronics Engineering")))
+          {
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+            this.formObject.setVisible("Label41", false);
+            this.formObject.setVisible("viewformk", false);
+            this.formObject.setVisible("validformk", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label42", false);
+            this.formObject.setVisible("viewformi", false);
+            this.formObject.setVisible("validformi", false);
+            this.formObject.setVisible("Label52", false);
+            this.formObject.setVisible("viewtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("validtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("Label50", false);
+            this.formObject.setVisible("viewdegreecertificate", false);
+            this.formObject.setVisible("validdegreecertificate", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+
+            this.formObject.setVisible("Label40", true);
+            this.formObject.setVisible("viewlastyearmarkssheet", true);
+            this.formObject.setVisible("validlastyearmarkssheet", true);
+            this.formObject.setTop("Label40", 64);
+            this.formObject.setTop("viewlastyearmarkssheet", 64);
+            this.formObject.setTop("validlastyearmarkssheet", 64);
+
+            this.formObject.setVisible("Label48", true);
+            this.formObject.setVisible("viewdiplomacertificate", true);
+            this.formObject.setVisible("validdiplomacertificate", true);
+            this.formObject.setTop("Label48", 85);
+            this.formObject.setTop("viewdiplomacertificate", 85);
+            this.formObject.setTop("validdiplomacertificate", 85);
+
+            this.formObject.setTop("Frame8", 140);
+            this.formObject.setHeight("Frame7", 120);
+            this.formObject.setTop("Frame10", 280);
+            this.formObject.setTop("Frame11", 390);
+            this.formObject.setHeight("Frame5", 520);
+            this.formObject.setTop("Frame15", 1440);
+            this.formObject.setTop("Frame16", 1520);
+            this.formObject.setTop("q_execon_comment1", 1650);
+          }
+          else if ((tech_qualification.equalsIgnoreCase("Degree In Electrical Engineering")) || (tech_qualification.equalsIgnoreCase("Degree In Electrical & Electronics Engineering")))
+          {
+            this.formObject.setVisible("Label42", false);
+            this.formObject.setVisible("viewformi", false);
+            this.formObject.setVisible("validformi", false);
+            this.formObject.setVisible("Label52", false);
+            this.formObject.setVisible("viewtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("validtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("Label41", false);
+            this.formObject.setVisible("viewformk", false);
+            this.formObject.setVisible("validformk", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label48", false);
+            this.formObject.setVisible("viewdiplomacertificate", false);
+            this.formObject.setVisible("validdiplomacertificate", false);
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+
+            this.formObject.setVisible("Label40", true);
+            this.formObject.setVisible("viewlastyearmarkssheet", true);
+            this.formObject.setVisible("validlastyearmarkssheet", true);
+            this.formObject.setTop("Label40", 64);
+            this.formObject.setTop("viewlastyearmarkssheet", 64);
+            this.formObject.setTop("validlastyearmarkssheet", 64);
+
+            this.formObject.setVisible("Label50", true);
+            this.formObject.setVisible("viewdegreecertificate", true);
+            this.formObject.setVisible("validdegreecertificate", true);
+            this.formObject.setTop("Label50", 85);
+            this.formObject.setTop("viewdegreecertificate", 85);
+            this.formObject.setTop("validdegreecertificate", 85);
+
+            this.formObject.setTop("Frame8", 140);
+            this.formObject.setHeight("Frame7", 120);
+            this.formObject.setTop("Frame10", 280);
+            this.formObject.setTop("Frame11", 390);
+            this.formObject.setHeight("Frame5", 520);
+            this.formObject.setTop("Frame15", 1420);
+            this.formObject.setTop("Frame16", 1520);
+            this.formObject.setTop("q_execon_comment1", 1650);
+          }
+          else if (tech_qualification.equalsIgnoreCase("Electrician (NCVT)+ National Apprenticeship Certificate In Electrician + 1 Year Practical Experience"))
+          {
+            this.formObject.setVisible("Label48", false);
+            this.formObject.setVisible("viewdiplomacertificate", false);
+            this.formObject.setVisible("validdiplomacertificate", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+            this.formObject.setVisible("Label40", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label50", false);
+            this.formObject.setVisible("viewdegreecertificate", false);
+            this.formObject.setVisible("validdegreecertificate", false);
+            this.formObject.setVisible("Label52", false);
+            this.formObject.setVisible("viewtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("validtechnicalexaminationboardcerti", false);
+
+            this.formObject.setVisible("Label39", true);
+            this.formObject.setVisible("viewnationaltradecerti", true);
+            this.formObject.setVisible("validnationaltradecerti", true);
+            this.formObject.setTop("Label39", 64);
+            this.formObject.setTop("viewnationaltradecerti", 64);
+            this.formObject.setTop("validnationaltradecerti", 64);
+
+            this.formObject.setVisible("Label41", true);
+            this.formObject.setVisible("viewformk", true);
+            this.formObject.setVisible("validformk", true);
+            this.formObject.setTop("Label41", 85);
+            this.formObject.setTop("viewformk", 85);
+            this.formObject.setTop("validformk", 85);
+
+            this.formObject.setVisible("Label38", true);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", true);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", true);
+            this.formObject.setTop("Label38", 127);
+            this.formObject.setTop("viewnationalapprenticeshipcerti", 127);
+            this.formObject.setTop("validnationalapprenticeshipcerti", 127);
+
+            this.formObject.setVisible("Label42", true);
+            this.formObject.setVisible("viewformi", true);
+            this.formObject.setVisible("validformi", true);
+            this.formObject.setTop("Label42", 106);
+            this.formObject.setTop("viewformi", 106);
+            this.formObject.setTop("validformi", 106);
+
+            this.formObject.setTop("Frame8", 200);
+            this.formObject.setHeight("Frame7", 180);
+            this.formObject.setTop("Frame10", 340);
+            this.formObject.setTop("Frame11", 450);
+            this.formObject.setTop("Frame15", 510);
+            this.formObject.setHeight("Frame5", 560);
+            this.formObject.setTop("Frame15", 1500);
+            this.formObject.setTop("Frame16", 1580);
+            this.formObject.setTop("q_execon_comment1", 1710);
+          }
+          else if (tech_qualification.equalsIgnoreCase("Electric Service Technician + 2 Years Practical Experience"))
+          {
+            this.formObject.setVisible("Label48", false);
+            this.formObject.setVisible("viewdiplomacertificate", false);
+            this.formObject.setVisible("validdiplomacertificate", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+            this.formObject.setVisible("Label40", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label50", false);
+            this.formObject.setVisible("viewdegreecertificate", false);
+            this.formObject.setVisible("validdegreecertificate", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+
+            this.formObject.setVisible("Label52", true);
+            this.formObject.setVisible("viewtechnicalexaminationboardcerti", true);
+            this.formObject.setVisible("validtechnicalexaminationboardcerti", true);
+            this.formObject.setTop("Label52", 64);
+            this.formObject.setTop("viewtechnicalexaminationboardcerti", 64);
+            this.formObject.setTop("validtechnicalexaminationboardcerti", 64);
+
+            this.formObject.setVisible("Label41", true);
+            this.formObject.setVisible("viewformk", true);
+            this.formObject.setVisible("validformk", true);
+            this.formObject.setTop("Label41", 85);
+            this.formObject.setTop("viewformk", 85);
+            this.formObject.setTop("validformk", 85);
+            this.formObject.setVisible("Label42", true);
+            this.formObject.setVisible("viewformi", true);
+            this.formObject.setVisible("validformi", true);
+            this.formObject.setTop("Label42", 106);
+            this.formObject.setTop("viewformi", 106);
+            this.formObject.setTop("validformi", 106);
+
+            this.formObject.setTop("Frame8", 175);
+            this.formObject.setHeight("Frame7", 135);
+            this.formObject.setTop("Frame10", 315);
+            this.formObject.setTop("Frame11", 425);
+            this.formObject.setTop("Frame15", 485);
+            this.formObject.setHeight("Frame5", 535);
+            this.formObject.setTop("Frame15", 1475);
+            this.formObject.setTop("Frame16", 1555);
+            this.formObject.setTop("q_execon_comment1", 1675);
+          }
+          else if (tech_qualification.equalsIgnoreCase("B.E/B.Tech In Electrical Engineering")) {
+            this.formObject.setVisible("Label48", false);
+            this.formObject.setVisible("viewdiplomacertificate", false);
+            this.formObject.setVisible("validdiplomacertificate", false);
+            this.formObject.setVisible("Label54", false);
+            this.formObject.setVisible("viewcertificate", false);
+            this.formObject.setVisible("validcertificate", false);
+            this.formObject.setVisible("Label40", false);
+            this.formObject.setVisible("viewlastyearmarkssheet", false);
+            this.formObject.setVisible("validlastyearmarkssheet", false);
+            this.formObject.setVisible("Label50", false);
+            this.formObject.setVisible("viewdegreecertificate", false);
+            this.formObject.setVisible("validdegreecertificate", false);
+            this.formObject.setVisible("Label38", false);
+            this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+            this.formObject.setVisible("Label39", false);
+            this.formObject.setVisible("viewnationaltradecerti", false);
+            this.formObject.setVisible("validnationaltradecerti", false);
+
+            this.formObject.setVisible("Label52", false);
+            this.formObject.setVisible("viewtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("validtechnicalexaminationboardcerti", false);
+            this.formObject.setVisible("Label41", false);
+            this.formObject.setVisible("viewformk", false);
+            this.formObject.setVisible("validformk", false);
+            this.formObject.setVisible("Label42", false);
+            this.formObject.setVisible("viewformi", false);
+            this.formObject.setVisible("validformi", false);
+
+            this.formObject.setVisible("Label50", true);
+            this.formObject.setVisible("viewdegreecertificate", true);
+            this.formObject.setVisible("validdegreecertificate", true);
+            this.formObject.setTop("Label50", 64);
+            this.formObject.setTop("viewdegreecertificate", 64);
+            this.formObject.setTop("validdegreecertificate", 64);
+
+            this.formObject.setTop("Frame8", 120);
+            this.formObject.setHeight("Frame7", 97);
+            this.formObject.setTop("Frame10", 270);
+            this.formObject.setTop("Frame11", 380);
+            this.formObject.setTop("Frame15", 440);
+            this.formObject.setHeight("Frame5", 490);
+            this.formObject.setTop("Frame15", 1430);
+            this.formObject.setTop("Frame16", 1510);
+            this.formObject.setTop("q_execon_comment1", 1640);
+          }
+          else if (!(tech_qualification.equalsIgnoreCase("B.E/B.Tech In Electrical & Electronics Engineering"))) {
+            if (tech_qualification.equalsIgnoreCase("Any Other Qualification Equivalent To Degree/Diploma In Electrical Engineering")) {
+              this.formObject.setVisible("Label48", false);
+              this.formObject.setVisible("viewdiplomacertificate", false);
+              this.formObject.setVisible("validdiplomacertificate", false);
+
+              this.formObject.setVisible("Label40", false);
+              this.formObject.setVisible("viewlastyearmarkssheet", false);
+              this.formObject.setVisible("validlastyearmarkssheet", false);
+              this.formObject.setVisible("Label50", false);
+              this.formObject.setVisible("viewdegreecertificate", false);
+              this.formObject.setVisible("validdegreecertificate", false);
+              this.formObject.setVisible("Label38", false);
+              this.formObject.setVisible("viewnationalapprenticeshipcerti", false);
+              this.formObject.setVisible("validnationalapprenticeshipcerti", false);
+              this.formObject.setVisible("Label39", false);
+              this.formObject.setVisible("viewnationaltradecerti", false);
+              this.formObject.setVisible("validnationaltradecerti", false);
+
+              this.formObject.setVisible("Label52", false);
+              this.formObject.setVisible("viewtechnicalexaminationboardcerti", false);
+              this.formObject.setVisible("validtechnicalexaminationboardcerti", false);
+              this.formObject.setVisible("Label41", false);
+              this.formObject.setVisible("viewformk", false);
+              this.formObject.setVisible("validformk", false);
+              this.formObject.setVisible("Label42", false);
+              this.formObject.setVisible("viewformi", false);
+              this.formObject.setVisible("validformi", false);
+
+              this.formObject.setVisible("Label50", false);
+              this.formObject.setVisible("viewdegreecertificate", false);
+              this.formObject.setVisible("validdegreecertificate", false);
+
+              this.formObject.setVisible("Label54", true);
+              this.formObject.setVisible("viewcertificate", true);
+              this.formObject.setVisible("validcertificate", true);
+              this.formObject.setTop("Label54", 64);
+              this.formObject.setTop("viewcertificate", 64);
+              this.formObject.setTop("validcertificate", 64);
+
+              this.formObject.setTop("Frame8", 120);
+              this.formObject.setHeight("Frame7", 97);
+              this.formObject.setTop("Frame10", 270);
+              this.formObject.setTop("Frame11", 380);
+              this.formObject.setTop("Frame15", 440);
+              this.formObject.setHeight("Frame5", 490);
+              this.formObject.setTop("Frame15", 1430);
+              this.formObject.setTop("Frame16", 1510);
+              this.formObject.setTop("q_execon_comment1", 1640);
+            }
+          }
+        }
+      }
+
+      if (pEvent.getSource().getName().equalsIgnoreCase("org_type")) {
+        String org_type = this.formObject.getNGValue("org_type");
+
+        if (this.lang_select.equalsIgnoreCase("Gujarati")) {
+          this.formObject.setNGValue("Label102", "4.1 ભાગીદારી ખત");
+          this.formObject.setNGValue("Label60", "4.1 નોંધણી પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label62", "4.1 મેમોરેન્ડમ");
+        } else if (this.lang_select.equalsIgnoreCase("English")) {
+          this.formObject.setNGValue("Label102", "4.1 Partnership deed");
+          this.formObject.setNGValue("Label60", "4.1 Registration certificate");
+          this.formObject.setNGValue("Label62", "4.1 Memorandum");
+        }
+
+        if (org_type.equalsIgnoreCase("Partnership")) {
+          this.formObject.setVisible("Label60", false);
+          this.formObject.setVisible("viewregistrationcertificate", false);
+          this.formObject.setVisible("validregistrationcertificate", false);
+          this.formObject.setVisible("Label62", false);
+          this.formObject.setVisible("viewmemorandum", false);
+          this.formObject.setVisible("validmemorandum", false);
+
+          this.formObject.setVisible("Label102", true);
+          this.formObject.setVisible("viewpartnershipdeed", true);
+          this.formObject.setVisible("validpartnershipdeed", true);
+        }
+
+        if (org_type.equalsIgnoreCase("LLP")) {
+          this.formObject.setVisible("Label102", false);
+          this.formObject.setVisible("viewpartnershipdeed", false);
+          this.formObject.setVisible("validpartnershipdeed", false);
+          this.formObject.setVisible("Label62", false);
+          this.formObject.setVisible("viewmemorandum", false);
+          this.formObject.setVisible("validmemorandum", false);
+
+          this.formObject.setVisible("Label60", true);
+          this.formObject.setVisible("viewregistrationcertificate", true);
+          this.formObject.setVisible("validregistrationcertificate", true);
+          this.formObject.setTop("Label60", 408);
+          this.formObject.setTop("viewregistrationcertificate", 408);
+          this.formObject.setTop("validregistrationcertificate", 408);
+        }
+        if ((org_type.equalsIgnoreCase("Private")) || (org_type.equalsIgnoreCase("Public"))) {
+          this.formObject.setVisible("Label102", false);
+          this.formObject.setVisible("viewpartnershipdeed", false);
+          this.formObject.setVisible("validpartnershipdeed", false);
+          this.formObject.setVisible("Label60", false);
+          this.formObject.setVisible("viewregistrationcertificate", false);
+          this.formObject.setVisible("validregistrationcertificate", false);
+
+          this.formObject.setVisible("Label62", true);
+          this.formObject.setVisible("viewmemorandum", true);
+          this.formObject.setVisible("validmemorandum", true);
+          this.formObject.setTop("Label62", 408);
+          this.formObject.setTop("viewmemorandum", 408);
+          this.formObject.setTop("validmemorandum", 408);
+        }
+
+      }
+
+      if (pEvent.getSource().getName().equalsIgnoreCase("candidate_type"))
+      {
+        this.candidate_type = this.formObject.getNGValue("candidate_type");
+        System.out.println("coming up to here ----- >" + this.candidate_type);
+
+        if (this.candidate_type.equalsIgnoreCase("New Supervisor Exemption"))
+        {
+          this.formObject.setSheetVisible("Tab1", 0, true);
+          this.formObject.setSheetVisible("Tab1", 1, false);
+          this.formObject.setSheetVisible("Tab1", 3, false);
+          this.formObject.setSheetVisible("Tab1", 2, false);
+
+          this.formObject.setNGValue("Label144", "Application for New Supervisor Exemption");
+        }
+
+        if (this.candidate_type.equalsIgnoreCase("New Wireman Exemption"))
+        {
+          this.formObject.setSheetVisible("Tab1", 0, true);
+          this.formObject.setSheetVisible("Tab1", 1, false);
+          this.formObject.setSheetVisible("Tab1", 3, false);
+          this.formObject.setSheetVisible("Tab1", 2, false);
+
+          this.formObject.setNGValue("Label144", "Application for New Wireman Exemption");
+        }
+
+        if (this.candidate_type.equalsIgnoreCase("New Contractor License"))
+        {
+          this.formObject.setSheetVisible("Tab1", 0, false);
+          this.formObject.setSheetVisible("Tab1", 1, true);
+          this.formObject.setSheetVisible("Tab1", 3, false);
+          this.formObject.setSheetVisible("Tab1", 2, false);
+          this.formObject.setHeight("Tab1_1", 10);
+
+          this.formObject.setNGValue("Label144", "Application for New Contractor License");
+        }
+
+        if (this.candidate_type.equalsIgnoreCase("Contractor Renewal"))
+        {
+          this.formObject.setSheetVisible("Tab1", 0, false);
+          this.formObject.setSheetVisible("Tab1", 1, false);
+          this.formObject.setSheetVisible("Tab1", 2, false);
+          this.formObject.setSheetVisible("Tab1", 3, true);
+
+          this.formObject.setNGValue("Label144", "Application for Contractor Renewal");
+        }
+
+        if (this.candidate_type.equalsIgnoreCase("Duplicate"))
+        {
+          this.formObject.setSheetVisible("Tab1", 0, false);
+          this.formObject.setSheetVisible("Tab1", 1, false);
+          this.formObject.setSheetVisible("Tab1", 3, false);
+          this.formObject.setSheetVisible("Tab1", 2, true);
+          this.formObject.setNGValue("Label144", "Application for Duplicate");
+        }
+
+      }
+
+      if (pEvent.getSource().getName().equalsIgnoreCase("Combo3")) {
+        this.lang_select = this.formObject.getNGValue("Combo3");
+        if (this.lang_select.equalsIgnoreCase("English"))
+        {
+          this.formObject.setNGValue("Label102", "4.1 Partnership deed");
+          this.formObject.setNGValue("Label60", "4.1 Registration certificate");
+          this.formObject.setNGValue("Label62", "4.1 Memorandum");
+
+          this.formObject.setNGValue("Label38", "11.2 National apprenticeship certificate (ELE)");
+          this.formObject.setNGValue("Label42", "11.4 Copy of Form “I” verified by authority");
+          this.formObject.setNGValue("Label49", "11.2 Electrical installation,wiring and jointing certificate");
+          this.formObject.setNGValue("Label53", "11.2 All semester marks sheet");
+          this.formObject.setNGValue("Label40", "11.2 Marks sheet of last year");
+          this.formObject.setNGValue("Label50", "11.3 Degree certificate");
+          this.formObject.setNGValue("Label54", "11.3 Certificate");
+          this.formObject.setNGValue("Label39", "11.2 National trade certificate (ELE)");
+          this.formObject.setNGValue("Label41", "11.5 Form “K”");
+          this.formObject.setNGValue("Label48", "11.3 Diploma certificate");
+          this.formObject.setNGValue("Label52", "11.2 Technical examination board certificate");
+          this.formObject.setNGValue("Label46", "11.2 Electrical service technician certificate");
+
+          this.formObject.setNGValue("Label4", "1. Surname");
+          this.formObject.setNGValue("Label5", "2. First name");
+          this.formObject.setNGValue("Label6", "3. Father / Husband or Middle nam");
+          this.formObject.setNGValue("Label10", "4. Date of birth");
+          this.formObject.setNGValue("Label7", "4.1 School leaving certificate");
+          this.formObject.setNGValue("Label11", "4.2. Age");
+          this.formObject.setNGValue("Label13", "5. Gender");
+          this.formObject.setNGValue("Label14", "6.1 House no /Flat no /Block no");
+          this.formObject.setNGValue("Label15", "6.2 Building / Apartment name");
+          this.formObject.setNGValue("Label16", "6.3 Taluka name");
+          this.formObject.setNGValue("Label17", "6.4 District name");
+          this.formObject.setNGValue("Label22", "6.5 State");
+          this.formObject.setNGValue("Label23", "6.6 Pincode");
+          this.formObject.setNGValue("Label24", "6.7 Attach electricity bill for address proof or any Govt. Id");
+          this.formObject.setNGValue("Label26", "7.1 House no /Flat no /Block no");
+          this.formObject.setNGValue("Label27", "7.2 Building / Apartment name");
+          this.formObject.setNGValue("Label28", "7.3 Taluka name");
+          this.formObject.setNGValue("Label29", "7.4 District name");
+          this.formObject.setNGValue("Label30", "7.5 State");
+          this.formObject.setNGValue("Label31", "7.6 Pincode");
+          this.formObject.setNGValue("Label32", "7.7 Attach electricity bill for address proof or any Govt. Id");
+          this.formObject.setNGValue("Label35", "8. Mobile no");
+          this.formObject.setNGValue("Label36", "9. Alternate Mobile no");
+          this.formObject.setNGValue("Label37", "10. Email id of applicant");
+          this.formObject.setNGValue("Label8", "11. Technical Qualification");
+          this.formObject.setNGValue("Label33", "11.1 Enrolment no");
+          this.formObject.setNGValue("Label56", "12. Name Of University");
+          this.formObject.setNGValue("Label57", "12.1 Year Of Passing");
+          this.formObject.setNGValue("Label58", "12.2 State");
+          this.formObject.setNGValue("Label59", "12.3 Affidavit if not from Gujarat");
+          this.formObject.setNGValue("Label61", "12.4 Permanent address proof of the state from which you belong if not from Gujarat");
+          this.formObject.setNGValue("Label63", "13. Name Of The Institute & College");
+          this.formObject.setNGValue("Label64", "13.1 Name Of District Of College");
+          this.formObject.setNGValue("Label65", "13.2 Marks sheet of all sem if from Other state");
+          this.formObject.setNGValue("Label67", "14. Upload Photograph");
+          this.formObject.setNGValue("Label68", "15. Upload Signature");
+          this.formObject.setNGValue("Label69", "14.1 Passport size photograph");
+          this.formObject.setNGValue("Label71", "15.1 Scan copy of signature");
+          this.formObject.setNGValue("Label12", "Declaration for exemption for electrical wireman permit in Gujarat");
+          this.formObject.setNGValue("Label47", "I hereby declare that i have not holding any wireman permit issued by Gujarat state or any other");
+          this.formObject.setNGValue("Label51", "I myself is liable for prosecution for false information.");
+          this.formObject.setNGValue("Label55", "Comment");
+          this.formObject.setNGValue("field", "Field name");
+          this.formObject.setNGValue("Label72", "Added by");
+          this.formObject.setNGValue("Label70", "Added on");
+
+          this.formObject.setNGValue("Label90", "1. Name in which Electrical Contractor License applied");
+          this.formObject.setNGValue("Label92", "2. Mobile No. of the applicant");
+          this.formObject.setNGValue("Label93", "3.1 Office no / Block no");
+          this.formObject.setNGValue("Label94", "3.2 Building / Apartment name");
+          this.formObject.setNGValue("Label95", "3.3 Taluka name");
+          this.formObject.setNGValue("Label96", "3.4 District name");
+          this.formObject.setNGValue("Label97", "3.5 State");
+          this.formObject.setNGValue("Label98", "3.6 Pincode");
+          this.formObject.setNGValue("Label99", "3.7 Attach electricity bill for address proof or any Govt. Id");
+          this.formObject.setNGValue("Label101", "4. Type Of Organization");
+          this.formObject.setNGValue("Label111", "5.  Details Of Organization for(Partnership/Propritership)");
+          this.formObject.setNGValue("Label138", "Name of Partner");
+          this.formObject.setNGValue("Label139", "Date of Birth");
+          this.formObject.setNGValue("Label141", "5.1 Date of birth proof ");
+          this.formObject.setNGValue("Label143", "5.2 Address proof");
+          this.formObject.setNGValue("Label140", "Home Address");
+          this.formObject.setNGValue("Label105", "6. Is Contractor License Previously Granted");
+          this.formObject.setNGValue("Label106", "6.1 Contractor License Number");
+          this.formObject.setNGValue("Label107", "6.2 Date Of Issue (contractor license)");
+          this.formObject.setNGValue("Label108", "7.1 Name Of Supervisor");
+          this.formObject.setNGValue("Label109", "7.2 Permit No. Supervisor");
+          this.formObject.setNGValue("Label110", "7.3 Date of issue Of Supervisor Permit");
+          this.formObject.setNGValue("Label73", "7.4 Date of birth of supervisor");
+          this.formObject.setNGValue("Label74", "7.5 Age");
+          this.formObject.setNGValue("Label112", "8. Previous Experience Of Supervisor With Any Other Licensed Contractor");
+          this.formObject.setNGValue("Label134", "Name of contarctor");
+          this.formObject.setNGValue("Label135", "Contractor License No");
+          this.formObject.setNGValue("Label137", "Date of starting");
+          this.formObject.setNGValue("Label136", "Date of leaving");
+          this.formObject.setNGValue("Label147", "8.1 Address proof ");
+          this.formObject.setNGValue("Label113", "9. Attach Documents Regarding Contractor License ");
+          this.formObject.setNGValue("Label114", "9.1 Bank solvency certificate");
+          this.formObject.setNGValue("Label116", "9.2  Details of instruments");
+          this.formObject.setNGValue("Label119", "9.3 Invoice of instruments");
+          this.formObject.setNGValue("Label121", "9.4 Owners Declaration");
+          this.formObject.setNGValue("Label123", "9.5 Declaration Of Supervisor");
+          this.formObject.setNGValue("Label125", "9.6 Appointment Letter to be given ");
+          this.formObject.setNGValue("Label127", "9.7 Letter of declaration");
+          this.formObject.setNGValue("Label133", "9.8 Affidavit");
+          this.formObject.setNGValue("Label34", "Comment");
+          this.formObject.setNGValue("Label43", "Field Name");
+          this.formObject.setNGValue("Label45", "Added by");
+          this.formObject.setNGValue("Label19", "Added on");
+
+          this.formObject.setNGValue("Label75", "1. Name of Applicant");
+          this.formObject.setNGValue("Label76", "2. Applying for supervisor / wireman permit or exemption certificate");
+          this.formObject.setNGValue("Label77", "3. Wireman Or Supervisor Permit No.");
+          this.formObject.setNGValue("Label78", "4. Date Of Issue Of Permit");
+          this.formObject.setNGValue("Label79", "5. Attach Document");
+          this.formObject.setNGValue("Label80", "5.1 Attach Photocopy of Permit");
+          this.formObject.setNGValue("Label82", "6. Is there any change in address ?");
+          this.formObject.setNGValue("Label83", "6.1 House No. / Flat No. / Block No");
+          this.formObject.setNGValue("Label84", "6.2 Building Name / Apartment Name");
+          this.formObject.setNGValue("Label85", "6.3 Taluka Name");
+          this.formObject.setNGValue("Label87", "6.4 District Name");
+          this.formObject.setNGValue("Label86", "6.5 State");
+          this.formObject.setNGValue("Label88", "6.6 Pincode");
+          this.formObject.setNGValue("Label89", "6.7 Attach electricity bill for address proof or any Govt. valid ID proof");
+          this.formObject.setNGValue("Label100", "7. Attach Document");
+          this.formObject.setNGValue("Label103", "7.1 Passport size Photograph");
+          this.formObject.setNGValue("Label115", "7.2 Affidavit");
+
+          this.formObject.setNGValue("Label118", "1. Name of contractor");
+          this.formObject.setNGValue("Label120", "2. Contractor license no");
+          this.formObject.setNGValue("Label122", "3. Date of issue of license");
+          this.formObject.setNGValue("Label124", "4. Expiry date of license");
+          this.formObject.setNGValue("Label126", "5. Attach Document");
+          this.formObject.setNGValue("Label128", "Copy of Form “I” verified by authority (All Pages)");
+          this.formObject.setNGValue("Label130", "6.1 Name of supervisor");
+          this.formObject.setNGValue("Label131", "6.2 Date of birth of supervisor");
+          this.formObject.setNGValue("Label132", "6.3 Date of joining");
+          this.formObject.setNGValue("Label142", "7. Is the above mentioned supervisor still working with the firm ?");
+          this.formObject.setNGValue("Label145", "7.1 Date of leaving of old supervisor");
+          this.formObject.setNGValue("Label146", "7.1 Name of supervisor");
+          this.formObject.setNGValue("Label148", "7.2 Date of birth of supervisor");
+          this.formObject.setNGValue("Label149", "7.3 Date of joining");
+          this.formObject.setNGValue("Label150", "8. Is there any change in address ?");
+          this.formObject.setNGValue("Label151", "8.1 House No. / Flat No. / Block No");
+          this.formObject.setNGValue("Label152", "8.2 Building Name / Apartment Name");
+          this.formObject.setNGValue("Label153", "8.3 Taluka Name");
+          this.formObject.setNGValue("Label154", "8.4 District Name");
+          this.formObject.setNGValue("Label155", "8.5 State");
+          this.formObject.setNGValue("Label156", "8.6 Pincode");
+          this.formObject.setNGValue("Label157", "8.7 Attach electricty bill for address pfroof or any Govt. valid ID proof");
+        }
+
+        if (this.lang_select.equalsIgnoreCase("Gujarati"))
+        {
+          this.formObject.setNGValue("Label102", "4.1 ભાગીદારી ખત");
+          this.formObject.setNGValue("Label60", "4.1 નોંધણી પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label62", "4.1 મેમોરેન્ડમ");
+
+          this.formObject.setNGValue("Label38", "11.2 રાષ્ટ્રીય ઉમેદવારી પ્રમાણપત્ર (એ.ઈ.)");
+          this.formObject.setNGValue("Label38", "11.2 રાષ્ટ્રીય ઉમેદવારી પ્રમાણપત્ર (એ.એલ.ઇ.)");
+          this.formObject.setNGValue("Label42", "11.4 સત્તા દ્વારા ચકાસાયેલ ફોર્મ આઇ ની કૉપિ");
+          this.formObject.setNGValue("Label49", "11.2 ઇલેક્ટ્રીકલ ઇન્સ્ટોલેશન, મકાનમાં વીજળીપ્રવાહના અખંડ માર્ગ");
+          this.formObject.setNGValue("Label53", "11.2 બધા સત્ર ગુણ પત્રક");
+          this.formObject.setNGValue("Label40", "11.2 ગયા વર્ષની ગુણ પત્રક");
+          this.formObject.setNGValue("Label50", "11.3 ડિગ્રી પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label54", "11.3 પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label39", "11.2 રાષ્ટ્રીય વેપાર પ્રમાણપત્ર (ELE)");
+          this.formObject.setNGValue("Label41", "11.5 કે ફોર્મ");
+          this.formObject.setNGValue("Label48", "11.3 ડિપ્લોમા પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label52", "11.2 ટેકનિકલ પરીક્ષા બોર્ડ પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label46", "11.2 ઇલેક્ટ્રિકલ સર્વિસ ટેકનિશિયન પ્રમાણપત્ર");
+
+          this.formObject.setNGValue("Label4", "1. સ્નામ");
+          this.formObject.setNGValue("Label5", "2. પ્રથમ નામ");
+          this.formObject.setNGValue("Label6", "3. પિતા / પતિ અથવા મધ્ય નામ");
+          this.formObject.setNGValue("Label10", "4. જન્મ તારીખ");
+          this.formObject.setNGValue("Label7", "4.1 શાળા છોડયાં નું પ્રમાણપત્ર");
+          this.formObject.setNGValue("Label11", "4.2. ઉંમર");
+          this.formObject.setNGValue("Label13", "5. જાતિ");
+          this.formObject.setNGValue("Label14", "6.1 ગૃહ નં. / ફ્લેટ નંબર / બ્લોક નં");
+          this.formObject.setNGValue("Label15", "6.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+          this.formObject.setNGValue("Label16", "6.3 તાલુકાનું નામ");
+          this.formObject.setNGValue("Label17", "6.4 જિલ્લાનું નામ");
+          this.formObject.setNGValue("Label22", "6.5 રાજ્ય");
+          this.formObject.setNGValue("Label23", "6.6 પીન કોડ");
+          this.formObject.setNGValue("Label24", "6.7 સરનામાના પુરાવા માટે વીજળી બિલ અથવાકોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો");
+          this.formObject.setNGValue("Label26", "7.1 ગૃહ નં. / ફ્લેટ નંબર / બ્લોક નં");
+          this.formObject.setNGValue("Label27", "7.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+          this.formObject.setNGValue("Label28", "7.3 તાલુકાનું નામ");
+          this.formObject.setNGValue("Label29", "7.4 જિલ્લાનું નામ");
+          this.formObject.setNGValue("Label30", "7.5 રાજ્ય");
+          this.formObject.setNGValue("Label31", "7.6 પીન કોડ");
+          this.formObject.setNGValue("Label32", "7.7 સરનામાના પુરાવા માટે વીજળી બિલ અથવાકોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો");
+          this.formObject.setNGValue("Label35", "8. મોબાઇલ નંબર");
+          this.formObject.setNGValue("Label36", "9. વૈકલ્પિક મોબાઇલ નંબર");
+          this.formObject.setNGValue("Label37", "10. અરજદારનું ઇમેઇલ આઈડી");
+          this.formObject.setNGValue("Label8", "11. તકનિકી લાયકાત");
+          this.formObject.setNGValue("Label33", "11.1 નોંધણી નંબર");
+          this.formObject.setNGValue("Label56", "12. યુનિવર્સિટીનું નામ");
+          this.formObject.setNGValue("Label57", "12.1 પાસિંગનું વર્ષ");
+          this.formObject.setNGValue("Label58", "12.2 રાજ્ય");
+          this.formObject.setNGValue("Label59", "12.3 જો ગુજરાતથી ના હોય તો એફિડેવિટ જોડો");
+          this.formObject.setNGValue("Label61", "12.4 જે રાજ્યનો તમે ગુજરાતથી ન હોવો તેનું કાયમી સરનામું પુરાવો");
+          this.formObject.setNGValue("Label63", "13. સંસ્થા અને કોલેજનું નામ");
+          this.formObject.setNGValue("Label64", "13.1 કોલેજ જિલ્લાનું નામ");
+          this.formObject.setNGValue("Label65", "13.2 અન્ય રાજ્યથી જો બધા સત્રના ગુણ પત્રક");
+          this.formObject.setNGValue("Label67", "14. ફોટો અપલોડ કરો");
+          this.formObject.setNGValue("Label68", "15. હસ્તાક્ષર અપલોડ કરો");
+          this.formObject.setNGValue("Label69", "14.1 પાસપોર્ટ સાઈઝ નો ફોટોગ્રાફ");
+          this.formObject.setNGValue("Label71", "15.1 સહીની સ્કેન નકલ જોડો");
+          this.formObject.setNGValue("Label12", "ગુજરાતમાં વિદ્યુત વાયરમેન પરમિટ માટે મુક્તિ માટેની ઘોષણા");
+          this.formObject.setNGValue("Label47", "હું આ મુજબ જાહેર કરું છું કે મારી પાસે ગુજરાત રાજ્ય અથવા અન્ય કોઇ દ્વારા આપવામાં આવેલા કોઈપણ વાયરમેન પરમિટ નથી");
+          this.formObject.setNGValue("Label51", "ખોટી માહિતી માટે હું પોતે કાર્યવાહી માટે જવાબદાર છું.");
+          this.formObject.setNGValue("Label55", "ટિપ્પણી કરો");
+          this.formObject.setNGValue("field", "ફીલ્ડનું નામ");
+          this.formObject.setNGValue("Label72", "દ્વારા ઉમેરાઈ");
+          this.formObject.setNGValue("Label70", "પર ઉમેર્યું");
+
+          this.formObject.setNGValue("Label90", "1. જેના માટે ઇલેક્ટ્રિકલ કોન્ટ્રાક્ટર લાઈસન્સ લાગુ થાય છે તેનું નામ");
+          this.formObject.setNGValue("Label92", "2. અરજદારનો મોબાઇલ નંબર ");
+          this.formObject.setNGValue("Label93", "3.1 ઓફિસ નંબર / બ્લોક નં");
+          this.formObject.setNGValue("Label94", "3.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+          this.formObject.setNGValue("Label95", "3.3 તાલુકાનું નામ");
+          this.formObject.setNGValue("Label96", "3.4 જિલ્લાનું નામ");
+          this.formObject.setNGValue("Label97", "3.5 રાજ્ય");
+          this.formObject.setNGValue("Label98", "3.6 પીન કોડ");
+          this.formObject.setNGValue("Label99", "3.7 સરનામાના પુરાવા માટે વીજળી બિલ અથવાકોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો");
+          this.formObject.setNGValue("Label101", "4. સંસ્થાના પ્રકાર");
+          this.formObject.setNGValue("Label111", "5.  સંગઠનની વિગતો (ભાગીદારી / પ્રસ્તાવના)");
+          this.formObject.setNGValue("Label138", "પાર્ટનરનું નામ");
+          this.formObject.setNGValue("Label139", "જન્મ તારીખ");
+          this.formObject.setNGValue("Label141", "5.1 જન્મતારીખ ની સાબિતી");
+          this.formObject.setNGValue("Label143", "5.2 સરનામું ની સાબિતી");
+          this.formObject.setNGValue("Label140", "ઘરનું સરનામું");
+          this.formObject.setNGValue("Label105", "6. શું કોન્ટ્રાક્ટર લાઇસન્સ પહેલાં મંજૂર થયેલ છે?");
+          this.formObject.setNGValue("Label106", "6.1 કોન્ટ્રાક્ટર લાઈસન્સ નંબર");
+          this.formObject.setNGValue("Label107", "6.2 કોન્ટ્રાક્ટર લાઈસન્સ કાઢી આપવાની તારીખ");
+          this.formObject.setNGValue("Label108", "7.1 સુપરવાઇઝરનું નામ");
+          this.formObject.setNGValue("Label109", "7.2 પરમિટ નં. સુપરવાઇઝર");
+          this.formObject.setNGValue("Label110", "7.3 સુપરવાઇઝર પરમિટના મુદ્દાની તારીખ");
+          this.formObject.setNGValue("Label73", "7.4 સુપરવાઇઝરના જન્મ તારીખ");
+          this.formObject.setNGValue("Label74", "7.5 ઉંમર");
+
+          this.formObject.setNGValue("Label112", "8. અગાઉના કોઈપણ અન્ય કોઇ લાઇસન્સ ધરાવતી ઠેકેદાર સાથે સુપરવાઇઝરનો અનુભવ");
+          this.formObject.setNGValue("Label134", "કોન્ટ્રેક્ટર નું નામ");
+          this.formObject.setNGValue("Label135", "કોન્ટ્રેક્ટર નો લાઈસન્સ નંબર");
+          this.formObject.setNGValue("Label137", "શરૂઆતની તારીખ");
+          this.formObject.setNGValue("Label136", "છોડવાની તારીખ");
+          this.formObject.setNGValue("Label147", "8.1 સરનામું સાબિતી ");
+          this.formObject.setNGValue("Label113", "9. કોન્ટ્રાક્ટર લાયસન્સ સંબંધિત દસ્તાવેજો જોડો");
+          this.formObject.setNGValue("Label114", "9.1 બેન્ક સૉલ્વેન્સી સર્ટિફિકેટ");
+          this.formObject.setNGValue("Label116", "9.2  સાધનોની વિગતો");
+          this.formObject.setNGValue("Label119", "9.3 સાધનોની ઇન્વોઇસ");
+          this.formObject.setNGValue("Label121", "9.4 માલિક નું ડિકલેરેશન");
+          this.formObject.setNGValue("Label123", "9.5 સુપરવાઇઝર નું ડિકલેરેશન");
+          this.formObject.setNGValue("Label125", "9.6 નિમણૂંક પત્ર આપવામાં આવશે");
+          this.formObject.setNGValue("Label127", "9.7 ઘોષણા પત્ર");
+          this.formObject.setNGValue("Label133", "9.8 સોગંદનામું");
+          this.formObject.setNGValue("Label34", "ટિપ્પણી કરો");
+          this.formObject.setNGValue("Label43", "ફીલ્ડનું નામ");
+          this.formObject.setNGValue("Label45", "દ્વારા ઉમેરાઈ");
+          this.formObject.setNGValue("Label9", "પર ઉમેર્યું");
+
+          this.formObject.setNGValue("Label75", "1. અરજદારનું નામ");
+          this.formObject.setNGValue("Label76", "2. સુપરવાઇઝર / વાયરમેન પરમિટ અથવા મુક્તિ પ્રમાણપત્ર માટે અરજી કરવી");
+          this.formObject.setNGValue("Label77", "3. વાયરમેન અથવા સુપરવાઇઝર પરમિટ નં.");
+          this.formObject.setNGValue("Label78", "4. પરમિટ(પરવાનગી) કાઢી આપવાની તારીખ");
+          this.formObject.setNGValue("Label79", "5. દસ્તાવેજ જોડો");
+          this.formObject.setNGValue("Label80", "5.1 પરમિટની ફોટોકોપી જોડો");
+          this.formObject.setNGValue("Label82", "6. સરનામામાં કોઈ ફેરફાર છે?");
+          this.formObject.setNGValue("Label83", "6.1 ગૃહ નં. / ફ્લેટ નંબર / બ્લોક નં.");
+          this.formObject.setNGValue("Label84", "6.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+          this.formObject.setNGValue("Label85", "6.3 તાલુકા નામ");
+          this.formObject.setNGValue("Label87", "6.4 જિલ્લાનું નામ");
+          this.formObject.setNGValue("Label86", "6.5 રાજ્ય");
+          this.formObject.setNGValue("Label88", "6.6 પીન કોડ");
+          this.formObject.setNGValue("Label89", "6.7 સરનામાના પુરાવા માટે વીજળી બિલ અથવાકોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો");
+          this.formObject.setNGValue("Label100", "7. દસ્તાવેજ જોડો");
+          this.formObject.setNGValue("Label103", "7.1 પાસપોર્ટ સાઈઝ નો ફોટોગ્રાફ");
+          this.formObject.setNGValue("Label115", "7.2 એફિડેવિટ");
+
+          this.formObject.setNGValue("Label118", "1. કોન્ટ્રાક્ટર નું નામ");
+          this.formObject.setNGValue("Label120", "2. કોન્ટ્રાક્ટર નું લાઇસન્સ નંબર");
+          this.formObject.setNGValue("Label122", "3. લાઇસન્સ કાઢી આપવાની તારીખ");
+          this.formObject.setNGValue("Label124", "4. લાઈસન્સની સમાપ્તિ તારીખ");
+          this.formObject.setNGValue("Label126", "5. દસ્તાવેજ જોડો");
+          this.formObject.setNGValue("Label128", "ઇલેક્ટ્રિકલ ઇન્સ્પેક્ટર અથવા તેના પ્રતિનિધિ દ્વારા ચકાસવામાં આવેલ ફોર્મ I(બધા પાના) ની નકલ");
+          this.formObject.setNGValue("Label130", "6.1 સુપરવાઇઝરનું નામ");
+          this.formObject.setNGValue("Label131", "6.2 સુપરવાઈઝર ની જન્મ તારીખ");
+          this.formObject.setNGValue("Label132", "6.3 જોડાયા ની તારીખ");
+          this.formObject.setNGValue("Label142", "7. ઉપરોક્ત સૂચિત સુપરવાઇઝર હજુ પણ કંપની સાથે કામ કરે છે?");
+          this.formObject.setNGValue("Label145", "7.1 જુના સુપરવાઇઝર ને છોડવાની તારીખ");
+          this.formObject.setNGValue("Label146", "7.1 સુપરવાઇઝરનું નામ");
+          this.formObject.setNGValue("Label148", "7.2 સુપરવાઈઝર ની જન્મ તારીખ");
+          this.formObject.setNGValue("Label149", "7.3 જોડાયા ની તારીખ");
+          this.formObject.setNGValue("Label150", "8. સરનામામાં કોઈ ફેરફાર છે?");
+          this.formObject.setNGValue("Label151", "8.1 ગૃહ નં. / ફ્લેટ નંબર / બ્લોક નં.");
+          this.formObject.setNGValue("Label152", "8.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+          this.formObject.setNGValue("Label153", "8.3 તાલુકાનું નામ");
+          this.formObject.setNGValue("Label154", "8.4 જિલ્લાનું નામ");
+          this.formObject.setNGValue("Label155", "8.5 રાજ્ય");
+          this.formObject.setNGValue("Label156", "8.6 પીન કોડ");
+          this.formObject.setNGValue("Label157", "8.7 સરનામાના પુરાવા માટે વીજળી બિલ અથવાકોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો");
+        }
+
+      }
+
+      if (pEvent.getSource().getName().equalsIgnoreCase("file_status")) {
+        this.file_status = this.formObject.getNGValue("file_status");
+        this.candidate_type = this.formObject.getNGValue("candidate_type");
+        System.out.println("status values-------------->" + this.file_status + "value of candidate type----->" + this.candidate_type);
+
+        if ((this.activityName.equalsIgnoreCase("StartEvent1")) || (this.activityName.equalsIgnoreCase("Start"))) {
+          System.out.println("activity name aftr------" + this.activityName);
+          if (this.file_status.equalsIgnoreCase("File In Processing")) {
+            System.out.println("file_status name aftr------" + this.file_status);
+            System.out.println("candidate_type name aftr------" + this.candidate_type);
+            if ((this.candidate_type.equalsIgnoreCase("New Contractor License")) || (this.candidate_type.equalsIgnoreCase("Contractor Renewal"))) {
+              System.out.println("candidate_type name aftr------" + this.candidate_type);
+              this.Query = "select username from ng_user_details where roletype = 'Clerk' and rolename = 'Head Clerk'";
+              System.out.println("value of Query---" + this.candidate_type + " value of ----" + this.Query);
+              this.objGeneral.setAssign(this.Query);
+            }
+            if ((this.candidate_type.equalsIgnoreCase("New Supervisor Exemption")) || (this.candidate_type.equalsIgnoreCase("New Wireman Exemption"))) {
+              this.Query = "select username from ng_user_details where roletype = 'Clerk' and rolename = 'Sr.clerk'";
+              this.objGeneral.setAssign(this.Query);
+            }
+            if (this.candidate_type.equalsIgnoreCase("Duplicate")) {
+              this.Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+              this.objGeneral.setAssign(this.Query);
+            }
+          }
+        }
+        if (this.activityName.equalsIgnoreCase("Clerk")) {
+          this.formObject.clear("assigned_to");
+          if (this.file_status.equalsIgnoreCase("File In Processing"))
+          {
+            this.Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+            this.objGeneral.setAssign(this.Query);
+          }
+        }
+
+        if (this.activityName.equalsIgnoreCase("Assistant officer")) {
+          this.formObject.clear("assigned_to");
+          if (this.file_status.equalsIgnoreCase("File In Processing")) {
+            this.Query = "select username from ng_user_details where roletype = 'AEI'";
+            this.objGeneral.setAssign(this.Query);
+          }
+
+          if (this.file_status.equalsIgnoreCase("Documents Not Completed")) {
+            System.out.println("insinde ------ not completed-->");
+            this.Query = "select username from ng_user_details where roletype = 'Clerk'";
+            System.out.println("SEcond query--------------------->" + this.Query);
+            this.objGeneral.setAssign(this.Query);
+          }
+        }
+
+        if (this.activityName.equalsIgnoreCase("AEI")) {
+          this.formObject.clear("assigned_to");
+          if (this.file_status.equalsIgnoreCase("File In Processing")) {
+            this.Query = "select username from ng_user_details where roletype = 'Secretary'";
+            this.objGeneral.setAssign(this.Query);
+          }
+
+          if (this.file_status.equalsIgnoreCase("Documents Not Completed")) {
+            this.Query = "select username from ng_user_details where roletype = 'Clerk'";
+            this.objGeneral.setAssign(this.Query);
+          }
+        }
+        if (this.activityName.equalsIgnoreCase("Secretary")) {
+          this.formObject.clear("assigned_to");
+          if (this.file_status.equalsIgnoreCase("File In Processing")) {
+            this.Query = "select username from ng_user_details where roletype = 'President'";
+            this.objGeneral.setAssign(this.Query);
+          }
+
+          if (this.file_status.equalsIgnoreCase("Documents Not Completed")) {
+            this.Query = "select username from ng_user_details where roletype = 'Clerk'";
+            this.objGeneral.setAssign(this.Query);
+          }
+        }
+        if (this.activityName.equalsIgnoreCase("President")) {
+          this.formObject.clear("assigned_to");
+          if (this.file_status.equalsIgnoreCase("Approved")) {
+            this.Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+            this.objGeneral.setAssign(this.Query);
+          }
+          if (this.file_status.equalsIgnoreCase("Documents Not Completed")) {
+            this.Query = "select username from ng_user_details where roletype = 'Clerk'";
+            this.objGeneral.setAssign(this.Query);
+          }
+          if (this.file_status.equalsIgnoreCase("Not Approved")) {
+            this.Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+            this.objGeneral.setAssign(this.Query);
+          }
+
+        }
+
+      }
+
+    }
+
+    if (!(pEvent.getType().name().equalsIgnoreCase("MOUSE_CLICKED")))
+    {
+      return;
+    }
+
+    if (pEvent.getSource().getName().equalsIgnoreCase("gente")) {
+      System.out.println("alert inside gente");
+      try {
+        System.out.println("alert inside try");
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("D:\\Newgen\\Server\\Certificate\\Exemption\\Supervisor\\" + this.formObject.getNGValue("file_no") + ".pdf"));
+        document.open();
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+
+      String file1 = "\\Exemption\\Supervisor\\" + this.formObject.getNGValue("file_no");
+      HashMap hm1 = new HashMap();
+      throw new ValidatorException(new CustomExceptionHandler("Error", file1, "MOUSE_CLICKED", hm1));
+    }
+
+    if (pEvent.getSource().getName().equalsIgnoreCase("Genc"))
+    {
+      String qr;
+      String licNo;
+      String licTemp;
+      Calendar now;
+      int year;
+  
+      String Syear;
+      SupervisorTemplate obj;
+         HashMap<Integer, String> hm = new HashMap<Integer, String>();
+      this.candidate_type = this.formObject.getNGValue("candidate_type");
+
+      this.file_noforcertificate = this.formObject.getNGValue("file_no");
+
+      int lic = 0;
+
+      General gn = new General();
+
+      if (this.candidate_type.equalsIgnoreCase("New Supervisor Exemption")) {
+        this.file_noforcertificate = this.formObject.getNGValue("file_no");
+
+        qr = "SELECT max(split_part(license_no, '-', 3)) FROM ext_exemption_contractor where candidate_type = 'New Supervisor Exemption'";
+        this.result = this.formObject.getDataFromDataSource(qr);
+
+        licNo = (String)((List)this.result.get(0)).get(0);
+
+        System.out.println("licNo -------> " + licNo);
+
+        if ((licNo == null) || (licNo.equalsIgnoreCase("null"))) {
+          System.out.println("-------Inside IF ----------");
+          lic = 1;
+        } else {
+          System.out.println("-------Inside else ----------");
+
+          System.out.println("-------Inside IF ----------");
+
+          if (!(this.formObject.getNGValue("license_no").equals("")))
+          {
+            System.out.println("Inside IF (IF)");
+            qr = "select split_part(license_no, '-', 3) from ext_exemption_contractor where processid = '" + this.processInstanceId + "'";
+            this.result = this.formObject.getDataFromDataSource(qr);
+            licTemp = (String)((List)this.result.get(0)).get(0);
+            lic = Integer.parseInt(licTemp);
+            System.out.println("Inside IF (IF) Value of lic--->" + lic);
+          }
+          else
+          {
+            System.out.println("Inside IF (ELSE) Value of lic");
+
+            qr = "select max(split_part(license_no, '-', 3)) from ext_exemption_contractor where candidate_type = 'New Supervisor Exemption'";
+            this.result = this.formObject.getDataFromDataSource(qr);
+            System.out.println("--------------------" + qr);
+            licTemp = (String)((List)this.result.get(0)).get(0);
+            System.out.println("Value of licTemp-------------------->" + licTemp);
+            lic = Integer.parseInt(licTemp) + 1;
+            System.out.println("Inside ELSE-IF Value of lic--->" + lic);
+          }
+        }
+
+        now = Calendar.getInstance();
+        year = now.get(1);
+        Syear = String.valueOf(year);
+        System.out.println("lic -------> " + lic);
+        licNo = "G/GS-E-" + String.format("%06d", new Object[] { Integer.valueOf(lic) }) + "-" + gn.getTQ(this.formObject.getNGValue("technical_qualification")) + "-" + Syear;
+        this.formObject.setNGValue("license_no", licNo);
+
+        this.formObject.RaiseEvent("WFSave");
+
+        obj = new SupervisorTemplate("D:\\Newgen\\Server\\Certificate\\Exemption\\Supervisor\\" + this.file_noforcertificate + ".pdf", licNo, "SUPERVISOR", "");
+        obj.pdfcreation();
+
+        this.file_noforcertificate = "\\Exemption\\Supervisor\\" + this.file_noforcertificate;
+
+    
+        throw new ValidatorException(new CustomExceptionHandler("Error Message", this.file_noforcertificate, "MOUSE_CLICKED", hm));
+      }
+      if (this.candidate_type.equalsIgnoreCase("New Contractor License")) {
+        this.file_noforcertificate = this.formObject.getNGValue("file_no");
+
+        qr = "SELECT max(split_part(license_no, '-', 2)) FROM ext_exemption_contractor where candidate_type = 'New Contractor License'";
+        this.result = this.formObject.getDataFromDataSource(qr);
+
+        licNo = (String)((List)this.result.get(0)).get(0);
+
+        System.out.println("licNo -------> " + licNo);
+
+        if ((licNo == null) || (licNo.equalsIgnoreCase("null"))) {
+          System.out.println("-------Inside IF ----------");
+          lic = 1;
+        }
+        else if (!(this.formObject.getNGValue("license_no").equals("")))
+        {
+          System.out.println("Inside IF (IF)");
+          qr = "select split_part(license_no, '-', 2) from ext_exemption_contractor where processid = '" + this.processInstanceId + "'";
+          this.result = this.formObject.getDataFromDataSource(qr);
+          licTemp = (String)((List)this.result.get(0)).get(0);
+          lic = Integer.parseInt(licTemp);
+          System.out.println("Inside IF (IF) Value of lic--->" + lic);
+        }
+        else
+        {
+          System.out.println("Inside IF (ELSE) Value of lic");
+
+          qr = "select max(split_part(license_no, '-', 2)) from ext_exemption_contractor where candidate_type = 'New Contractor License'";
+          this.result = this.formObject.getDataFromDataSource(qr);
+          System.out.println("--------------------" + qr);
+          licTemp = (String)((List)this.result.get(0)).get(0);
+          System.out.println("Value of licTemp-------------------->" + licTemp);
+          lic = Integer.parseInt(licTemp) + 1;
+          System.out.println("Inside ELSE-IF Value of lic--->" + lic);
+        }
+
+        System.out.println("lic -------> " + lic);
+        licNo = "G/" + this.formObject.getNGValue("Text37") + "/C-" + String.format("%03d", new Object[] { Integer.valueOf(lic) });
+        this.formObject.setNGValue("license_no", licNo);
+
+        this.formObject.RaiseEvent("WFSave");
+
+        ElectricalTemplate obj11 = new ElectricalTemplate("D:\\Newgen\\Server\\Certificate\\Exemption\\Contractor\\" + this.file_noforcertificate + ".pdf", licNo);
+        obj11.pdfcreation();
+
+        this.file_noforcertificate = "\\Exemption\\Contractor\\" + this.file_noforcertificate;
+
+        hm = new HashMap();
+        throw new ValidatorException(new CustomExceptionHandler("Error Message", this.file_noforcertificate, "MOUSE_CLICKED", hm));
+      }
+      if (this.candidate_type.equalsIgnoreCase("New Wireman Exemption")) {
+        this.file_noforcertificate = this.formObject.getNGValue("file_no");
+
+        this.file_noforcertificate = this.formObject.getNGValue("file_no");
+
+        qr = "SELECT max(split_part(license_no, '-', 3)) FROM ext_exemption_contractor where candidate_type = 'New Wireman Exemption'";
+        this.result = this.formObject.getDataFromDataSource(qr);
+
+        licNo = (String)((List)this.result.get(0)).get(0);
+
+        System.out.println("licNo -------> " + licNo);
+
+        if ((licNo == null) || (licNo.equalsIgnoreCase("null"))) {
+          System.out.println("-------Inside IF ----------");
+          lic = 1;
+        } else {
+          System.out.println("-------Inside else ----------");
+
+          System.out.println("-------Inside IF ----------");
+
+          if (!(this.formObject.getNGValue("license_no").equals("")))
+          {
+            System.out.println("Inside IF (IF)");
+            qr = "select split_part(license_no, '-', 3) from ext_exemption_contractor where processid = '" + this.processInstanceId + "'";
+            this.result = this.formObject.getDataFromDataSource(qr);
+            licTemp = (String)((List)this.result.get(0)).get(0);
+            lic = Integer.parseInt(licTemp);
+            System.out.println("Inside IF (IF) Value of lic--->" + lic);
+          }
+          else
+          {
+            System.out.println("Inside IF (ELSE) Value of lic");
+
+            qr = "select max(split_part(license_no, '-', 3)) from ext_exemption_contractor where candidate_type = 'New Wireman Exemption'";
+            this.result = this.formObject.getDataFromDataSource(qr);
+            System.out.println("--------------------" + qr);
+            licTemp = (String)((List)this.result.get(0)).get(0);
+            System.out.println("Value of licTemp-------------------->" + licTemp);
+            lic = Integer.parseInt(licTemp) + 1;
+            System.out.println("Inside ELSE-IF Value of lic--->" + lic);
+          }
+        }
+
+        now = Calendar.getInstance();
+         year = now.get(Calendar.YEAR);
+            Syear = String.valueOf(year);
+        //
+          
+                    
+                  
+        
+        //
+       // hm = now.get(1);
+       // Syear = String.valueOf(hm);
+        System.out.println("lic -------> " + lic);
+        licNo = "G/GS-E-" + String.format("%04d", new Object[] { Integer.valueOf(lic) }) + "-" + gn.getTQ(this.formObject.getNGValue("technical_qualification")) + "-" + Syear;
+        this.formObject.setNGValue("license_no", licNo);
+
+        this.formObject.RaiseEvent("WFSave");
+
+        obj = new SupervisorTemplate("D:\\Newgen\\Server\\Certificate\\Exemption\\Wireman\\" + this.file_noforcertificate + ".pdf", licNo, "WIREMAN", "");
+        obj.pdfcreation();
+
+        this.file_noforcertificate = "\\Exemption\\Wireman\\" + this.file_noforcertificate;
+
+        hm = new HashMap();
+        throw new ValidatorException(new CustomExceptionHandler("Error Message", this.file_noforcertificate, "MOUSE_CLICKED", hm));
+      }
+
+      if (this.candidate_type.equalsIgnoreCase("Duplicate")) {
+        this.file_noforcertificate = this.formObject.getNGValue("file_no");
+
+        licNo = this.formObject.getNGValue("license_no");
+
+        SupervisorTemplate obj1 = new SupervisorTemplate("D:\\Newgen\\Server\\Certificate\\Exemption\\Wireman\\" + this.file_noforcertificate + ".pdf", licNo, "DUPLICATE WIREMAN", "DUPLICATE");
+        obj1.pdfcreation();
+
+        this.file_noforcertificate = "\\Exemption\\Wireman\\" + this.file_noforcertificate;
+
+        hm = new HashMap();
+        throw new ValidatorException(new CustomExceptionHandler("Error Message", this.file_noforcertificate, "MOUSE_CLICKED", hm));
+      }
+
+    }
+
+    if (pEvent.getSource().getName().equalsIgnoreCase("btn")) {
+      this.formObject.ExecuteExternalCommand("NGAddRow", "q_orgdetails");
+      System.out.println("After addition of list view--fisrt->");
+    }
+
+    if ((!(pEvent.getSource().getName().equalsIgnoreCase("btn_cghs_upload"))) || 
+      (pEvent.getSource().getName().equalsIgnoreCase("q_orgdetails")))
+    {
+      ListView lv1 = (ListView)this.formObject.getComponent("q_orgdetails");
+      int rowindex = lv1.getSelectedRowIndex().intValue();
+      String listviewdata = this.formObject.getNGValue("q_orgdetails", rowindex, 0);
+      System.out.println("My Value----" + listviewdata);
+
+      this.Query = "select docid,document ,form_type from complex_documents where form_type='" + listviewdata + "'  and pinstanceid = '" + this.processInstanceId + "'";
+      System.out.println("Query----" + this.Query);
+
+      this.arrayListnew2 = this.formObject.getDataFromDataSource(this.Query);
+      Iterator iteratornew2 = this.arrayListnew2.iterator();
+      while (iteratornew2.hasNext()) {
+        List desrow2 = (List)iteratornew2.next();
+        this.docid = ((String)desrow2.get(0));
+        this.documentname = ((String)desrow2.get(1));
+        this.form_type = ((String)desrow2.get(2));
+        System.out.println(this.docid);
+        System.out.println(this.documentname);
+        System.out.println(this.form_type);
+
+        if (this.documentname.equalsIgnoreCase("birthproof"))
+        {
+          this.formObject.setNGValue("docidbirthproof", this.docid);
+        }
+
+      }
+
+    }
+
+    if (pEvent.getSource().getName().equalsIgnoreCase("cmAdd")) {
+      this.formObject.ExecuteExternalCommand("NGAddRow", "q_execon_comment1");
+      System.out.println("After addition of list view--fisrt->");
+    }
+
+    if (pEvent.getSource().getName().equalsIgnoreCase("C2")) {
+      this.formObject.ExecuteExternalCommand("NGAddRow", "q_execon_comment2");
+      System.out.println("After addition of list view--fisrt->");
+    }
+
+    if (pEvent.getSource().getName().substring(0, 5).equalsIgnoreCase("valid")) {
+      String checkboxID = pEvent.getSource().getName();
+      String docVal = checkboxID.substring(5, checkboxID.length());
+      System.out.println("Doc_type--------" + docVal);
+
+      ListView firstlv = null;
+      this.Query = "select label_seq|| ' | '||label_name , form_part from ng_label_doctypemapping where upper(doctype) = upper('" + docVal + "') and processid='exemption_contractor'";
+      System.out.println(this.Query);
+      this.temparray = this.formObject.getDataFromDataSource(this.Query);
+      String temp = (String)((List)this.temparray.get(0)).get(0);
+      System.out.println("value of temp in valid code-----" + temp);
+      String formPart = (String)((List)this.temparray.get(0)).get(1);
+      System.out.println("value of formPart in valid code-----" + formPart);
+      if (formPart.equalsIgnoreCase("1"))
+      {
+        this.comboID = "fieldname1";
+        this.comment_p1 = "q_execon_comment1";
+        firstlv = (ListView)this.formObject.getComponent("q_execon_comment1");
+      } else if (formPart.equalsIgnoreCase("2")) {
+        this.comboID = "fieldname2";
+        this.comment_p1 = "q_execon_comment2";
+        firstlv = (ListView)this.formObject.getComponent("q_execon_comment2");
+
+        if ((docVal.equalsIgnoreCase("birthproof")) || (docVal.equalsIgnoreCase("orgaddressproof"))) {
+          temp = this.form_type + " | " + temp;
+        }
+
+      }
+
+      System.out.println("temparray--0.0---- " + temp);
+
+      String checkboxValue = this.formObject.getNGValue(checkboxID);
+      System.out.println("checkboxValue--------" + checkboxValue);
+
+      if (checkboxValue.equalsIgnoreCase("false")) {
+        System.out.println("Inside false");
+
+        this.formObject.addItem(this.comboID, temp);
+
+        this.Query = "select form_part from ng_label_doctypemapping where  LOWER(doc_type)= LOWER('" + docVal + "')";
+        this.temparray = this.formObject.getDataFromDataSource(this.Query);
+        formPart = (String)((List)this.temparray.get(0)).get(0);
+        System.out.println("value of label name----" + formPart);
+        System.out.println("value of docVal name----" + docVal);
+        System.out.println("value of processInstanceId name----" + this.processInstanceId);
+        System.out.println("value of temp name----" + temp);
+
+        this.Query = "INSERT INTO ng_invalid_docs(doctype,pid,formfield,form_part) VALUES('" + docVal + "','" + this.processInstanceId + "','" + temp + "','" + formPart + "')";
+        this.formObject.saveDataIntoDataSource(this.Query);
+      } else if (checkboxValue.equalsIgnoreCase("true")) {
+        System.out.println("Inside true");
+        int count = this.formObject.getItemCount(this.comboID);
+        System.out.println(count + "<<count");
+
+        for (int j = 0; j < count; ++j) {
+          String sValue = this.formObject.getNGValueAt(this.comboID, j);
+          String sText = this.formObject.getNGItemText(this.comboID, j);
+          System.out.println(sValue + " --><-- " + sText);
+
+          if (temp.equalsIgnoreCase(sValue)) {
+            System.out.println("Inside value same");
+            try {
+              this.Query = "DELETE from ng_invalid_docs where formfield='" + temp + "' and pid='" + this.processInstanceId + "' and form_part='" + formPart + "'";
+              System.out.println("Query DELETE----" + this.Query);
+              this.formObject.saveDataIntoDataSource(this.Query);
+              this.formObject.removeItem(this.comboID, j);
+
+              int x = firstlv.getRowCount();
+              System.out.println("length value ------" + x);
+              for (int i = 0; i < x; ++i) {
+                String cm = this.formObject.getNGValue("comment1");
+                System.out.println("value of comment1" + cm);
+                String tmclass = this.formObject.getNGValue(this.comment_p1, i, 0);
+                System.out.println("inside for loop -- " + tmclass + "temp vlaue---" + temp + "----" + temp.equalsIgnoreCase(tmclass));
+                if (temp.equalsIgnoreCase(tmclass)) {
+                  firstlv.deleteRow(i);
+                  OFUtility.render(firstlv);
+
+                  System.out.println("Inside if condition part- NEW----" + i);
+                }
+              }
+            } catch (Exception ex) {
+              Logger.getLogger(Head.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public void formLoaded(FormEvent arg0)
+  {
+    System.out.println(" -------------------Intiation Workstep Loaded from formloaded.----------------");
+
+    System.out.println("form Loaded called");
+    this.formObject = FormContext.getCurrentInstance().getFormReference();
+    this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+    System.out.println("formObject :" + this.formObject);
+    System.out.println("formConfig :" + this.formConfig);
+    try
+    {
+      this.activityName = this.formObject.getWFActivityName();
+      System.out.println("#####################ActivityName##############################3" + this.activityName);
+
+      this.engineName = this.formConfig.getConfigElement("EngineName");
+      this.sessionId = this.formConfig.getConfigElement("DMSSessionId");
+      this.folderId = this.formConfig.getConfigElement("FolderId");
+      this.serverUrl = this.formConfig.getConfigElement("ServletPath");
+
+      this.processInstanceId = this.formConfig.getConfigElement("ProcessInstanceId");
+      this.workItemId = this.formConfig.getConfigElement("WorkitemId");
+      this.userName = this.formConfig.getConfigElement("UserName");
+      this.processDefId = this.formConfig.getConfigElement("ProcessDefId");
+      System.out.println("ProcessInstanceId===== " + this.processInstanceId);
+      System.out.println("Activityname=====" + this.activityName);
+      System.out.println("CabinetName====" + this.engineName);
+      System.out.println("sessionId====" + this.sessionId);
+      System.out.println("Username====" + this.userName);
+      System.out.println("workItemId====" + this.workItemId);
+      System.out.println("workItemId====" + this.engineName);
+      System.out.println("workItemId====" + this.processDefId);
+    }
+    catch (Exception e)
+    {
+      System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+    }
+  }
+
+  public void formPopulated(FormEvent arg0)
+  {
+    try
+    {
+      this.objGeneral = new General();
+      System.out.println("----------------------Intiation Workstep Loaded from form populated.---------------------------");
+      this.formObject = FormContext.getCurrentInstance().getFormReference();
+      this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+      System.out.println("printing my activity name------->" + this.activityName);
+
+      this.Query = "select formfield,form_part from ng_invalid_docs where pid='" + this.processInstanceId + "'";
+      this.valid = this.formObject.getDataFromDataSource(this.Query);
+      for (int k = 0; k < this.valid.size(); ++k)
+      {
+        String fieldname = (String)((List)this.valid.get(k)).get(0);
+        String form_part = (String)((List)this.valid.get(k)).get(1);
+
+        if (form_part.equalsIgnoreCase("1")) {
+          this.comboID = "fieldname1";
+          this.comment_p1 = "q_comment1";
+        }
+        else if (form_part.equalsIgnoreCase("2")) {
+          this.comboID = "fieldname2";
+          this.comment_p1 = "q_comment2";
+        }
+
+        this.formObject.addItem(this.comboID, fieldname);
+      }
+
+      String prevs_stage = this.formObject.getNGValue("q_prevs_activity");
+      String prevs_status = this.formObject.getNGValue("q_prevs_status");
+
+      if (this.activityName.equalsIgnoreCase("StartEvent1")) {
+        this.formObject.addItem("file_status", "File In Processing");
+      }
+
+      if (this.activityName.equalsIgnoreCase("Clerk")) {
+        if (prevs_stage.equalsIgnoreCase("StartEvent1")) {
+          this.formObject.addItem("file_status", "File In Processing");
+        }
+        if ((prevs_status.equalsIgnoreCase("Documents Not Completed")) && (((prevs_stage.equalsIgnoreCase("Assistant officer")) || (prevs_stage.equalsIgnoreCase("AEI")) || (prevs_stage.equalsIgnoreCase("Secretary")) || (prevs_stage.equalsIgnoreCase("President")))))
+        {
+          this.formObject.addItem("file_status", "Query Sent To Applicant");
+        }
+      }
+
+      if (this.activityName.equalsIgnoreCase("Assistant officer")) {
+        if (prevs_stage.equalsIgnoreCase("Clerk")) {
+          this.formObject.addItem("file_status", "File In Processing");
+        }
+        if (prevs_stage.equalsIgnoreCase("President")) {
+          this.formObject.setVisible("Genc", true);
+          this.formObject.clear("file_status");
+          this.formObject.addItem("file_status", "Approved");
+        }
+
+        if ((prevs_stage.equalsIgnoreCase("President")) && (prevs_status.equalsIgnoreCase("Not Approved"))) {
+          this.formObject.clear("file_status");
+        }
+
+      }
+
+      if (this.activityName.equalsIgnoreCase("AEI")) {
+        this.formObject.addItem("file_status", "File In Processing");
+        this.formObject.addItem("file_status", "Documents Not Completed");
+      }
+
+      if (this.activityName.equalsIgnoreCase("Secretary")) {
+        this.formObject.addItem("file_status", "File In Processing");
+        this.formObject.addItem("file_status", "Documents Not Completed");
+      }
+
+      if (this.activityName.equalsIgnoreCase("President")) {
+        this.formObject.addItem("file_status", "Approved");
+        this.formObject.addItem("file_status", "Documents Not Completed");
+        this.formObject.addItem("file_status", "Not Approved");
+      }
+
+      this.objGeneral.getDocIndex(this.processInstanceId, "exemption_contractor");
+      this.candidate_type = this.formObject.getNGValue("candidate_type");
+
+      this.formObject.setNGValue("addedby1", this.userName);
+      this.formObject.setNGValue("addedby2", this.userName);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+    }
+  }
+
+  public void saveFormCompleted(FormEvent arg0)
+    throws ValidatorException
+  {
+    this.formObject = FormContext.getCurrentInstance().getFormReference();
+    this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+  }
+
+  public void saveFormStarted(FormEvent arg0)
+    throws ValidatorException
+  {
+    this.formObject = FormContext.getCurrentInstance().getFormReference();
+    this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+  }
+
+  public void submitFormCompleted(FormEvent arg0)
+    throws ValidatorException
+  {
+    this.formObject = FormContext.getCurrentInstance().getFormReference();
+    this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+  }
+
+  public void submitFormStarted(FormEvent arg0)
+    throws ValidatorException
+  {
+    this.formObject = FormContext.getCurrentInstance().getFormReference();
+    this.formConfig = FormContext.getCurrentInstance().getFormConfig();
+    System.out.print("-------------------submitform started---------");
+
+    String fileststatus = null; String checkboxid = null; String newdocname = null; String docnameval = null;
+    String finaldocs = null; String validfinal = null; String docid_field = null; String checkbocvalue = null;
+    String docindex = null; String doccname = null; String docidfinal = null;
+    this.formObject.setNGValue("q_prevs_activity", this.activityName);
+    this.formObject.setNGValue("q_prevs_status", this.file_status);
+
+    this.Query = "select var_rec_1 from WFINSTRUMENTTABLE where processinstanceID='" + this.processInstanceId + "'";
+
+    this.temparray = this.formObject.getDataFromDataSource(this.Query);
+    String parentfolderindex = (String)((List)this.temparray.get(0)).get(0);
+    this.Query = "select documentindex from pdbdocumentcontent where parentfolderindex =" + parentfolderindex + " ";
+    this.temparray = this.formObject.getDataFromDataSource(this.Query);
+
+    for (int i = 0; i < this.temparray.size(); ++i) {
+      if (i == 0)
+        docindex = (String)((List)this.temparray.get(i)).get(0);
+      else {
+        docindex = docindex + "," + ((String)((List)this.temparray.get(i)).get(0));
+      }
+    }
+    this.Query = "select name from pdbdocument where documentindex in (" + docindex + ")";
+    this.docarray1 = this.formObject.getDataFromDataSource(this.Query);
+
+    for (int i = 0; i < this.docarray1.size(); ++i) {
+      doccname = (String)((List)this.docarray1.get(i)).get(0);
+
+      newdocname = "docid" + doccname;
+      docid_field = this.formObject.getNGValue(newdocname);
+      checkboxid = "valid" + doccname;
+      checkbocvalue = this.formObject.getNGValue(checkboxid);
+
+      if (((!(this.activityName.equalsIgnoreCase("Assistant officer"))) && (!(this.activityName.equalsIgnoreCase("AEI"))) && (!(this.activityName.equalsIgnoreCase("Secretary"))) && (!(this.activityName.equalsIgnoreCase("President")))) || 
+        (docid_field.equalsIgnoreCase("")) || (!(checkbocvalue.equalsIgnoreCase("false"))) || (fileststatus.equalsIgnoreCase("Document not Completed"))) {
+        continue;
+      }
+      throw new ValidatorException(new FacesMessage("You can't proceed with invalid documents and file status as 'File in Processing'. Please mark file status as 'Document Not Completed'", ""));
+    }
+  }
+
+  public void initialize()
+  {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  private void setTechnicalQualification(String candidate_type)
+  {
+    this.formObject.clear("technical_qualification");
+    if (candidate_type.equalsIgnoreCase("New Wireman Exemption")) {
+      this.formObject.addItem("technical_qualification", "National Apprenticeship Certificate(Electrician)");
+      this.formObject.addItem("technical_qualification", "National Apprenticeship Certificate(Wireman)");
+      this.formObject.addItem("technical_qualification", "National Apprenticeship Certificate(Lineman)");
+      this.formObject.addItem("technical_qualification", "National Trade Certificate(Electrician)");
+      this.formObject.addItem("technical_qualification", "National Trade Certificate(Wireman)");
+      this.formObject.addItem("technical_qualification", "National Trade Certificate(Lineman)");
+      this.formObject.addItem("technical_qualification", "Electrical Service Technician");
+      this.formObject.addItem("technical_qualification", "Electrical Installation,Wiring And Jointing From Technical Examination Board");
+      this.formObject.addItem("technical_qualification", "Any Other Qualification Equivalent National Trade Or Apprenticeship Certificate");
+      this.formObject.addItem("technical_qualification", "Electrical Service Technician");
+    } else if (candidate_type.equalsIgnoreCase("New Supervisor Exemption")) {
+      this.formObject.addItem("technical_qualification", "Diploma In Electrical Engineering");
+      this.formObject.addItem("technical_qualification", "Degree In Electrical Engineering");
+      this.formObject.addItem("technical_qualification", "Diploma In Electrical & Electronics Engineering");
+      this.formObject.addItem("technical_qualification", "Degree In Electrical & Electronics Engineering");
+      this.formObject.addItem("technical_qualification", "Electric Service Technician + 2 Years Practical Experience");
+      this.formObject.addItem("technical_qualification", "Electrician (NCVT)+ National Apprenticeship Certificate In Electrician + 1 Year Practical Experience");
+      this.formObject.addItem("technical_qualification", "B.E/B.Tech In Electrical Engineering");
+      this.formObject.addItem("technical_qualification", "B.E/B.Tech In Electrical & Electronics Engineering");
+      this.formObject.addItem("technical_qualification", "Any Other Qualification Equivalent To Degree/Diploma In Electrical Engineering");
+    }
+  }
+}

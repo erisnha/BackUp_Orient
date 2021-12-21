@@ -1,0 +1,227 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.newgen.common;
+
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.List;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+import static com.newgen.common.ElectricalTemplate.timeStamp;
+
+import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.util.Date;
+import java.awt.event.ActionEvent;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class SupervisorTemplate {
+
+
+    //public static final String FONT = "D:/HARL.TTF";
+    private String FILE = "d://supervisor.pdf";
+   
+    private static String licNo;
+    
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.BOLD);
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.BOLD);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+            Font.NORMAL);
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.NORMAL);
+    private static Font font2 = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+            Font.BOLD | Font.UNDERLINE);
+    Font font = null;
+    public static String timeStamp;
+    public static String timeStamp1;
+    public static String name1;
+    public static String dup;
+    
+    
+    public SupervisorTemplate(String file, String licNo, String na, String dup) {
+        this.dup = dup;
+        this.FILE = file;
+        this.licNo = licNo;
+        this.name1 = na;
+        timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        timeStamp1 = new SimpleDateFormat("dd MMMM yyyy").format(new Date());
+    }
+    
+    public void pdfcreation() {
+        try {
+            //this.FILE = file;
+            //font = FontFactory.getFont(FONT, "Cp1250", BaseFont.EMBEDDED);
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.open();
+            addMetaData(document);
+            addTitlePage(document);
+            addContent(document);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // iText allows to add metadata to the PDF which can be viewed in your Adobe
+    // Reader
+    // under File -> Properties
+    private static void addMetaData(Document document) {
+        document.addTitle("My first PDF");
+        document.addSubject("Using iText");
+        document.addKeywords("Java, PDF, iText");
+        document.addAuthor("Lars Vogel");
+        document.addCreator("Lars Vogel");
+    }
+
+    private static void addTitlePage(Document document)
+            throws DocumentException, BadElementException, IOException {
+
+        
+        PdfPTable table = new PdfPTable(2);
+        
+        table.setWidthPercentage(90);
+        
+        PdfPCell duplicatecell = new PdfPCell(new Paragraph(dup, smallBold));
+       duplicatecell.setBorderColor(BaseColor.WHITE);
+       
+               table.addCell(duplicatecell);
+        
+        PdfPCell filenocell = new PdfPCell(new Paragraph(licNo, font2));
+        filenocell.setPaddingLeft(70);
+        
+        filenocell.setBorderColor(BaseColor.WHITE);
+        
+        
+        table.addCell(filenocell);
+        
+//        Paragraph fileno = new Paragraph();
+//        addEmptyLine(fileno, 5);
+//        fileno.add(new Paragraph(licNo, font2));
+//        fileno.setIndentationLeft(370);
+//        document.add(fileno);
+        Image image2 = Image.getInstance("d:\\Newgen\\Server\\resources\\logo2.jpg");
+        //image2.setAbsolutePosition(0, 0);
+        image2.setAlignment(Image.MIDDLE);
+        image2.scaleAbsoluteHeight(20);
+        image2.scaleAbsoluteWidth(10);
+        image2.scalePercent(60);
+        document.add(image2);
+
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 0);
+        // Lets write a big header
+        preface.add(new Paragraph("GOVERNMENT OF GUJARAT", smallBold));
+        //preface.setAlignment(Element.ALIGN_RIGHT);
+        preface.setIndentationLeft(185);
+
+        // Will create: Report generated by: _name, _date
+        //preface.add(new Paragraph(
+        //   "Report generated by: " + System.getProperty("user.name") + ", " + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        //  smallBold));
+
+        document.add(preface);
+        // Start a new page
+        //document.newPage();
+    }
+
+    private static void addContent(Document document) throws DocumentException {
+
+        String name = "Chetan Kumar";
+
+        //Font font1 = FontFactory.getFont(FONT, "Cp1250", BaseFont.EMBEDDED, 16);
+        Paragraph header = new Paragraph();
+        addEmptyLine(header, 2);
+        header.add(new Paragraph(name1+" EXEMPTION CERTIFICATE ", catFont));
+        header.setIndentationLeft(120);
+
+        document.add(header);
+
+        Paragraph subtitle = new Paragraph();
+        addEmptyLine(subtitle, 1);
+        subtitle.add(new Paragraph(
+                "(Authorised by Government Notification,E&P Department,",
+                redFont));
+        subtitle.add(new Paragraph("No GU/2017/ELA/11-2012/2401/K,dt. "+timeStamp1+")", redFont));
+        subtitle.setIndentationLeft(120);
+        document.add(subtitle);
+
+        Chunk chunk1 = new Chunk("Shri/Kum/Smt.   " , smallBold);
+        Chunk chunk2 = new Chunk(name, font2);
+        Chunk chunk3 = new Chunk("  having satisfied the Licensing Board that his/her qualification entitle him to exemption from taking the prescribed Examination for Electrical Supervisor is hereby granted this Certificate of Competency." , smallBold);
+
+        Paragraph p = new Paragraph();
+        addEmptyLine(p,1 ); 
+        p.add(chunk1);
+        p.add(chunk2);
+        p.add(chunk3);
+        
+        p.setIndentationLeft(40);
+        addEmptyLine(p, 4);
+        p.add(new Paragraph("Energy & Petrochemicals Department,                                                                                   President", subFont));
+        p.add(new Paragraph("Gujarat State,Gandhinagar,                                                                                                    Licensing Board", subFont));
+        p.add(new Paragraph("Issue Date:"+timeStamp+"                                                                                                           Gandhinagar", subFont));
+        document.add(p);
+
+        Paragraph last = new Paragraph();
+        addEmptyLine(last, 2);
+        last.add(new Paragraph("Secretary", subFont));
+        last.add(new Paragraph("Licensing Board", subFont));
+        last.add(new Paragraph("Gandhinagar", subFont));
+        last.setIndentationLeft(400);
+        document.add(last);
+
+        document.setPageSize(PageSize.LETTER);
+        document.setMargins(36, 72, 108, 180);
+        document.setMarginMirroring(false);
+        Rectangle rect = new Rectangle(570, 820, 50, 200);
+        rect.enableBorderSide(1);
+        rect.enableBorderSide(2);
+        rect.enableBorderSide(4);
+        rect.enableBorderSide(8);
+        //rect.setBorder(2);
+        rect.setBorder(Rectangle.BOX);
+        rect.setBorderWidth(2);
+        rect.setBorderColor(BaseColor.BLACK);
+        document.add(rect);
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+}

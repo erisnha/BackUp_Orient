@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================== -->
+<!--  OmniDocs Server Configuration                                        -->
+<!-- ===================================================================== -->
+
+<!-- ===================================================================== -->
+<!-- ATTENTION:  DO NOT FORGET TO SET Each Hook's Name under a separate	   -->
+<!-- "HookName" tag														   -->
+<!-- ===================================================================== -->
+
+<HookInfo>
+	<HookName>HOOKAddUser</HookName>
+	<HookName>HOOKChangeCabinetProperty</HookName>
+	<HookName>HOOKProcessUserGroupRequest</HookName>
+	<HookName>HOOKChangeUserProperty</HookName>
+	<HookName>HOOKConnectCabinet</HookName>
+	<HookName>HOOKDeleteMemberFromGroup</HookName>
+	<HookName>HOOKDeleteUser</HookName>
+	<HookName>HOOKGetCabinetProperty</HookName>
+	<HookName>HOOKSetFTLCheck</HookName>
+	<HookName>HOOKGetUserProperty</HookName>
+	<HookName>HOOKChangeUserPassword</HookName>
+        <!-- Hook Names that are intended to exist in the system. 
+        <HookName>Some Hook Name</HookName>
+        -->
+</HookInfo>

@@ -1,0 +1,25 @@
+#Development Env
+Cabinet = DRDOSAG
+AppServer = 172.16.84.16
+DBServer = 172.16.84.14
+
+#Production Env
+##Cabinet = DRDOSAG
+###AppServer = 172.16.84.17
+####DBServer = 172.16.84.15 
+
+#Total No. of Leaves
+totalCL = 8
+totalEL = 15
+totalRH = 2
+
+#EL Routing Config
+EL_1LR = 12
+EL_ELR = 30
+
+#CL Routing Config
+CL_1LR = 5
+##CL_ELR = 
+
+#Consequtive Message
+remarksAppend = Consequtive Leave request 

@@ -1,0 +1,180 @@
+package com.newgen.common;
+
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class ExaminationPermitTemplate {
+
+
+
+        public static final String FONT = "D:/GABRIOLA.TTF";
+        private static String FILE;
+        private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+                Font.BOLD);
+        private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+                Font.BOLD);
+        private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+                Font.NORMAL);
+        private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+                Font.NORMAL);
+        private static Font font2 = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+                Font.BOLD | Font.UNDERLINE);
+        Font font = null;
+        public static String lic;
+        
+        public ExaminationPermitTemplate(String file, String lic) {
+        
+            this.lic = lic;
+            this.FILE = file;
+            try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.open();
+           
+          addTitlePage(document);
+            addContent(document);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        
+        
+
+    public void pdfcreation() {
+        try {
+            font = FontFactory.getFont(FONT, "Cp1250", BaseFont.EMBEDDED);
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.open();
+            addMetaData(document);
+            addTitlePage(document);
+            addContent(document);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // iText allows to add metadata to the PDF which can be viewed in your Adobe
+    // Reader
+    // under File -> Properties
+    private static void addMetaData(Document document) {
+        document.addTitle("My first PDF");
+        document.addSubject("Using iText");
+        document.addKeywords("Java, PDF, iText");
+        document.addAuthor("Lars Vogel");
+        document.addCreator("Lars Vogel");
+    }
+
+    private static void addTitlePage(Document document)
+            throws DocumentException, BadElementException, IOException {
+
+        Paragraph fileno = new Paragraph();
+        addEmptyLine(fileno, 1);
+        fileno.add(new Paragraph(lic, smallBold));
+        fileno.setIndentationLeft(330);
+        document.add(fileno);
+        
+        Image image2 = Image.getInstance("d:\\Newgen\\Server\\resources\\logo2.jpg");
+        //image2.setAbsolutePosition(0, 0);
+        image2.setAlignment(Image.MIDDLE);
+        image2.scaleAbsoluteHeight(20);
+        image2.scaleAbsoluteWidth(10);
+        image2.scalePercent(60);
+        document.add(image2);
+
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 0);
+        // Lets write a big header
+        preface.add(new Paragraph("GOVERNMENT OF GUJARAT", smallBold));
+        //preface.setAlignment(Element.ALIGN_RIGHT);
+        preface.setIndentationLeft(185);
+
+        document.add(preface);
+    }
+
+    private static void addContent(Document document) throws DocumentException {
+        String name = "ABCDEFGHIJ";
+        
+        Font font1 = FontFactory.getFont(FONT, "Cp1250", BaseFont.EMBEDDED, 16);
+        Paragraph header = new Paragraph();
+        addEmptyLine(header, 4);
+        header.add(new Paragraph("WIREMAN 'S CERTIFICATE ", catFont));
+        header.setIndentationLeft(150);
+
+        document.add(header);
+
+        Paragraph subtitle = new Paragraph();
+        addEmptyLine(subtitle, 1);
+        subtitle.add(new Paragraph(
+                "(Authorised by Government Notification,E&P Department,",
+                redFont));
+        subtitle.add(new Paragraph("No GU/2017/ELA/11-2012/2401/K,dt. 6th June 2017)", redFont));
+        subtitle.setIndentationLeft(120);
+        document.add(subtitle);
+
+        Chunk chunk1 = new Chunk("Shri/Kum/Smt.     " , font1);
+        Chunk chunk2 = new Chunk(name, font2);
+        Chunk chunk3 = new Chunk("  having satisfied the Licensing Board that his/her qualification entitle him to exemption from taking the prescribed Examination for Wireman is hereby granted Wireman's Certificate of Competency." , font1);
+
+        Paragraph p = new Paragraph();
+        addEmptyLine(p,1 ); 
+        p.add(chunk1);
+        p.add(chunk2);
+        p.add(chunk3);
+        
+        p.setIndentationLeft(40);
+        addEmptyLine(p, 4);
+        p.add(new Paragraph("Energy & Petrochemicals Department,                                                                                   President", subFont));
+        p.add(new Paragraph("Gujarat State,Gandhinagar,                                                                                                    Licensing Board", subFont));
+        p.add(new Paragraph("Issue Date:01/12/2016                                                                                                           Gandhinagar", subFont));
+        document.add(p);
+
+        Paragraph last = new Paragraph();
+        addEmptyLine(last, 2);
+        last.add(new Paragraph("Secretary", subFont));
+        last.add(new Paragraph("Licensing Board", subFont));
+        last.add(new Paragraph("Gandhinagar", subFont));
+        last.setIndentationLeft(400);
+        document.add(last);
+
+        document.setPageSize(PageSize.LETTER);
+        document.setMargins(36, 72, 108, 180);
+        document.setMarginMirroring(false);
+        Rectangle rect = new Rectangle(560, 810, 50, 120);;
+        rect.enableBorderSide(1);
+        rect.enableBorderSide(2);
+        rect.enableBorderSide(4);
+        rect.enableBorderSide(8);
+        //rect.setBorder(2);
+        rect.setBorder(Rectangle.BOX);
+        rect.setBorderWidth(2);
+        rect.setBorderColor(BaseColor.BLACK);
+        document.add(rect);
+    }
+
+    
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+}
+

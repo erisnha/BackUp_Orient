@@ -1,0 +1,55 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.newgen.omniforms.user;
+
+import com.newgen.exelicedup.dupHead;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.listener.FormListener;
+
+
+
+/**
+ *
+ * @author Admin
+ */
+public class exelicedup implements IFormListenerFactory {
+  
+
+    @Override
+    public FormListener getListener() {
+        // TODO Auto-generated method stub
+
+        String sActivityName = null;
+        String sProcessName = null;
+        FormListener objActivity = null;
+       // FormReference objFormReference = FormContext.getCurrentInstance().getFormReference();
+        //sActivityName = objFormReference.getWFActivityName().trim();
+        
+        FormConfig formConfig = FormContext.getCurrentInstance().getFormConfig();
+        sActivityName = formConfig.getConfigElement("ActivityName");
+        sProcessName = formConfig.getConfigElement("ProcessName");
+        System.out.println("**********sActivityName :"
+                + sActivityName);
+
+        if (sActivityName.equalsIgnoreCase("Start") || sActivityName.equalsIgnoreCase("StartEvent1")){
+        System.out.println("Apply:Start");
+            return new dupHead();
+        }
+        else if ((sActivityName.equalsIgnoreCase("Assistant officer"))
+                || (sActivityName.equalsIgnoreCase("AEI"))
+                || (sActivityName.equalsIgnoreCase("Secretary")))
+                {
+
+            System.out.println("Apply:SrAssistant");
+            return new dupHead();
+        }
+
+
+
+        return null;
+    }
+}

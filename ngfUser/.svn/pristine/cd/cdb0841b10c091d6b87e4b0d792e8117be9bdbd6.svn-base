@@ -1,0 +1,1295 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.newgen.examinterstate;
+import com.newgen.common.ExaminationPermitTemplate;
+import com.newgen.common.ExaminationWiremanTemplate;
+import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import javax.faces.validator.ValidatorException;
+import com.newgen.common.General;
+import com.newgen.common.PicklistListenerHandler;
+import com.newgen.common.SupervisorTemplate;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.component.ListView;
+import com.newgen.omniforms.component.PickList;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.event.ComponentEvent;
+import com.newgen.omniforms.event.FormEvent;
+import com.newgen.omniforms.excp.CustomExceptionHandler;
+import com.newgen.omniforms.listener.FormListener;
+import com.newgen.omniforms.util.OFUtility;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.awt.windows.WBufferStrategy;
+
+
+public class Head implements FormListener {
+     //FormReference objFormReference = null; //FormContext.getCurrentInstance().getFormReference();
+    FormReference formObject = null;
+    FormConfig formConfig = null;
+    String activityName = null;
+    String engineName = null;
+    String dropvalue1 = null;
+    String varname = null;
+    String sessionId = null;
+    String folderId = null;
+    String serverUrl = null;
+    String processInstanceId = null;
+    String workItemId = null;
+    String userName = null;
+    String processDefId = null;
+    String Query = null;
+    List<List<String>> result;
+    PickList objPicklist;
+    General objGeneral = null;
+    String assign = null;
+    String formtype = null;
+    String lang_select = null;
+    String filestatus = null;
+    String value = null;
+    String act=null;
+    String examtype=null;
+    String type=null;
+    String oldactivity=null;
+    String oldfilestatus=null;
+    List<List<String>> temparray, docarray, docarrayid;
+    String asr;
+    List<List<String>> arrayListnew2 = null;
+        String docid, documentname = null;
+
+    /* public Head(FormReference formObject) {
+     super();
+     System.out.println("In COnstructor");
+     this.formObject = formObject;
+     } */
+    @Override
+    public void continueExecution(String arg0, HashMap<String, String> arg1) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void eventDispatched(ComponentEvent pEvent) throws ValidatorException {
+        // TODO Auto-generated method stub
+        System.out.println("Value Change Event :" + pEvent);
+        System.out.println("pEvent.getType() :" + pEvent.getType());
+        System.out.println("pEvent.getType().name() :" + pEvent.getType().name());
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        objGeneral = new General();
+        if (pEvent.getType().name().equalsIgnoreCase("VALUE_CHANGED")) {
+
+            //code for language selection
+            if (pEvent.getSource().getName().equalsIgnoreCase("lang")) {
+                lang_select = formObject.getNGValue("lang");
+                if (lang_select.equalsIgnoreCase("English")) {
+                    
+                    //FORM STARTS HERE ENGLISH
+                    //PERSONAL DETAILS
+                    formObject.setNGValue("Frame2", "PERSONAL DETAILS");
+                    formObject.setNGValue("Label4", "1. Surname");
+                    formObject.setNGValue("Label71", "2. First Name");
+                    formObject.setNGValue("Label6", "3. Father/Husband/Middle Name");
+                    formObject.setNGValue("Label7", "4. Date Of Birth(As per school leaving certificate)");
+                    formObject.setNGValue("Label9", "4.1 School Leaving Certificate or matriculation certificate");
+                    formObject.setNGValue("Label11", "4.2 Age");
+                    formObject.setNGValue("Label12", "5. Gender");
+                    
+                    //PERMANENT DETAILS
+                    formObject.setNGValue("Frame10", "6. PERMANENT ADDRESS");
+                    formObject.setNGValue("Label13", "6.1 House no./Flat no./Block no.");
+                    formObject.setNGValue("Label14", "6.2 Building Name/Appartment Name");
+                    formObject.setNGValue("Label16", "6.3 Taluka Name");
+                    formObject.setNGValue("Label17", "6.4 District Name");
+                    formObject.setNGValue("Label22", "6.5 State");
+                    formObject.setNGValue("Label23", "6.6 Pin Code");
+                    formObject.setNGValue("Label24", "Attach Document");
+                    formObject.setNGValue("Label25", "6.7 Attach Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+                    
+                    //TEMPORARY DETAILS
+                    formObject.setNGValue("Frame3", "7. TEMPORARY  ADDRESS(If the Address is as above please dont fill the Temporary Address)");
+                    formObject.setNGValue("Label27", "7.1 House no./Flat no./Block no.");
+                    formObject.setNGValue("Label28", "7.2 Building Name/Appartment Name");
+                    formObject.setNGValue("Label29", "7.3 Taluka Name");
+                    formObject.setNGValue("Label30", "7.4 District Name");
+                    formObject.setNGValue("Label31", "7.5 State");
+                    formObject.setNGValue("Label32", "7.6 Pin Code");
+                    formObject.setNGValue("Label33", "Attach Document");
+                    formObject.setNGValue("Label34", "7.7 Attach Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+                    
+                    
+                    //CONTACT DETAILS
+                    formObject.setNGValue("Frame5", "CONTACT DETAILS");
+                    formObject.setNGValue("Label36", "8. Mobile No.");
+                    formObject.setNGValue("Label38", "9. Aternate Mobile No.(Optional)");
+                    formObject.setNGValue("Label37", "10. Email ID of the Applicant");
+                    
+                    
+                    
+                    //QUALIFICATION AND PRESENT DESIGNATION
+                    formObject.setNGValue("Frame6", "QUALIFICATION AND PRESENT DESIGNATION");
+                    formObject.setNGValue("Label39", "11. Permit No. Of Other State");
+                    formObject.setNGValue("Label40", "11.1 Year Of Passing Exam(If Passed Exam)");
+                    formObject.setNGValue("Label41", "11.2 Date Of Issue Of Permit");
+                    formObject.setNGValue("Label43", "11.3 Attach Orignal Permit Copy");
+                    formObject.setNGValue("Label46", "11.4 Attach Exemption Certificate copy If Taken Exemption");
+                    formObject.setNGValue("docidaffidavitinterstate", "11.5 Attach Affidavit if Interstate");
+                    formObject.setNGValue("Label42", "12. Name Of Present Organization In Gujarat");
+                    formObject.setNGValue("Label50", "12.1 Address Of Present Organization In Gujarat");
+                    formObject.setNGValue("Label51", "12.2 Attach Appointment Letter");
+                    formObject.setNGValue("Label66", "I hereby do solemnly declare that the particulars stated above are correct and true to best of my knowledge and i am not having any other permit of any state except stated above.");
+                    
+                    
+                    
+                    //EXAMINATION REQUIREMENTS
+                    formObject.setNGValue("Frame8", "EXAMINATION REQUIREMENTS");
+                    formObject.setNGValue("Exam_Type", "11. Exam Type");
+                    formObject.setNGValue("Eligibility", "11.Eligibility For Appearing In Exam");
+                    formObject.setNGValue("Label55", "12.   Wireman Permit No.");
+                    formObject.setNGValue("wiremanpermit", "12.1 Attach Wireman permit");
+                    formObject.setNGValue("Label56", "13.   Date Of Issue Of Wireman Permit");
+                    formObject.setNGValue("Label58", "14.   Experience");
+                    formObject.setNGValue("Label59", "15. Details of past and present Experience");
+                    
+                    formObject.setNGValue("Label60", "Attach Document After Filling Above Information");
+                    formObject.setNGValue("Label61", "15.1 Form K ( K in One PDF)");
+                    formObject.setNGValue("Label69", "15.2 Copy of Form L Verified by electrical Inspector(All Pages)");
+                    formObject.setNGValue("Label63", "16. Preferred Examination Centre");
+                    formObject.setNGValue("Label65", "17. Preferred Mode Of Language");
+                    formObject.setNGValue("Label8", "I hereby declare that the stated above are correct and true to the best of my knowledge.");
+                    
+                     //COMMENTS
+                    formObject.setNGValue("Frame7", "COMMENTS");
+                    formObject.setNGValue("Label10", "Comments");
+                    formObject.setNGValue("Label26", "Field Name");
+                    formObject.setNGValue("Label35", "AddedOn");
+                    formObject.setNGValue("Label45", "AddedBy"); 
+                    
+                    
+                    //REPEATER FORM
+                    formObject.setNGValue("Label47", "1. Date Of Birth(As per school Leaving certificate)");
+                    formObject.setNGValue("Label48", "Attach Document");
+                    formObject.setNGValue("Label49", "1.1 School leaving certificate or matriculation certificate");
+                    formObject.setNGValue("Label52", "2.Age");
+                    formObject.setNGValue("Label53", "3.Exam Type"); 
+                    
+                    formObject.setNGValue("Label54", "EXAMINATION REQUIREMENTS (For Reappearing In Examination)");
+                    formObject.setNGValue("Label57", "4. Previous Exam Roll No.");
+                    formObject.setNGValue("Label62", "5. Previous Exam Centre");
+                    formObject.setNGValue("Label64", "6. Previous Exam Date/Month & Year");
+                    formObject.setNGValue("Label67", "7. Preferred Examination Centre");
+                    
+                    formObject.setNGValue("Label70", "8. Preferred Mode Of Language");
+                    formObject.setNGValue("Label72", "I hereby declare that the particuler stated above are correct and true to the best my knowledge.");
+                    
+                    
+                }
+                if (lang_select.equalsIgnoreCase("Gujarati")) {
+                    
+                    //FORM STARTS HERE GUJARATI
+                    //PERSONAL DETAILS
+                    formObject.setNGValue("Frame2", "અંગત વિગતો");
+                    formObject.setNGValue("Label4", "1. અટક");
+                    formObject.setNGValue("Label71", "2. પ્રથમ નામ");
+                    formObject.setNGValue("Label6", "3. પિતા / પતિ / મધ્ય નામ");
+                    formObject.setNGValue("Label7", "4. જન્મ તારીખ (શાળા છોડવાના પ્રમાણપત્ર મુજબ)");
+                    formObject.setNGValue("Label9", "4.1 શાળા છોડયાં નું પ્રમાણપત્ર અથવા મેટ્રિક સર્ટિફિકેટ");
+                    formObject.setNGValue("Label11", "4.2 ઉંમર");
+                    formObject.setNGValue("Label12", "5. જાતિ");
+                    
+                    //PERMANENT ADDRESS
+                    formObject.setNGValue("Frame10", "6. કાયમી સરનામુ");
+                    formObject.setNGValue("Label13", "6.1 ગૃહ નં. / ફ્લેટ નંબર / બ્લોક નં.");
+                    formObject.setNGValue("Label14", "6.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+                    formObject.setNGValue("Label16", "6.3 તાલુકાનું નામ");
+                    formObject.setNGValue("Label17", "6.4 જિલ્લાનું નામ");
+                    formObject.setNGValue("Label22", "6.5 રાજ્ય");
+                    formObject.setNGValue("Label23", "6.6 પીન કોડ");
+                    formObject.setNGValue("Label24", "દસ્તાવેજ જોડો");
+                    formObject.setNGValue("Label25", "6.7 \"સરનામાના પુરાવા માટે વીજળી બિલ અથવા\n" +
+                                                        "કોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો\"");
+                    
+                    //TEMPORARY ADDRESS
+                    formObject.setNGValue("Frame3", "7. સ્થાનાંતર સરનામું (જો સરનામાં ઉપર પ્રમાણે છે તો કૃપા કરીને કામચલાઉ સરનામાં ભરો નહીં)");
+                    formObject.setNGValue("Label27", "7.1 ગૃહ નં. / ફ્લેટ નંબર / બ્લોક નં.");
+                    formObject.setNGValue("Label28", "7.2 બિલ્ડિંગ નામ / એપાર્ટમેન્ટ નામ");
+                    formObject.setNGValue("Label29", "7.3 તાલુકાનું નામ");
+                    formObject.setNGValue("Label30", "7.4 જિલ્લાનું નામ");
+                    formObject.setNGValue("Label31", "7.5 રાજ્ય");
+                    formObject.setNGValue("Label32", "7.6 પીન કોડ");
+                    formObject.setNGValue("Label33", "દસ્તાવેજ જોડો");
+                    formObject.setNGValue("Label34", "7.7 \"સરનામાના પુરાવા માટે વીજળી બિલ અથવા\n" +
+                                                        "કોઈપણ સરકાર માન્ય ID ની સાબિતી જોડો\"");
+                    
+                    
+                    //CONTACT DETAILS
+                    formObject.setNGValue("Frame5", "સંપર્ક ની વિગતો");
+                    formObject.setNGValue("Label36", "8. મોબાઇલ નંબર");
+                    formObject.setNGValue("Label38", "9. વૈકલ્પિક મોબાઇલ નંબર (વૈકલ્પિક)");
+                    formObject.setNGValue("Label37", "10. અરજદારનું ઇમેઇલ આઈડી");
+                    
+                    
+                    
+                    //QUALIFICATION AND PRESENT DESIGNATION
+                    formObject.setNGValue("Frame6", "લાયકાત અને વર્તમાન હોદ્દો");
+                    formObject.setNGValue("Label39", "11. અન્ય રાજ્યની પરવાનગી નંબર");
+                    formObject.setNGValue("Label40", "11.1 પાસિંગ પરીક્ષા વર્ષ (જો પાસ થયેલ પરીક્ષા)");
+                    formObject.setNGValue("Label41", "11.2 પરમિટ(પરવાનગી) કાઢી આપવાની તારીખ");
+                    formObject.setNGValue("Label43", "11.3 મૂળ પરમિટ(પરવાનગી) ની નકલ જોડો");
+                    formObject.setNGValue("Label46", "11.4 જો એક્ઝેમ્પ્શન લેવામાં આવેલ હોય તો એક્ઝેમ્પ્શન પ્રમાણપત્ર જોડો.");
+                    formObject.setNGValue("docidaffidavitinterstate", "11.5 જો ઇન્ટરસ્ટેટ હોય તો એફિડેવિટ જોડો");
+                    formObject.setNGValue("Label42", "12. ગુજરાતમાં વર્તમાન સંગઠનનું નામ");
+                    formObject.setNGValue("Label50", "12.1 ગુજરાતમાં વર્તમાન સંગઠનનું સરનામું");
+                    formObject.setNGValue("Label51", "12.2 નિમણૂંક પત્ર જોડો");
+                    formObject.setNGValue("Label66", "હું અહીંથી ગંભીરતાપૂર્વક જાહેર કરું છું કે ઉપરોક્ત વિગતો સાચી છે અને મારા જ્ઞાનના પ્રમાણે શ્રેષ્ઠ અને સાચી છે અને ઉપર જણાવેલી કોઈપણ રાજ્ય સિવાયની અન્ય કોઇ પરમિટ નથી.");
+                    
+                    
+                    
+                    //EXAMINATION REQUIREMENTS
+                    formObject.setNGValue("Frame8", "પરીક્ષાની જરૂરીયાતો");
+                    formObject.setNGValue("Exam_Type", "11. પરીક્ષાનો પ્રકાર");
+                    formObject.setNGValue("Eligibility", "11.પરીક્ષામાં ઉપસ્થિત થવાની લાયકાત");
+                    formObject.setNGValue("Label55", "12.   વાયરમેન પરમિટ(પરવાનગી) નંબર");
+                    formObject.setNGValue("wiremanpermit", "12.1 વાયરમેન પરમિટ(પરવાનગી) જોડો");
+                    formObject.setNGValue("Label56", "13.   વાયરમેન પરમિટ(પરવાનગી) કાઢી આપવાની તારીખ");
+                    formObject.setNGValue("Label58", "14.   અનુભવ");
+                    formObject.setNGValue("Label59", "15. ભૂતકાળ અને વર્તમાન અનુભવની વિગતો");
+                    
+                    formObject.setNGValue("Label60", "ઉપરની માહિતી ભરીને દસ્તાવેજ જોડો");
+                    formObject.setNGValue("Label61", "15.1 ફોર્મ \"કે\" (એક પીડીએફમાં \"કે\")");
+                    formObject.setNGValue("Label69", "15.2 ઇલેક્ટ્રિકલ ઇન્સ્પેક્ટર અથવા તેના પ્રતિનિધિ દ્વારા ચકાસવામાં આવેલ ફોર્મ \"I\"(બધા પાના) ની નકલ");
+                    formObject.setNGValue("Label63", "16. મનપસંદ પરીક્ષા કેન્દ્ર");
+                    formObject.setNGValue("Label65", "17. ભાષાની મનપસંદ રીત");
+                    formObject.setNGValue("Label8", "હું અહીંથી જાહેર કરું છું કે ઉપર જણાવેલી વિશેષતા મારા જ્ઞાનના પ્રમાણે શ્રેષ્ઠ અને સાચી છે");
+                    
+                     //COMMENTS
+                    formObject.setNGValue("Frame7", "ટિપ્પણીઓ");
+                    formObject.setNGValue("Label10", "ટિપ્પણીઓ");
+                    formObject.setNGValue("Label26", "ફીલ્ડનું નામ");
+                    formObject.setNGValue("Label35", "ઉમેરાયેલ પર");
+                    formObject.setNGValue("Label45", "દ્વારા ઉમેરાયેલ");
+                    
+                    
+                    //REPEATER FORM
+                    formObject.setNGValue("Label47", "1. જન્મ તારીખ (શાળા છોડવાના પ્રમાણપત્ર મુજબ)");
+                    formObject.setNGValue("Label48", "દસ્તાવેજ જોડો");
+                    formObject.setNGValue("Label49", "1.1 શાળા છોડયા નું પ્રમાણપત્ર અથવા મેટ્રિક સર્ટિફિકેટ");
+                    formObject.setNGValue("Label52", "2. ઉંમર");
+                    formObject.setNGValue("Label53", "3.પરીક્ષાનો પ્રકાર"); 
+                    
+                    formObject.setNGValue("Label54", "પરીક્ષાની આવશ્યકતા (પરીક્ષામાં ફરીથી હાજર થવા માટે)");
+                    formObject.setNGValue("Label57", "4. પહેલાનો પરીક્ષા નો રોલ નં.");
+                    formObject.setNGValue("Label62", "5. અગાઉનું પરીક્ષા કેન્દ્ર");
+                    formObject.setNGValue("Label64", "6. અગાઉનીપરીક્ષા તારીખ / મહિનો અને વર્ષ");
+                    formObject.setNGValue("Label67", "7. મનપસંદ પરીક્ષા કેન્દ્ર");
+                    
+                    formObject.setNGValue("Label70", "8. ભાષાની મનપસંદ રીત");
+                    formObject.setNGValue("Label72", "હું અહીંથી જાહેર કરું છું કે ઉપર જણાવેલ ચોક્કસ માહિતી મારા જ્ઞાનના પ્રમાણે યોગ્ય અને સાચી છે.");
+                    
+                    
+                    
+                }
+            }
+            
+            //Code for Exam Type and Experience Criteria
+            
+             if (pEvent.getSource().getName().equalsIgnoreCase("sup_exam_type")) {
+             examtype=formObject.getNGValue("sup_exam_type");
+             formObject.clear("sup_experience");
+             if(examtype.equalsIgnoreCase("SUPERVISOR GENERAL")||(examtype.equalsIgnoreCase("SUPERVISOR ORAL / ORAL GENERAL (AGE >45 YEARS)NOTE: AGE WILL BE CONSIDRED AS OF LAST DATE OF SUBMISSION OF FORM"))) {
+             formObject.addItem("sup_experience", "4 YEARS PRACTICAL EXPERIENCE out of which minimum 02 years experience after getting wireman permit");
+             formObject.addItem("sup_experience", "Three and half year PRACTICAL EXPERIENCE out of which minimum one and half year experience after getting wireman permit (who has completed electrician classes at technical institute and passed examination of T.E.B.)");
+             formObject.addItem("sup_experience", "PERIOD OF APPRENTICESHIP WILL BE CONSIDERED AFTER GETTING WIREMAN CERTIFICATE AND PERMIT");
+             }
+             /*if(examtype.equalsIgnoreCase("SUPERVISOR ORAL / ORAL GENERAL (AGE >45 YEARS)NOTE: AGE WILL BE CONSIDRED AS OF LAST DATE OF SUBMISSION OF FORM")) {
+             formObject.addItem("sup_experience", "4 YEARS PRACTICAL EXPERIENCE out of which minimum 02 years experience after getting wireman permit");
+             formObject.addItem("sup_experience", "Three and half year PRACTICAL EXPERIENCE out of which minimum one and half year experience after getting wireman permit (who has completed electrician classes at technical institute and passed examination of T.E.B.)");
+             formObject.addItem("sup_experience", "PERIOD OF APPRENTICESHIP WILL BE CONSIDERED AFTER GETTING WIREMAN CERTIFICATE AND PERMIT");
+             }*/
+             if(examtype.equalsIgnoreCase("SUPERVISOR MINES / MINES GENERAL")) {
+             formObject.addItem("sup_experience", "4 YEARS PRACTICAL EXPERIENCE out of which minimum 02 years experience after getting wireman EXEPERINCE IN MINES RELATED WORK ORDER");
+             }
+             if(examtype.equalsIgnoreCase("MINES EXEMPTION")) {
+             formObject.addItem("sup_experience", "4 YEARS PRACTICAL EXPERIENCE out of which minimum 02 years experience after getting wireman EXEPERINCE IN MINES RELATED WORK ORDER");
+             }
+             
+             /*code for exam centre
+             
+            
+             if(examtype.equalsIgnoreCase("SUPERVISOR GENERAL")) {
+             formObject.addItem("preferred_exam_centre", "Ahmedabad"); 
+             formObject.addItem("preferred_exam_centre", "Vadodara");
+             formObject.addItem("preferred_exam_centre", "Rajkot");
+             formObject.addItem("preferred_exam_centre", "Bhavnagar");
+             formObject.addItem("preferred_exam_centre", "Surat");
+             }
+             if(examtype.equalsIgnoreCase("SUPERVISOR ORAL / ORAL GENERAL (AGE >45 YEARS)NOTE: AGE WILL BE CONSIDRED AS OF LAST DATE OF SUBMISSION OF FORM")) {
+             formObject.addItem("preferred_exam_centre", "Ahmedabad"); 
+             }
+             if(examtype.equalsIgnoreCase("SUPERVISOR MINES / MINES GENERAL")) {
+             formObject.addItem("preferred_exam_centre", "Ahmedabad"); 
+             }
+             if(examtype.equalsIgnoreCase("MINES EXEMPTION")) {
+             formObject.addItem("preferred_exam_centre", "Ahmedabad"); 
+             }*/
+             }
+            
+            
+            // Code for Assigned_to
+
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("file_status")) {
+                filestatus = formObject.getNGValue("file_status");
+                type=formObject.getNGValue("form_type");
+                oldactivity = formObject.getNGValue("q_pstage");
+                oldfilestatus = formObject.getNGValue("q_pstatus");
+                System.out.println("status values-------------->" + filestatus);
+                //String status = formObject.getNGValue("q_pstatus");
+
+                if (activityName.equalsIgnoreCase("StartEvent1")) {
+
+                    if (filestatus.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_user_details where roletype = 'Clerk' AND rolename='Clerk'";
+                        objGeneral.setAssign(Query);
+                        
+                    }
+                }
+System.out.println("---------------------->"+activityName);
+System.out.println("---------------------->"+act);
+//System.out.println("---------------------->"+activityName);
+
+
+                if (activityName.equalsIgnoreCase("SrClerk")) {
+
+                    
+                    
+                    if (filestatus.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+                        objGeneral.setAssign(Query);
+                        //formObject.setVisible("Genrate_PDF",true);
+                    }
+                    if (act.equalsIgnoreCase("Secretary")){
+                    formObject.setVisible("Genrate_PDF", true);
+                    formObject.clear("file_status");
+                    }
+                   /* if ((filestatus.equalsIgnoreCase("Documents Not Completed"))||(act.equalsIgnoreCase("Secretary"))) {
+                    formObject.clear("file_status");
+                    }
+                    if ((filestatus.equalsIgnoreCase("Query Sent To Applicant"))||(act.equalsIgnoreCase("Secretary"))) {
+                    formObject.clear("file_status");
+                    }
+                    if ((filestatus.equalsIgnoreCase("Not Approved"))||(act.equalsIgnoreCase("Secretary"))) {
+                    formObject.clear("file_status");
+                    }*/
+                    
+                }
+
+                if (activityName.equalsIgnoreCase("AssistantOfficer")) {
+                    if(filestatus.equalsIgnoreCase("File In Processing")){
+                    Query = "select username from ng_user_details where roletype = 'AEI'";
+                    objGeneral.setAssign(Query);
+                    }
+                    if(filestatus.equalsIgnoreCase("Documents Not Completed")){
+                    Query = "select username from ng_user_details where roletype = 'Clerk' AND rolename='Clerk'";
+                    objGeneral.setAssign(Query);
+                    }
+                    if((oldfilestatus.equalsIgnoreCase("Approved"))&&(act.equalsIgnoreCase("Secretary"))){
+                    formObject.setVisible("Genrate_PDF",true);
+                    formObject.clear("file_status");
+                    //Query = "select username from ng_user_details where roletype = 'Clerk' AND rolename='Clerk'";
+                    //objGeneral.setAssign(Query);
+                    }
+                    if((oldfilestatus.equalsIgnoreCase("Not Approved"))&&(act.equalsIgnoreCase("Secretary"))){
+                    //formObject.setVisible("Genrate_PDF",true);
+                    formObject.clear("file_status");
+                    }
+                }
+                
+                if (activityName.equalsIgnoreCase("AEI")) {
+
+                  if(filestatus.equalsIgnoreCase("File In Processing")){
+                  Query = "select username from ng_user_details where roletype = 'Secretary'";
+                  objGeneral.setAssign(Query);
+                            
+                 }
+                
+                 if(filestatus.equalsIgnoreCase("Documents Not Completed")){
+                 Query = "select username from ng_user_details where roletype = 'Clerk' AND rolename='Clerk'";
+                 objGeneral.setAssign(Query);
+                              
+                 }
+                }
+                
+                if (activityName.equalsIgnoreCase("Secretary")) {
+                    if((filestatus.equalsIgnoreCase("Approved"))&&(type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State"))){
+                    Query = "select username from ng_user_details where roletype ='Assistant officer'";
+                    objGeneral.setAssign(Query);
+                   }
+                   if((filestatus.equalsIgnoreCase("Not Approved"))&&(type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State"))){
+                    Query = "select username from ng_user_details where roletype ='Assistant officer'";
+                    objGeneral.setAssign(Query);
+                   }
+                   if(filestatus.equalsIgnoreCase("Query Sent To Applicant")){
+                    Query = "select username from ng_user_details where roletype ='Clerk' AND rolename='Clerk'";
+                    objGeneral.setAssign(Query);
+                    
+                    }
+                    if(filestatus.equalsIgnoreCase("Documents Not Completed")){
+                    Query = "select username from ng_user_details where roletype ='Clerk' AND rolename='Clerk'";
+                    objGeneral.setAssign(Query);
+                   }
+                  if((filestatus.equalsIgnoreCase("Approved"))&&(!type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State"))){
+                    Query = "select username from ng_user_details where roletype = 'Clerk' AND rolename='Clerk'";
+                    objGeneral.setAssign(Query);
+                   }
+                  if((filestatus.equalsIgnoreCase("Not Approved"))&&(!type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State"))){
+                    Query = "select username from ng_user_details where roletype = 'Clerk' AND rolename='Clerk'";
+                    objGeneral.setAssign(Query);
+                    }
+               }
+
+            }
+            
+            //CODE FOR FRAME HIDE
+            
+             if (pEvent.getSource().getName().equalsIgnoreCase("form_type")) {
+             type=formObject.getNGValue("form_type");
+             if(type.equalsIgnoreCase("Application For Admission To Examination For Electrical Supervisor")) {
+             formObject.setNGValue("Label144", "Application For Admission To Examination For Electrical Supervisor");
+             formObject.setVisible("Frame6",false);
+             formObject.setVisible("Frame12",false);
+             formObject.setVisible("Frame8",true);
+             formObject.setTop("Frame8",1229);
+             formObject.setTop("Frame7",1936);
+             formObject.setVisible("Eligibility",false);
+             formObject.setVisible("wman_eligibility",false);
+             formObject.setVisible("Exam_Type",true);
+             formObject.setVisible("Combo4",true);
+             formObject.setVisible("Label56",true);
+             formObject.setVisible("sup_wireman_permit_issue_date",true);
+             formObject.setVisible("Label55",true);
+             formObject.setVisible("sup_wireman_permit_no",true);
+             formObject.setVisible("Label58",true);
+             formObject.setVisible("sup_experience",true);
+             
+             
+             }
+             if(type.equalsIgnoreCase("Application For Admission To Examination For Wireman")) {
+             formObject.setNGValue("Label144", "Application For Admission To Examination For Wireman");
+             formObject.setVisible("Frame6",false);
+             formObject.setVisible("Frame12",false);
+             formObject.setVisible("Frame8",true);
+             formObject.setVisible("Exam_Type",false);
+             formObject.setVisible("Combo4",false);
+             formObject.setVisible("Eligibility",true);
+             formObject.setVisible("wman_eligibility",true);
+             formObject.setVisible("Label55",false);
+             formObject.setVisible("sup_wireman_permit_no",false);
+             formObject.setVisible("Label56",false);
+             formObject.setVisible("sup_wireman_permit_issue_date",false);
+             formObject.setVisible("Label58",false);
+             formObject.setVisible("sup_experience",false);
+             formObject.setTop("Frame8",1229);
+             formObject.setTop("Frame7",1936);
+             formObject.setTop("Frame11",96);
+             formObject.setTop("wiremanpermit",32);
+             formObject.setTop("viewwiremanpermit",56);
+             formObject.setTop("validwiremanpermit",56);
+             formObject.setTop("docidwiremanpermit",56);
+             formObject.setVisible("sup_wireman_permit_no",false);
+             formObject.setNGValue("wiremanpermit", "11.1 Attach Wireman permit");
+             formObject.setNGValue("Label59", "12. Details of past and present Experience");
+             formObject.setNGValue("Label61", "12.1 Form K ( K in One PDF)"); 
+             formObject.setNGValue("Label69", "12.2 Copy of Form L Verified by electrical Inspector(All Pages)"); 
+             formObject.setNGValue("Label63", "13. Preferred Examination Centre");
+             formObject.setNGValue("Label65", "14. Preferred Mode Of Language");
+             }
+             
+             if(type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State")) {
+             formObject.setNGValue("Label144", "Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State");
+             formObject.setVisible("Frame8",false);
+             formObject.setVisible("Frame6",true);
+             formObject.setVisible("Frame12",false);
+             formObject.setTop("Frame7",1715);
+             formObject.setVisible("Frame2",true);
+             formObject.setVisible("Frame3",true);
+             formObject.setVisible("Frame5",true);
+             formObject.setVisible("Frame10",true);
+             formObject.setNGValue("flag",'y');
+             }
+             
+             if(type.equalsIgnoreCase("Application For Admission To Examination For Repeater Candidate Electrical Supervisor Or Wireman")) {
+             formObject.setNGValue("Label144", "Application For Admission To Examination For Repeater Candidate Electrical Supervisor Or Wireman");
+             formObject.setVisible("Frame2",false);
+             formObject.setVisible("Frame3",false);
+             formObject.setVisible("Frame5",false);
+             formObject.setVisible("Frame6",false);
+             formObject.setVisible("Frame8",false);
+             formObject.setVisible("Frame10",false);
+             formObject.setVisible("Frame12",true);
+             formObject.setVisible("Frame7",true);
+             formObject.setTop("Frame12",256);
+             formObject.setTop("Frame7",650);
+             
+            }
+             }
+              // CODE FOR WIREMAN ATTACHMENTS
+              
+             if (pEvent.getSource().getName().equalsIgnoreCase("wman_eligibility")) {
+             String eligibility=formObject.getNGValue("wman_eligibility");
+             if(eligibility.equalsIgnoreCase("1 YEAR EXPERIENCE IN WIRING AND ELECTRICAL INSTALLATION UNDER ELE. CONTRACTOR LICENCE")) {
+             formObject.setVisible("Label60",true);
+             formObject.setVisible("Label61",true);
+             formObject.setVisible("viewformk",true);
+             formObject.setVisible("validformk",true);
+             formObject.setVisible("docidformk",true);
+             formObject.setVisible("Label69",true);
+             formObject.setVisible("viewforml",true);
+             formObject.setVisible("validforml",true);
+             formObject.setVisible("docidforml",true);
+             }
+             if(eligibility.equalsIgnoreCase("WIREMAN APPRENTICE CLASSES AT TECHNICAL INSTITUTE AND PASSED THE EXAMINATION BY T.E.B.+ SIX MOTHS PRACTICAL EXPERIENCE")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("ONE YEAR COURSE OF ELECRICIAN CONDUCTED BY COTTAGE INDUSTRIES")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("ONE YEAR COURSE OF RADI0 MECHANIC CONDUCTED BY COTTAGE INDUSTRIES")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("ONE YEAR COURSE OF WIREMAN MOTOR REWINDING CONDUCTED BY COTTAGE INDUSTRIES")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("ONE YEAR COURSE OF ELECTRICIAN CONDUCTED BY PROTOTYPE DEVELOPMENT AND TRAING CENTER RAJKOT")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("SIX MONTHS COURSE OF MOTOR WINDING")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("STATE TRADE IN (ELECRICIAN)")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             if(eligibility.equalsIgnoreCase("STATE TRADE IN (WIREMAN)")) {
+             formObject.setVisible("Label60",false);
+             formObject.setVisible("Label61",false);
+             formObject.setVisible("viewformk",false);
+             formObject.setVisible("validformk",false);
+             formObject.setVisible("docidformk",false);
+             formObject.setVisible("Label69",false);
+             formObject.setVisible("viewforml",false);
+             formObject.setVisible("validforml",false);
+             formObject.setVisible("docidforml",false);
+             }
+             }
+            
+             
+             
+}
+        
+        if (pEvent.getType().name().equalsIgnoreCase("MOUSE_CLICKED")) {
+            
+            
+            //ListView On Click
+            String form_type= null;
+           if (pEvent.getSource().getName().equalsIgnoreCase("q_expdetails")) {
+                
+                System.out.println("Inside Button Click (List View)");
+                ListView lv1 = (ListView) formObject.getComponent("q_expdetails");
+                int rowindex = lv1.getSelectedRowIndex();
+                System.out.println("Row Index Value---------->>>"+rowindex);
+                String listviewdata = formObject.getNGValue("q_expdetails", rowindex, 5);
+                System.out.println("My Value----" + listviewdata);
+                /*
+                 String insQuery = "insert into complex_documents (file_no,form_type,document,pinstanceid,docid) values ('a','3b','birthproof','" + processInstanceId + "',333)";
+                 System.out.println(insQuery);
+                 formObject.saveDataIntoDataSource(insQuery);
+                 */
+                Query = "select docid,document ,form_type from complex_documents where form_type='" + listviewdata + "'  and pinstanceid = '" + processInstanceId + "'";
+                System.out.println("Query----" + Query);
+
+                arrayListnew2 = formObject.getDataFromDataSource(Query);
+                Iterator iteratornew2 = arrayListnew2.iterator();
+                while (iteratornew2.hasNext()) {
+                    List<String> desrow2 = (List<String>) iteratornew2.next();
+                    docid = desrow2.get(0);
+                    documentname = desrow2.get(1);
+                    form_type =desrow2.get(2);
+                    System.out.println(docid);
+                    System.out.println(documentname);
+                    System.out.println(form_type);
+
+                    if (documentname.equalsIgnoreCase("myfile")) {
+                        System.out.println("-------------Indside IF---------------");    
+                        formObject.setNGValue("viewformk", docid);
+                        }
+                   
+
+                }
+            }
+
+            // PDF Generation
+            if (pEvent.getSource().getName().equalsIgnoreCase("Genrate_PDF")){
+                
+                System.out.println("-------Inside PDF Generation----------");
+                
+                String type = formObject.getNGValue("form_type");
+                String file_noforcertificate = formObject.getNGValue("file_no");
+                String qr;
+                String licNo;
+                int lic = 0;
+                String licTemp;
+                String type1;
+                General gn = new General();
+                
+                if(type.equalsIgnoreCase("Application For Admission To Examination For Electrical Supervisor")){
+                    
+                    type1 = "SUPERVISOR";
+                    qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where form_type = 'Application For Admission To Examination For Electrical Supervisor'";
+                    result = formObject.getDataFromDataSource(qr);
+
+                    licNo = result.get(0).get(0);
+
+                    System.out.println("-----QR------->"+qr);
+                    System.out.println("Value Of licNo -------> "+licNo);
+                    //System.out.println("licNo -------> " + licNo);
+
+                    if (licNo == null || licNo.equalsIgnoreCase("null")) {
+                        System.out.println("-------Inside IF ----------");
+                        lic = 1;
+                    } else {
+                        System.out.println("-------Inside Else ----------");
+                        if (!formObject.getNGValue("licno").equals("")) {
+
+                            qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where processid = '" + processInstanceId + "'";
+                            System.out.println("-----------Inside IF (IF)------------>"+qr);
+                            result = formObject.getDataFromDataSource(qr);
+                            licTemp = result.get(0).get(0);
+                            lic = Integer.parseInt(licTemp);
+                            System.out.println("Inside IF (IF) Value of lic--->" + lic);
+
+                        } else {
+
+                            System.out.println("---------Inside IF (ELSE)-------------");
+
+                            qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate  where form_type = 'Application For Admission To Examination For Electrical Supervisor'";
+                            result = formObject.getDataFromDataSource(qr);
+                            System.out.println("-------------------->" + qr);
+                            licTemp = result.get(0).get(0);
+                            System.out.println("Value of licTemp-------------------->" + licTemp);
+                            lic = Integer.parseInt(licTemp) + 1;
+                            System.out.println("Inside ELSE-IF Value of lic--->" + lic);
+                        }
+                    }
+
+                    Calendar now = Calendar.getInstance();
+                    int year = now.get(Calendar.YEAR);
+                    int mon = now.get(Calendar.MONTH);
+                    int session;
+                    String Ssession;
+
+                    if((mon>=5)&&(mon<11))
+                        session = 1;
+                    else
+                        session = 2;
+
+                    String Syear = String.valueOf(year);
+                    Ssession = String.valueOf(session);
+
+                    System.out.println("lic -------> " + lic);
+                    System.out.println("Session  Syear  -------> " + session + Syear);
+                    System.out.println("formObject.getNGValue(\"dist_index_id\") -------> " + formObject.getNGValue("dist_index_id"));
+                    System.out.println("String.format(\"%04d\", lic) -------> " + String.format("%04d", lic));
+                    System.out.println("Ssession -------> " +Ssession);
+                    licNo = "G/" +formObject.getNGValue("dist_index_id")+gn.getExamType(formObject.getNGValue("Combo4"))+ "/WW-" + String.format("%04d", lic) + "/" + String.format("%02d", session)+ "/" + Syear;
+                    //System.out.println("Session -------> " + session);
+                    formObject.setNGValue("licno", licNo);
+
+                    formObject.RaiseEvent("WFSave");
+
+                    System.out.println("Value Of Session -------> " + session);
+
+                    ExaminationWiremanTemplate obj = new ExaminationWiremanTemplate("D:\\Newgen\\Server\\Certificate\\Examination\\Supervisor\\" + file_noforcertificate + ".pdf", type1,  licNo, "Raju", "12/12/1994");
+                    obj.generatePDF();
+
+                    System.out.println("---------Ending-------");
+
+                    file_noforcertificate = "\\Examination\\Supervisor\\" + file_noforcertificate;
+
+                    HashMap<Integer, String> hm = new HashMap<Integer, String>();  // not nullable HashMap
+                    throw new ValidatorException(new CustomExceptionHandler("Error Message", file_noforcertificate,
+                            "MOUSE_CLICKED", hm));
+                    
+                    
+                }else if(type.equalsIgnoreCase("Application For Admission To Examination For Wireman")){
+                    
+                    
+                    type1 = "WIREMAN";
+                    qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where form_type = 'Application For Admission To Examination For Wireman'";
+                    result = formObject.getDataFromDataSource(qr);
+
+                    licNo = result.get(0).get(0);
+
+                    System.out.println("-----QR------->"+qr);
+                    System.out.println("Value Of licNo -------> "+licNo);
+                    //System.out.println("licNo -------> " + licNo);
+
+                    if (licNo == null || licNo.equalsIgnoreCase("null")) {
+                        System.out.println("-------Inside IF ----------");
+                        lic = 1;
+                    } else {
+                        System.out.println("-------Inside Else ----------");
+                        if (!formObject.getNGValue("licno").equals("")) {
+
+                            qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where processid = '" + processInstanceId + "'";
+                            System.out.println("-----------Inside IF (IF)------------>"+qr);
+                            result = formObject.getDataFromDataSource(qr);
+                            licTemp = result.get(0).get(0);
+                            lic = Integer.parseInt(licTemp);
+                            System.out.println("Inside IF (IF) Value of lic--->" + lic);
+
+                        } else {
+
+                            System.out.println("---------Inside IF (ELSE)-------------");
+
+                            qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where form_type = 'Application For Admission To Examination For Wireman'";
+                            result = formObject.getDataFromDataSource(qr);
+                            System.out.println("-------------------->" + qr);
+                            licTemp = result.get(0).get(0);
+                            System.out.println("Value of licTemp-------------------->" + licTemp);
+                            lic = Integer.parseInt(licTemp) + 1;
+                            System.out.println("Inside ELSE-IF Value of lic--->" + lic);
+                        }
+                    }
+
+                    Calendar now = Calendar.getInstance();
+                    int year = now.get(Calendar.YEAR);
+                    int mon = now.get(Calendar.MONTH);
+                    int session;
+                    String Ssession;
+
+                    if((mon>=5)&&(mon<11))
+                        session = 1;
+                    else
+                        session = 2;
+
+                    String Syear = String.valueOf(year);
+                    Ssession = String.valueOf(session);
+
+                    System.out.println("lic -------> " + lic);
+                    System.out.println("Session  Syear  -------> " + session + Syear);
+                    System.out.println("formObject.getNGValue(\"dist_index_id\") -------> " + formObject.getNGValue("dist_index_id"));
+                    System.out.println("String.format(\"%04d\", lic) -------> " + String.format("%04d", lic));
+                    System.out.println("Ssession -------> " +Ssession);
+                    licNo = "G/" +formObject.getNGValue("dist_index_id")+ "/WW-" + String.format("%04d", lic) + "/" + String.format("%02d", session)+ "/" + Syear;
+                   // System.out.println("Session -------> " + session);
+                    formObject.setNGValue("licno", licNo);
+
+                    formObject.RaiseEvent("WFSave");
+
+                    System.out.println("Value Of Session -------> " + session);
+
+                    ExaminationWiremanTemplate obj = new ExaminationWiremanTemplate("D:\\Newgen\\Server\\Certificate\\Examination\\Wireman\\" + file_noforcertificate + ".pdf", type1, licNo, "Raju", "12/12/1994");
+                    obj.generatePDF();
+
+                    System.out.println("---------Ending-------");
+
+                    file_noforcertificate = "\\Examination\\Wireman\\" + file_noforcertificate;
+
+                    HashMap<Integer, String> hm = new HashMap<Integer, String>();  // not nullable HashMap
+                    throw new ValidatorException(new CustomExceptionHandler("Error Message", file_noforcertificate,
+                            "MOUSE_CLICKED", hm));
+                    
+                    
+                }else if(type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State")){
+                    
+                    
+                    qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where form_type = 'Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State'";
+                    result = formObject.getDataFromDataSource(qr);
+
+                    licNo = result.get(0).get(0);
+
+                    System.out.println("-----QR------->"+qr);
+                    System.out.println("Value Of licNo -------> "+licNo);
+                    //System.out.println("licNo -------> " + licNo);
+
+                    if (licNo == null || licNo.equalsIgnoreCase("null")) {
+                        System.out.println("-------Inside IF ----------");
+                        lic = 1;
+                    } else {
+                        System.out.println("-------Inside Else ----------");
+                        if (!formObject.getNGValue("licno").equals("")) {
+
+                            qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where processid = '" + processInstanceId + "'";
+                            System.out.println("-----------Inside IF (IF)------------>"+qr);
+                            result = formObject.getDataFromDataSource(qr);
+                            licTemp = result.get(0).get(0);
+                            lic = Integer.parseInt(licTemp);
+                            System.out.println("Inside IF (IF) Value of lic--->" + lic);
+
+                        } else {
+
+                            System.out.println("---------Inside IF (ELSE)-------------");
+
+                            qr = "SELECT max(split_part(split_part(licno, '-', 2), '/', 1)) FROM ext_examination_interstate where form_type = 'Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State'";
+                            result = formObject.getDataFromDataSource(qr);
+                            System.out.println("-------------------->" + qr);
+                            licTemp = result.get(0).get(0);
+                            System.out.println("Value of licTemp-------------------->" + licTemp);
+                            lic = Integer.parseInt(licTemp) + 1;
+                            System.out.println("Inside ELSE-IF Value of lic--->" + lic);
+                        }
+                    }
+
+                    Calendar now = Calendar.getInstance();
+                    int year = now.get(Calendar.YEAR);
+                    int mon = now.get(Calendar.MONTH);
+                    int session;
+                    String Ssession;
+
+                    if((mon>=5)&&(mon<11))
+                        session = 1;
+                    else
+                        session = 2;
+
+                    String Syear = String.valueOf(year);
+                    Ssession = String.valueOf(session);
+
+                    System.out.println("lic -------> " + lic);
+                    System.out.println("Session  Syear  -------> " + session + Syear);
+                    System.out.println("formObject.getNGValue(\"dist_index_id\") -------> " + formObject.getNGValue("dist_index_id"));
+                    System.out.println("String.format(\"%04d\", lic) -------> " + String.format("%04d", lic));
+                    System.out.println("Ssession -------> " +Ssession);
+                    licNo = "G/" +formObject.getNGValue("dist_index_id")+ "/WW-" + String.format("%04d", lic) + "/" + String.format("%02d", session)+ "/" + Syear;
+                    // System.out.println("Session -------> " + session);
+                    formObject.setNGValue("licno", licNo);
+
+                    formObject.RaiseEvent("WFSave");
+
+                    System.out.println("Value Of Session -------> " + session);
+
+                    new ExaminationPermitTemplate("D:\\Newgen\\Server\\Certificate\\Examination\\Interstate\\" + file_noforcertificate + ".pdf", licNo);
+                    
+
+                    System.out.println("---------Ending-------");
+
+                    file_noforcertificate = "\\Examination\\Interstate\\" + file_noforcertificate;
+
+                    HashMap<Integer, String> hm = new HashMap<Integer, String>();  // not nullable HashMap
+                    throw new ValidatorException(new CustomExceptionHandler("Error Message", file_noforcertificate,
+                            "MOUSE_CLICKED", hm));
+                    
+                }
+                
+            }
+            
+            
+            if (pEvent.getSource().getName().equalsIgnoreCase("ADD")){
+               
+                 //formObject.NGAddListItem("ListView1","<ListItem><SubItem>"+formObject.getNGValue("Q_commentlist_Coment") +"</SubItem><SubItem> "+formObject.getNGValue("Q_commentlist_FieldName") +"</SubItem><SubItem>"+formObject.getNGValue("Q_commentlist_AddedOn") +"</SubItem><SubItem>"+formObject.getNGValue("Q_commentlist_AddedBy") +"</SubItem></ListItem>");
+            }
+            
+            
+
+             if (pEvent.getSource().getName().substring(0, 5).equalsIgnoreCase("valid")) {
+                 populate();
+             }
+//          
+        }
+    }
+
+    public void populate(){
+
+   
+   if(type.equalsIgnoreCase("Application For Admission To Examination For Electrical Supervisor")) {
+          
+        formObject.clear("Combo11");
+   
+        if(formObject.getNGValue("validforml").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "15.2 Copy of Form L Verified by electrical Inspector(All Pages)");
+        }else     
+            DelListView("Q_commentlist", "15.2 Copy of Form L Verified by electrical Inspector(All Pages)");
+   
+           //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validformk").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "15.1 Form K ( K in One PDF)");  
+         }else
+            DelListView("Q_commentlist", "15.1 Form K ( K in One PDF)");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validwiremanpermit").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "12.1 Wireman permit");  
+         }else
+            DelListView("Q_commentlist", "12.1 Wireman permit");
+        
+        if(formObject.getNGValue("validtemporarytaddressproof").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "7.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");  
+        } else
+            DelListView("Q_commentlist", "7.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validpermanentaddressproof").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "6.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");  
+        } else
+            DelListView("Q_commentlist", "6.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validschoolleavingcerti").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "4.1 School Leaving Certificate or matriculation certificate");  
+        } else
+            DelListView("Q_commentlist", "4.1 School Leaving Certificate or matriculation certificate");
+
+   }else if(type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State")) {
+       
+       formObject.clear("Combo11");
+       
+       if(formObject.getNGValue("validappointmentletter").equalsIgnoreCase("false")){
+          formObject.addItem("Combo11", "12.2 Attach Appointment Letter");
+       }else     
+         DelListView("Q_commentlist", "12.2 Attach Appointment Letter");
+   
+       if(formObject.getNGValue("validaffidavit").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "11.5 Affidavit if Interstate");
+         }else
+            DelListView("Q_commentlist", "11.5 Affidavit if Interstate");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validexemptioncerti").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "11.4 Exemption Certificate copy If Taken Exemption");  
+         } else
+            DelListView("Q_commentlist", "11.4 Exemption Certificate copy If Taken Exemption");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validpermitcopy").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "11.3 Orignal Permit Copy");  
+        }else
+            DelListView("Q_commentlist", "11.3 Orignal Permit Copy");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validtemporarytaddressproof").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "7.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");  
+        } else
+            DelListView("Q_commentlist", "7.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validpermanentaddressproof").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "6.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");  
+        } else
+            DelListView("Q_commentlist", "6.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validschoolleavingcerti").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "4.1 School Leaving Certificate or matriculation certificate");  
+        } else
+            DelListView("Q_commentlist", "4.1 School Leaving Certificate or matriculation certificate");
+
+   }else if(type.equalsIgnoreCase("Application For Admission To Examination For Wireman")) {
+       formObject.clear("Combo11");
+        
+        if(formObject.getNGValue("validforml").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "12.2 Copy of Form L Verified by electrical Inspector(All Pages)");
+        }else     
+            DelListView("Q_commentlist", "12.2 Copy of Form L Verified by electrical Inspector(All Pages)");
+   
+           //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validformk").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "12.1 Form K ( K in One PDF)");  
+         }else
+            DelListView("Q_commentlist", "12.1 Form K ( K in One PDF)");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validwiremanpermit").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "11.1 Wireman permit");  
+         }else
+            DelListView("Q_commentlist", "11.1 Wireman permit");
+        
+        if(formObject.getNGValue("validtemporarytaddressproof").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "7.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");  
+        } else
+            DelListView("Q_commentlist", "7.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validpermanentaddressproof").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "6.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");  
+        } else
+            DelListView("Q_commentlist", "6.7 Electricity Bill for Address Proof or any other Govt. Valid ID Proof");
+        
+        //formObject.clear("Q_commentlist_FieldName");
+        if(formObject.getNGValue("validschoolleavingcerti").equalsIgnoreCase("false")){
+           formObject.addItem("Combo11", "4.1 School Leaving Certificate or matriculation certificate");  
+        } else
+            DelListView("Q_commentlist", "4.1 School Leaving Certificate or matriculation certificate");
+
+   }else if(type.equalsIgnoreCase("Application For Admission To Examination For Repeater Candidate Electrical Supervisor Or Wireman")) {
+       
+       formObject.clear("Combo11");
+       
+       if(formObject.getNGValue("validschoolleavingcertirepeter").equalsIgnoreCase("false")){
+          formObject.addItem("Combo11", "1.1 Attach School leaving certificate or Matriculation certificate");
+          
+       }else     
+         DelListView("Q_commentlist", "1.1 Attach School leaving certificate or Matriculation certificate");
+   }
+
+    
+  }
+     public void DelListView(String na, String field){
+         
+         int i;
+       for(i = 0 ; i < formObject.getLVWRowCount(na);i++){
+           if(formObject.getNGValue(na, i, 0).equalsIgnoreCase(field))
+               break;
+       }
+       try{
+        formObject.removeItem(na, i);
+       }catch(Exception ex){
+           System.out.println(ex);
+       }
+         
+     }
+    
+    @Override
+    public void formLoaded(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        System.out.println(" -------------------Intiation Workstep Loaded from formloaded.----------------");
+        // TODO Auto-generated method stub
+        System.out.println("form Loaded called");
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        //formObject.setVisible("Genrate_PDF",false);
+
+        System.out.println("formObject :" + formObject);
+        System.out.println("formConfig :" + formConfig);
+        try {
+
+            activityName = formObject.getWFActivityName();
+            System.out.println("#####################ActivityName##############################3" + activityName);
+            //capturing system fields----starts
+            engineName = formConfig.getConfigElement("EngineName");
+            sessionId = formConfig.getConfigElement("DMSSessionId");
+            folderId = formConfig.getConfigElement("FolderId");
+            serverUrl = formConfig.getConfigElement("ServletPath");
+            //ServletUrl = serverUrl + "/servlet/ExternalServlet";
+            processInstanceId = formConfig.getConfigElement("ProcessInstanceId");
+            workItemId = formConfig.getConfigElement("WorkitemId");
+            userName = formConfig.getConfigElement("UserName");
+            processDefId = formConfig.getConfigElement("ProcessDefId");
+            System.out.println("ProcessInstanceId===== " + processInstanceId);
+            System.out.println("Activityname=====" + activityName);
+            System.out.println("CabinetName====" + engineName);
+            System.out.println("sessionId====" + sessionId);
+            System.out.println("Username====" + userName);
+            System.out.println("workItemId====" + workItemId);
+
+
+
+        } catch (Exception e) {
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void formPopulated(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        try {
+            
+           
+            objGeneral = new General();
+            System.out.println("----------------------Intiation Workstep Loaded from form populated.---------------------------");
+            formObject = FormContext.getCurrentInstance().getFormReference();
+            formConfig = FormContext.getCurrentInstance().getFormConfig();
+            formObject.setVisible("Genrate_PDF",false);
+            formObject.setNGValue("AddedBy",userName);
+
+            //Code for File Status
+
+            System.out.println("printing my activity name------->" + activityName);
+            oldactivity = formObject.getNGValue("q_pstage");
+            oldfilestatus = formObject.getNGValue("q_pstatus"); 
+            System.out.println("COming inside form populate methord----"+oldactivity +"Status--"+oldfilestatus);           
+            
+            act = formObject.getNGValue("q_pstage");
+            System.out.println("Old Activity : " + act );
+            //formObject.clear("file_status");
+            if (activityName.equalsIgnoreCase("StartEvent1")) {
+                formObject.addItem("file_status", "File In Processing");
+            }
+            
+            if (activityName.equalsIgnoreCase("SrClerk")) {
+               if (act.equalsIgnoreCase("StartEvent1")){
+               formObject.addItem("file_status", "File In Processing");
+               } 
+               if (act.equalsIgnoreCase("Secretary")){
+               formObject.clear("file_status");
+               formObject.addItem("file_status","Query Sent To Applicant");
+               }
+            }
+
+
+            if (activityName.equalsIgnoreCase("AssistantOfficer")) {
+                 //formObject.addItem("file_status", "File In Processing");
+                 //formObject.addItem("file_status", "Documents Not Completed");
+                 if (act.equalsIgnoreCase("SrClerk")){
+                    formObject.clear("file_status");
+                    formObject.addItem("file_status", "File In Processing");
+                    formObject.addItem("file_status", "Documents Not Completed");
+                } 
+                if (act.equalsIgnoreCase("Secretary")){
+                    formObject.clear("file_status");
+                    formObject.addItem("file_status", "Query Sent To Applicant");
+                    formObject.setVisible("Genrate_PDF",true);
+                }
+                
+            }
+
+            if (activityName.equalsIgnoreCase("AEI")) {
+                formObject.addItem("file_status", "File In Processing");
+                formObject.addItem("file_status", "Documents Not Completed");
+            }
+
+            if (activityName.equalsIgnoreCase("Secretary")) {
+                type=formObject.getNGValue("form_type");
+                formObject.clear("file_status");
+                formObject.addItem("file_status", "Approved");
+                formObject.addItem("file_status", "Documents Not Completed");
+                formObject.addItem("file_status", "Not Approved");
+                formObject.addItem("file_status", "Query Sent To Applicant");
+                
+                if(type.equalsIgnoreCase("Application For Interstate recognition for Electrical Supervisor / Wireman Permit in Gujarat State")) {
+                formObject.clear("file_status");
+                formObject.addItem("file_status", "Approved");
+                formObject.addItem("file_status", "Not Approved");
+                }
+           }
+          
+                objGeneral.getDocIndex(processInstanceId ,"ExamInterstate");
+                
+                //dummy datal
+                formObject.NGAddListItem("q_expdetails","<ListItem><SubItem>abs</SubItem><SubItem>sdf</SubItem><SubItem>sdf</SubItem><SubItem>sdf</SubItem><SubItem>sdf</SubItem><SubItem>sdf</SubItem></ListItem>");
+                
+               
+                
+                
+                
+               
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+
+        }
+    }
+
+    @Override
+    public void saveFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void saveFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        formObject.setNGValue("AddedBy",userName);
+        
+        
+        //String qry="insert into complex_documents values('','','','',00)";
+
+
+    }
+
+    @Override
+    public void submitFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+
+    }
+
+    @Override
+    public void submitFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+       
+     
+        activityName = formObject.getWFActivityName();
+        filestatus = formObject.getNGValue("file_status");
+        
+        formObject.setNGValue("q_pstage", activityName);
+        formObject.setNGValue("q_pstatus", filestatus);
+        
+    }
+
+    @Override
+    public void initialize() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}
+
+    

@@ -1,0 +1,487 @@
+package com.newgen.exelicnew;
+
+import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.validator.ValidatorException;
+
+
+import com.newgen.common.General;
+import com.newgen.common.PicklistListenerHandler;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.component.PickList;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.event.ComponentEvent;
+import com.newgen.omniforms.event.FormEvent;
+import com.newgen.omniforms.listener.FormListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import sun.awt.windows.WBufferStrategy;
+
+public class Head implements FormListener {
+
+    //FormReference objFormReference = null; //FormContext.getCurrentInstance().getFormReference();
+    FormReference formObject = null;
+    FormConfig formConfig = null;
+    String activityName = null, file_status = null;
+    String engineName = null;
+    String asigndfield = null;
+    String name_asign = null;
+    String sessionId = null;
+    String folderId = null;
+    String serverUrl = null;
+    String processInstanceId = null;
+    String workItemId = null;
+    String userName = null;
+    String processDefId = null;
+    String Query = null;
+    String Query1 = null;
+    List<List<String>> result;
+    PickList objPicklist;
+    General objGeneral = null;
+    String processtype = null, value1 = null, value2 = null, value3 = null, value4 = null;
+    String lang_select = null, prevs_activity = null, docnameval = null, finaldocs = null, validfinal = null;
+
+    /* public Head(FormReference formObject) {
+     super();
+     System.out.println("In COnstructor");
+     this.formObject = formObject;
+     } */
+    @Override
+    public void continueExecution(String arg0, HashMap<String, String> arg1) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void eventDispatched(ComponentEvent pEvent) throws ValidatorException {
+        // TODO Auto-generated method stub
+        System.out.println("Value Change Event :" + pEvent);
+        System.out.println("pEvent.getType() :" + pEvent.getType());
+        System.out.println("pEvent.getType().name() :" + pEvent.getType().name());
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        objGeneral = new General();
+        if (pEvent.getType().name().equalsIgnoreCase("VALUE_CHANGED")) {
+
+            //code for set name value
+
+           if (pEvent.getSource().getName().equalsIgnoreCase("fullname_a3_b_d_a4_e_f_g_j")) {
+                name_asign = formObject.getNGValue("fullname_a3_b_d_a4_e_f_g_j");
+
+                formObject.setNGValue("Text2", name_asign);
+                formObject.setNGValue("Text12", name_asign);
+                formObject.setNGValue("Text13", name_asign);
+                formObject.setNGValue("Text15", name_asign);
+            }
+
+            //code for enable or disable tab 
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("process_type")) {
+
+                processtype = formObject.getNGValue("process_type");
+                System.out.println("coming up to here ----- >" + processtype);
+
+                if (processtype.equalsIgnoreCase("New Supervisor Exemption")) {
+
+                    formObject.setSheetVisible("Tab1", 0, true);
+                    formObject.setSheetVisible("Tab1", 1, false);
+                    formObject.setSheetVisible("Tab1", 2, false);
+                   
+                    // code for process label setting
+                    formObject.setNGValue("Label144", "Application for New Supervisor Exemption");
+                }
+
+                if (processtype.equalsIgnoreCase("New Wireman Exemption ")) {
+
+                    
+                    formObject.setSheetVisible("Tab1", 0, false);
+                    formObject.setSheetVisible("Tab1", 1, true);
+                    formObject.setSheetVisible("Tab1", 2, false);
+                   
+                    formObject.setNGValue("Label144", "Application for New Wireman Exemption");
+
+                }
+
+                if (processtype.equalsIgnoreCase("New Contractor License")) {
+
+                     formObject.setSheetVisible("Tab1", 2, true);
+                    formObject.setSheetVisible("Tab1", 0, false);
+                    formObject.setSheetVisible("Tab1", 1, false);
+                   
+                   
+                    formObject.setNGValue("Label144", "Application for New Contractor License");
+
+                }
+            }
+            //code for language selection
+            if (pEvent.getSource().getName().equalsIgnoreCase("Combo3")) {
+                lang_select = formObject.getNGValue("Combo3");
+                if (lang_select.equalsIgnoreCase("English")) {
+                    formObject.setNGValue("Label4", "1. Full name of the applicant(organisation)");
+                    formObject.setNGValue("Label5", "2. Phone No. of the applicant");
+                }
+                if (lang_select.equalsIgnoreCase("Gujarati")) {
+                    formObject.setNGValue("Label4", "અરજદાર નું પૂરું નામ (સંસ્થા)");
+                    formObject.setNGValue("Label5", "અરજદાર નો ફોન નંબર");
+                }
+            }
+
+            // code for assigned to field on status change
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("file_status")) {
+                file_status = formObject.getNGValue("file_status");
+                System.out.println("status values-------------->" + file_status);
+                if (activityName.equalsIgnoreCase("StartEvent1")) {
+
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_user_details where roletype = 'Clerk'";
+                        objGeneral.setAssign(Query);
+                    }
+                }
+
+                if (activityName.equalsIgnoreCase("Clerk")) {
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+
+                        Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+                        objGeneral.setAssign(Query);
+                    }
+//                        if(file_status.equalsIgnoreCase("Query sent to Applicant")){
+//                            
+//                        }
+                }
+
+                if (activityName.equalsIgnoreCase("Assistant officer")) {
+
+
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_user_details where roletype = 'AEI'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                    if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                        System.out.println("insinde ------ not completed-->");
+                        Query = "select username from ng_user_details where roletype = 'Clerk'";
+                        System.out.println("SEcond query--------------------->" + Query);
+                        objGeneral.setAssign(Query);
+                    }
+                }
+
+                if (activityName.equalsIgnoreCase("AEI")) {
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_user_details where roletype = 'Secretary'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                    if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                        Query = "select username from ng_user_details where roletype = 'Clerk'";
+                        objGeneral.setAssign(Query);
+                    }
+                }
+                if (activityName.equalsIgnoreCase("Secretary")) {
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_user_details where roletype = 'President'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                    if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                        Query = "select username from ng_user_details where roletype = 'Clerk'";
+                        objGeneral.setAssign(Query);
+                    }
+                }
+                if (activityName.equalsIgnoreCase("President")) {
+                    if (file_status.equalsIgnoreCase("Approved")) {
+                        Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                        Query = "select username from ng_user_details where roletype = 'Clerk'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("Not Approved")) {
+                        Query = "select username from ng_user_details where roletype = 'Assistant officer'";
+                        objGeneral.setAssign(Query);
+                    }
+                }
+                if (file_status.equalsIgnoreCase("")) {
+                    formObject.clear("assigned_to");
+                }
+            }
+
+            // code for duration calculation         
+
+            /*    System.out.println("duration process started");
+             String startDate;
+             String endDate;
+             startDate = formObject.getNGValue("DatePicker2");
+             endDate = formObject.getNGValue("DatePicker1");
+             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+             System.out.println("startdate is:---" + startDate + "enddate is:---" + endDate);
+             try {
+             Calendar start = Calendar.getInstance();
+             start.setTime(sdf.parse(startDate));
+             Calendar end = Calendar.getInstance();
+             end.setTime(sdf.parse(endDate));
+             int workingDays = 0;
+             while (!start.after(end)) {
+             int day = start.get(Calendar.DAY_OF_WEEK);
+             if ((day != Calendar.SATURDAY) && (day != Calendar.SUNDAY)) {
+             workingDays++;
+             }
+             start.add(Calendar.DATE, 1);
+             }
+             System.out.println("****************Working Days****************" + workingDays);
+
+             formObject.setNGValue("Text8", workingDays);
+             } catch (Exception e) {
+             e.printStackTrace();
+             } */
+
+        }
+
+        if (pEvent.getType().name().equalsIgnoreCase("MOUSE_CLICKED")) {
+
+            //System.out.println("coming inside mouse click label9");
+            if (pEvent.getSource().getName().equalsIgnoreCase("btn_cghs_upload")) {
+            }
+
+//            if (pEvent.getSource().getName().equalsIgnoreCase("Button1")) {
+//                
+//                
+//                System.out.println("coming inside mouse click label9");
+//                FileInputStream ins = null;
+//      FileOutputStream outs = null;
+//      try {
+////         URI uri = new URI("http://192.168.1.70/downloads/bcc.txt");
+////         File test = new File(uri);
+//         File infile =new File("//192.168.1.70/Users/AWC-U36/Downloads/TestCases Phase3.xlsx"); 
+//         File outfile =new File("C://Users//Newgen1//Desktop//exeee.xlsx");
+//          System.out.println("coming inside file label9");
+//        ins = new FileInputStream(infile);
+//         outs = new FileOutputStream(outfile);
+//         byte[] buffer = new byte[1024];
+//         int length;
+//         
+//         while ((length = ins.read(buffer)) > 0) {
+//            outs.write(buffer, 0, length);
+//         } 
+//         ins.close();
+//         outs.close();
+//         System.out.println("File copied successfully!!");
+//      } catch(IOException ioe) {
+//         ioe.printStackTrace();
+//      } 
+
+            //}
+
+        }
+    }
+
+    @Override
+    public void formLoaded(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        System.out.println(" -------------------Intiation Workstep Loaded from formloaded.----------------");
+        // TODO Auto-generated method stub
+        System.out.println("form Loaded called");
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.println("formObject :" + formObject);
+        System.out.println("formConfig :" + formConfig);
+        try {
+
+            activityName = formObject.getWFActivityName();
+            System.out.println("#####################ActivityName##############################3" + activityName);
+            //capturing system fields----starts
+            engineName = formConfig.getConfigElement("EngineName");
+            sessionId = formConfig.getConfigElement("DMSSessionId");
+            folderId = formConfig.getConfigElement("FolderId");
+            serverUrl = formConfig.getConfigElement("ServletPath");
+            //ServletUrl = serverUrl + "/servlet/ExternalServlet";
+            processInstanceId = formConfig.getConfigElement("ProcessInstanceId");
+            workItemId = formConfig.getConfigElement("WorkitemId");
+            userName = formConfig.getConfigElement("UserName");
+            processDefId = formConfig.getConfigElement("ProcessDefId");
+            System.out.println("ProcessInstanceId===== " + processInstanceId);
+            System.out.println("Activityname=====" + activityName);
+            System.out.println("CabinetName====" + engineName);
+            System.out.println("sessionId====" + sessionId);
+            System.out.println("Username====" + userName);
+            System.out.println("workItemId====" + workItemId);
+            System.out.println("workItemId====" + engineName);
+            System.out.println("workItemId====" + processDefId);
+
+
+            // formObject.setNGValue("activity_name", userName);
+        } catch (Exception e) {
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void formPopulated(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        try {
+            objGeneral = new General();
+            System.out.println("----------------------Intiation Workstep Loaded from form populated.---------------------------");
+            formObject = FormContext.getCurrentInstance().getFormReference();
+            formConfig = FormContext.getCurrentInstance().getFormConfig();
+           System.out.println("printing my activity name------->" + activityName);
+           
+            // code for dropdown list visiblity on each Activity
+            String prevs_stage = formObject.getNGValue("q_prevs_stage"); 
+            String prevs_status = formObject.getNGValue("q_prevs_status");
+            
+            
+
+            if (activityName.equalsIgnoreCase("StartEvent1")) {
+                formObject.addItem("file_status", "File In Processing");
+
+            }
+            if (activityName.equalsIgnoreCase("Clerk")) 
+             {
+                formObject.addItem("file_status", "File In Processing");
+                
+                if(prevs_status.equalsIgnoreCase("Documents Not Completed")
+                        && ((prevs_stage.equalsIgnoreCase("Assistant officer") 
+                        || (prevs_stage.equalsIgnoreCase("AEI"))
+                        || (prevs_stage.equalsIgnoreCase("Secretary")
+                        || (prevs_stage.equalsIgnoreCase("President"))))))
+                      {
+                           formObject.addItem("file_status", "Query Sent To Applicant");
+                  
+                      }
+             }
+            if (activityName.equalsIgnoreCase("Assistant officer")) 
+            {
+                formObject.addItem("file_status", "File In Processing");
+                if(prevs_stage.equalsIgnoreCase("President")&& (prevs_status.equalsIgnoreCase("Approved"))){
+                formObject.setVisible("GenerateCertificate", true);
+               
+                }
+                if(prevs_stage.equalsIgnoreCase("President")&& (prevs_status.equalsIgnoreCase("Not Approved"))){
+                formObject.addItem("file_status", "Query Sent To Applicant");
+               
+                }
+              
+            }
+
+            if (activityName.equalsIgnoreCase("AEI")) {
+                formObject.addItem("file_status", "File In Processing");
+                formObject.addItem("file_status", "Documents Not Completed");
+
+            }
+            if (activityName.equalsIgnoreCase("Secretary")) {
+                formObject.addItem("file_status", "File In Processing");
+                formObject.addItem("file_status", "Documents Not Completed");
+
+            }
+            if (activityName.equalsIgnoreCase("President")) {
+                formObject.addItem("file_status", "Approved");
+                formObject.addItem("file_status", "Documents Not Completed");
+                formObject.addItem("file_status", "Not Approved");
+
+            }
+
+            objGeneral.getDocIndex(processInstanceId,"exelicnew");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+
+        }
+    }
+
+    @Override
+    public void saveFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+    }
+
+    @Override
+    public void saveFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+
+    }
+
+    @Override
+    public void submitFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+
+    }
+
+    @Override
+    public void submitFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.print("-------------------submitform started---------");
+
+        formObject.setNGValue("q_prevs_stage", activityName);
+        formObject.setNGValue("q_prevs_status", file_status);
+
+/*
+        String query = "select docname from documenttypedeftable where processdefid =2";
+        System.out.println("first query value for testing-----" + query);
+        result = formObject.getDataFromDataSource(query);
+        System.out.println("-result----" + result + "  second value---" + result.size());
+        for (int i = 0; i <= result.size(); i++) {
+            docnameval = result.get(i).get(0);
+            value3 = docnameval.substring(0, 3);
+            value4 = docnameval.substring(3);
+            finaldocs = "docid" + value4;
+            
+            value1 = formObject.getNGValue(finaldocs);
+        
+            validfinal = "valid" + value4;
+           
+            value2 = formObject.getNGValue(validfinal);
+           
+            if (activityName.equalsIgnoreCase("Assistant officer")
+                    || activityName.equalsIgnoreCase("AEI")
+                    || activityName.equalsIgnoreCase("Secretary")
+                    || activityName.equalsIgnoreCase("President")) {
+
+                if (value1 != null && value2.equalsIgnoreCase("false"))
+                    {
+                     System.out.println("value of value1----"+value1+"Value of value2------"+value2);
+                     throw new ValidatorException(new FacesMessage("Please validate the document!", ""));
+                    }
+                 if(file_status.equalsIgnoreCase("File In Processing")&& value2.equalsIgnoreCase("false")) 
+                      {
+                       System.out.println("value of file_status----"+file_status+"Value of value2------"+value2);
+                       throw new ValidatorException(new FacesMessage("Please update status document not completed!", ""));
+                      }
+                    
+                    
+               
+                
+            } 
+        }*/
+    }
+
+    @Override
+    public void initialize() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+}

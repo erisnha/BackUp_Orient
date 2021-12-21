@@ -1,0 +1,226 @@
+package com.newgen.common;
+import java.io.FileOutputStream;
+import java.util.Date;
+
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.List;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+/**
+ *
+ * @author Rituraj
+ */
+public class ExaminationWiremanTemplate {
+
+
+    private static String FILE = null;
+    private static String licenseNo;
+    
+        private static String name ;
+        private static String permit_number;
+        private static String dateofissue;
+        private static String dateofbirth;
+        private static String duplicateissuedate;
+        private static String type;
+    
+        
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
+    
+    public ExaminationWiremanTemplate(String file, String type, String prNO, String name, String DOB) {
+        this.type = type;
+        this.FILE = file;
+        this.name = name;
+        permit_number = prNO;
+        dateofbirth = DOB;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        dateofissue = sdf.format(cal.getTime());
+        
+    }
+
+    public void generatePDF() {
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.open();
+           
+          
+            addContent(document);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void addTitlePage(Document document)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 1);
+        // Lets write a big header
+       
+        document.add(preface);
+        // Start a new page
+        document.newPage();
+    }
+
+    
+    private static void addContent(Document document) throws DocumentException, IOException {
+        Anchor anchor = new Anchor("First Chapter", catFont);
+        Font regular = new Font(FontFamily.HELVETICA, 10);
+      Font bold = new Font(FontFamily.HELVETICA, 10, Font.BOLD);
+
+        PdfPTable table = createTable1();
+        document.add(table);
+        table = createTable1();
+        table.setSpacingBefore(5);
+        table.setSpacingAfter(5);
+               document.close();
+               
+            
+
+    }
+
+    public static PdfPTable createTable1() throws DocumentException, BadElementException, IOException  {
+        
+        
+        PdfPTable table = new PdfPTable(2); //3 columns
+        
+//        table.setWidths(new int[]{1, 1, 1});
+        table.setWidthPercentage(95);
+        PdfPTable table1 = new PdfPTable(2);
+        PdfPTable table2 = new PdfPTable(2);
+        
+        table1.setWidths(new int[]{1, 4});
+        table2.setWidths(new int[]{3, 4});
+        PdfPCell cell;
+        PdfPCell cell1 = new PdfPCell();
+        cell1.setBorderColorRight(BaseColor.WHITE);
+        Image image2 = Image.getInstance("d:\\Newgen\\Server\\resources\\logo2.jpg");
+        //image2.setAbsolutePosition(0, 0);
+        image2.setAlignment(Image.MIDDLE);
+        image2.scaleAbsoluteHeight(20);
+        image2.scaleAbsoluteWidth(10);
+        image2.scalePercent(30);
+        cell1.setPaddingTop(20);
+//        cell1.addElement(new Paragraph("DUPLICATE"));
+        cell1.addElement(image2);
+        
+        Paragraph prcell2 = new Paragraph();
+            Paragraph pr = new Paragraph("      GOVERNMENT OF GUJARAT",FontFactory.getFont(FontFactory.HELVETICA,10, Font.BOLD, BaseColor.BLACK));
+            Paragraph pr23 = new Paragraph("        PERMIT FOR "+type,FontFactory.getFont(FontFactory.HELVETICA,10, Font.BOLD, BaseColor.BLACK));
+            Paragraph pr33 = new Paragraph ("   Authorised by Government Notification E & P  \n Deptt.NO.-GU/2013/37/ELA/11-2012/2401/K,\n dt.22nd APRIL 2013 ",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+////            Paragraph pr44 = new Paragraph ("Permit No.       "+permit_number,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK));
+//            Paragraph pr66 = new Paragraph ("Date of Issue       "+dateofissue ,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK));
+//            Paragraph pr77 = new Paragraph ("Name       "+name ,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK));
+//            Paragraph pr88 = new Paragraph ("Date of Birth       "+dateofbirth,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK));
+//            Paragraph pr99 = new Paragraph ("Duplicate Issue Date       "+ duplicateissuedate,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK));
+//            
+            
+            PdfPCell cell2 = new PdfPCell();
+            PdfPCell cell3 = new PdfPCell(new Paragraph("\n  This permit allows the holder to supervise and carry out electrical    installation work subject to the condiions mentioned in the rules   issued by the Government of gujarat underGovernment notification,   E & P Deptt. No.-GU/2013/37/ELA/11-2012/2401/K,\n dt.22nd APRIL 2013 but  does not allow him to undertake electrical contracting work unless he holds a contractor's licence.\n"
+            +"\n This Permit is to be carried on the holder's person .\n \n \n \n \n \n \n "
+            +"              Secretary                                         President\n"
+            +"          Licensing Board                             Licensing Board\n"
+            +"            Gandhinagar                                  Gandhinagar\n \n \n \n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK)
+            ));
+            
+//            prcell2.add(pr);
+                prcell2.add(pr23);
+                prcell2.add(pr33);
+////            prcell2.add(pr44);
+//            prcell2.add(pr66);
+//            prcell2.add(pr77);
+//            prcell2.add(pr88);
+//            prcell2.add(pr99);
+            
+//private static String permit_number = "PERMIT NUMBER";
+//        private static String dateofissue = "dateofissue";
+//        private static String dateofbirth = "dateofbirth";
+//        private static String duplicateissuedate = "duplicateissuedate";
+
+
+
+            PdfPCell cell4 = new PdfPCell(new Paragraph("Permit Number",FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell5 = new PdfPCell(new Paragraph(permit_number,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell6 = new PdfPCell(new Paragraph("Date of Issue",FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell7 = new PdfPCell(new Paragraph(dateofissue,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell8 = new PdfPCell(new Paragraph("Name",FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell9 = new PdfPCell(new Paragraph(name,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell10 = new PdfPCell(new Paragraph("Date of Birth",FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+            PdfPCell cell11 = new PdfPCell(new Paragraph(dateofbirth,FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK)));
+           
+            
+            cell4.setBorderColor(BaseColor.WHITE);
+            cell5.setBorderColor(BaseColor.WHITE);
+            cell6.setBorderColor(BaseColor.WHITE);
+            cell7.setBorderColor(BaseColor.WHITE);
+            cell8.setBorderColor(BaseColor.WHITE);
+            cell9.setBorderColor(BaseColor.WHITE);
+            cell10.setBorderColor(BaseColor.WHITE);
+            cell11.setBorderColor(BaseColor.WHITE);
+           
+            cell4.setPaddingTop(20);
+            cell5.setPaddingTop(20);
+            
+            
+            table2.addCell(cell4);
+            table2.addCell(cell5);
+            table2.addCell(cell6);
+            table2.addCell(cell7);
+            table2.addCell(cell8);
+            table2.addCell(cell9);
+            table2.addCell(cell10);
+            table2.addCell(cell11);
+            
+            
+            
+//            cell4.addElement(prcell2);
+            
+            cell2.addElement(prcell2);
+            
+            cell2.addElement(table2);
+            cell1.setBorderColor(BaseColor.WHITE);
+            cell2.setBorderColor(BaseColor.WHITE);
+            table1.addCell(cell1);
+            table1.addCell(cell2);
+            table.addCell(table1);
+            
+            table2.addCell(cell4);
+            
+            
+            table.addCell(cell3);
+        return table;
+    }
+
+    
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+}
+    
+    
+

@@ -1,0 +1,1087 @@
+package com.newgen.authorisation;
+
+import com.newgen.common.ElectricalTemplate;
+import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.validator.ValidatorException;
+
+import com.newgen.common.General;
+import com.newgen.common.PicklistListenerHandler;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.component.PickList;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.event.ComponentEvent;
+import com.newgen.omniforms.event.FormEvent;
+import com.newgen.omniforms.excp.CustomExceptionHandler;
+import com.newgen.omniforms.listener.FormListener;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.awt.windows.WBufferStrategy;
+
+public class AuthorisationHead implements FormListener {
+
+    //FormReference objFormReference = null; //FormContext.getCurrentInstance().getFormReference();
+    FormReference formObject = null;
+    FormConfig formConfig = null;
+    String activityName = null;
+    String engineName = null;
+    String designation = null;
+    String dropvalue2 = null;
+    String sessionId = null;
+    String folderId = null;
+    String serverUrl = null;
+    String processInstanceId = null;
+    String workItemId = null;
+    String userName = null;
+    String processDefId = null;
+    String Query = null;
+    String Query1 = null;
+    String bussinessAdd = null;
+    String auth_isu_certi = null;
+    String reg_ele_cont_lic = null;
+    String erec_mainte_lif_esca = null;
+    String asign = null;
+    String fullname = null;
+    String assignto = null;
+    String typeOfAgencies = null;
+    String file_status = null;
+    String dropvalue1 = null;
+    String auth_no = null;
+    String place = null;
+    String q_prevs_stage = null;
+    String ch = null;
+    List< List< String>> result;
+    PickList objPicklist;
+    General objGeneral = null;
+    String SelfCheck = null;
+    HashSet<String> set = new HashSet<String>();
+String a ;
+    ArrayList<String> list = new ArrayList<String>();
+    /* public Head(FormReference formObject) {
+     super();
+     System.out.println("In COnstructor");
+     this.formObject = formObject;
+     } */
+
+    @Override
+    public void continueExecution(String arg0, HashMap< String, String> arg1) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void eventDispatched(ComponentEvent pEvent) throws ValidatorException {
+        // TODO Auto-generated method stub
+        System.out.println("Value Change Event :" + pEvent);
+        System.out.println("pEvent.getType() :" + pEvent.getType());
+        System.out.println("pEvent.getType().name() :" + pEvent.getType().name());
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        objGeneral = new General();
+        if (pEvent.getType().name().equalsIgnoreCase("VALUE_CHANGED")) {
+
+            // q_prevs_stage = formObject.getNGValue("q_prevs_stage");
+            //  code for language selection
+//                  document.close();
+//                    // Read file code 
+//   
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            
+//                 HashMap<Integer,String> hm=new HashMap<Integer,String>();  // not nullable HashMap
+//throw new Vali", hm ));
+//               datorException( new CustomExceptionHandler( "Error Message", file_noforcertificate,
+//"MOUSE_CLICKED", hm ));
+//                
+//            }   if (pEvent.getSource().getName().equalsIgnoreCase("excemptioncertificate")) {
+//                try {
+//                    System.out.println("coming here-----inside new button");
+//                    Document document = new Document();
+//                    PdfWriter.getInstance(document, new FileOutputStream("D:\\Newgen\\Server\\Certificate\\" + file_noforcertificate + ".pdf"));
+//                    document.open();
+//                    temp.addContent(document);
+//                    document.close();
+//                    // Read file code
+//   
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            
+//                 HashMap<Integer,String> hm=new HashMap<Integer,String>();  // not nullable HashMap
+//throw new ValidatorException( new CustomExceptionHandler( "Error Message", file_noforcertificate,
+//"MOUSE_CLICKED", hm ));
+//                
+//            }
+//      
+            if (pEvent.getSource().getName().equalsIgnoreCase("Combo2")) {
+                System.out.println("Lang Select Started");
+                String lang_type = formObject.getNGValue("combo2");
+                System.out.println("lang select value :" + lang_type);
+                if (lang_type.equalsIgnoreCase("English")) {
+                    formObject.setTop("Frame123", 1100);
+                    formObject.setCaption("Label18", "Chief Electrical Inspector");
+                    formObject.setCaption("Label19", "AND");
+                    formObject.setCaption("Label20", "Collector Electricity Duty");
+                    formObject.setCaption("Label21", "Energy and Petrochemical Department, Government of Gujarat");
+                    formObject.setCaption("Label144", "Agency apply for authorisation");
+
+                    formObject.setCaption("Label1", "File No.");
+                    formObject.setCaption("Label2", "Assigned To");
+                    formObject.setCaption("Label3", "File Status");
+
+//form 13.1
+                    formObject.setCaption("Label4", "1. Full name of the applicant");
+                    formObject.setCaption("Label5", "3. Bussiness Address");
+                    formObject.setCaption("Frame14", "2. Legal status");
+                    formObject.setCaption("Label112", "2.1. Individual firm or Company");
+                    formObject.setCaption("Label113", "2.2. Registration No.");
+                    formObject.setCaption("Frame6", "2.3. Name  of Partner or Directors");
+                    formObject.setCaption("Label6", "4. Weather certificate of authorization was issued in the past in the same name. If so, give number and date of certification of authorization.");
+                    formObject.setCaption("Label7", "5. Particulars relating to erection or maintenance of lifts/ escalators. Details of lifts/ escalators erected or maintenance to be furnished.");
+                    formObject.setCaption("Label10", "6. Registration Number of electrical contractor's licence.");
+                    formObject.setCaption("Label8", "7. Whether solvency certificate is attached.");
+                    formObject.setCaption("viewSolvencyCertificate", "View");
+                    formObject.setCaption("validSolvencyCertificate", "Valid");
+                    formObject.setCaption("Label9", "8. Details of entire staff employed.");
+                    formObject.setCaption("Label11", "9. Details of workshop with machineries.");
+                    formObject.setCaption("Label12", "10. Details of testing instruments.");
+                    formObject.setCaption("Label13", "11. Details of safety gadgets/ tools.");
+                    formObject.setCaption("Label14", "12. Details of facilities of vehicles.");
+                    formObject.setCaption("Label15", "13. Details of payment of fees (Challan to be attached)");
+                    formObject.setCaption("Label150", "View");
+                    formObject.setCaption("CheckBox2", "Valid");
+                    formObject.setCaption("Label16", "14. Remarks");
+                    formObject.setCaption("Label22", "I/ We hereby declare that the particulars stated above are correct to the best of my/ our knowledge.");
+                    formObject.setCaption("Label23", "Place");
+                    formObject.setCaption("Label27", "Date");
+                    formObject.setCaption("Label114", "Name");
+                    formObject.setCaption("Label117", "Designation");
+                    formObject.setCaption("Label24", "a.");
+                    formObject.setCaption("Label25", "b.");
+                    formObject.setCaption("Label26", "c.");
+                    formObject.setCaption("Label28", "d.");
+                    formObject.setCaption("Label80", "e.");
+                    formObject.setCaption("Label81", "f.");
+                    formObject.setCaption("Label115", "g.");
+                    formObject.setCaption("Label116", "h.");
+
+//13.2 form
+                    formObject.setCaption("Label29", "Certificate of authorization for erection and maintenance of lifts.");
+                    formObject.setCaption("Label30", "(This certificate is to be renewed annually and must be returned to the Chief Inspector at the appropriate time)");
+                    formObject.setCaption("Label118", "Authorization No.");
+                    formObject.setCaption("Label31", "Shri/Messers");
+                    formObject.setCaption("Label32", "is/are hereby  authorized to carry out the erection and maintenance of lifts within the State of Gujarat. This certificate of authorization is issued subject to compliance with the conditions set on the reverse.");
+                    formObject.setCaption("Label103", "Date");
+                    formObject.setCaption("Label64", "Chief Inspector of Lifts and Escalators,");
+                    formObject.setCaption("Label88", "Gujarat State ,");
+                    formObject.setCaption("Label91", "Gandhinagar .");
+                    formObject.setCaption("Label33", "Authorization valid upto the date");
+                    formObject.setCaption("Label57", "Initial of Chief Inspector of Lifts and Escalators");
+
+//13.3 form
+                    formObject.setCaption("Label35", "Certification of authorization of person for erection and maintenance of escalators.");
+                    formObject.setCaption("Label37", "(This certificate is to be renewed annually and must be returned to the Chief Inspector at the appropriate time)");
+                    formObject.setCaption("Label119", "Authorization No.");
+                    formObject.setCaption("Label63", "Shri/Messers");
+                    formObject.setCaption("Label120", "is/are hereby  authorized to carry out the erection and maintenance of escalators within the State of Gujarat. This certificate of authorization is issued subject to compliance with the conditions set on the reverse.");
+                    formObject.setCaption("Label40", "Date");
+                    formObject.setCaption("Label36", "Chief Inspector of Lifts and Escalators,");
+                    formObject.setCaption("Label38", "Gujarat State ,");
+                    formObject.setCaption("Label39", "Gandhinagar .");
+                    formObject.setCaption("Label41", "Authorization valid upto the date");
+                    formObject.setCaption("Label42", "Initial of Chief Inspector of Lifts and Escalators");
+
+//14.1 form
+                    formObject.setCaption("Label17", "1. Full name of the applicant");
+                    formObject.setCaption("Label34", "3. Bussiness Address");
+                    formObject.setCaption("Frame8", "2. Legal status");
+                    formObject.setCaption("Label45", "2.1. Individual firm or Company");
+                    formObject.setCaption("Label46", "2.2. Registration No.");
+                    formObject.setCaption("Frame10", "2.3. Name  of Partner or Directors");
+                    formObject.setCaption("Label43", "4. Weather certificate of authorization was issued in the past in the same name. If so, give number and date of certification of authorization.");
+                    formObject.setCaption("Label55", "5. Particulars relating to maintenance of lifts/ escalators. Details of lifts/ escalators  maintained to be furnished.");
+                    formObject.setCaption("Label44", "6. Registration Number of electrical contractor's licence.");
+                    formObject.setCaption("Label56", "7. Whether solvency certificate is attached.");
+                    formObject.setCaption("Label151", "View");
+                    formObject.setCaption("CheckBox3", "Valid");
+                    formObject.setCaption("Label58", "8. Details of entire staff employed.");
+                    formObject.setCaption("Label59", "9. Details of workshop with machineries.");
+                    formObject.setCaption("Label60", "10. Details of testing instruments.");
+                    formObject.setCaption("Label61", "11. Details of safety gadgets/ tools.");
+                    formObject.setCaption("Label62", "12. Details of facilities of vehicles.");
+                    formObject.setCaption("Label65", "13. Details of payment of fees (Challan to be attached)");
+                    formObject.setCaption("Label152", "View");
+                    formObject.setCaption("CheckBox4", "Valid");
+                    formObject.setCaption("Label66", "14. Remarks");
+                    formObject.setCaption("Label67", "I/ We hereby declare that the particulars stated above are correct to the best of my/ our knowledge.");
+                    formObject.setCaption("Label68", "Place");
+                    formObject.setCaption("Label69", "Date");
+                    formObject.setCaption("Label70", "Name");
+                    formObject.setCaption("Label71", "Designation");
+
+//14.2 form
+                    formObject.setCaption("Label72", "Certificate of authorization for maintenance of lifts.");
+                    formObject.setCaption("Label73", "(This certificate is to be renewed annually and must be returned to the Chief Inspector at the appropriate time)");
+                    formObject.setCaption("Label79", "Authorization No.");
+                    formObject.setCaption("Label74", "Shri/Messers");
+                    formObject.setCaption("Label82", "is/are hereby  authorized to carry out the erection and maintenance of lifts within the State of Gujarat. This certificate of authorization is issued subject to compliance with the conditions set on the reverse.");
+                    formObject.setCaption("Label78", "Date");
+                    formObject.setCaption("Label75", "Chief Inspector of Lifts and Escalators,");
+                    formObject.setCaption("Label76", "Gujarat State ,");
+                    formObject.setCaption("Label77", "Gandhinagar .");
+                    formObject.setCaption("Label83", "Authorization valid upto the date");
+                    formObject.setCaption("Label84", "Initial of Chief Inspector of Lifts and Escalators");
+
+//14.3 form    
+                    formObject.setCaption("Label85", "Certificate of authorization for maintenance of escalators.");
+                    formObject.setCaption("Label86", "(This certificate is to be renewed annually and must be returned to the Chief Inspector at the appropriate time)");
+                    formObject.setCaption("Label89", "Authorization No.");
+                    formObject.setCaption("Label87", "Shri/Messers");
+                    formObject.setCaption("Label90", "is/are hereby  authorized to carry out the erection and maintenance of escalators within the State of Gujarat. This certificate of authorization is issued subject to compliance with the conditions set on the reverse.");
+                    formObject.setCaption("Label95", "Date");
+                    formObject.setCaption("Label92", "Chief Inspector of Lifts and Escalators,");
+                    formObject.setCaption("Label93", "Gujarat State ,");
+                    formObject.setCaption("Label94", "Gandhinagar .");
+                    formObject.setCaption("Label96", "Authorization valid upto the date");
+                    formObject.setCaption("Label97", "Initial of Chief Inspector of Lifts and Escalators");
+
+                    //15.1 form    
+                    formObject.setCaption("Label98", "1. Full name of the applicant");
+                    formObject.setCaption("Frame83", "2. Legal status");
+                    formObject.setCaption("Label102", "2.1. Individual firm or Company");
+                    formObject.setCaption("Label104", "2.2. Registration No.");
+                    formObject.setCaption("Frame84", "2.3. Name  of Partner or Directors and Address");
+                    formObject.setCaption("Label99", "3. Office Address");
+                    formObject.setCaption("Label125", "3.1 Phone No.");
+                    formObject.setCaption("Label100", "4. Weather certificate of authorization was issued in the past in the same name. If so, give number and date of certification of authorization.");
+                    formObject.setCaption("Label109", "5. Details of technical qualifications and experience.(Attested copies to be attached).");
+                    formObject.setCaption("Label101", "6. Details of technical and ministerial staff employed.");
+                    formObject.setCaption("Label110", "7.Details of payment of fees (Challan to be attached).");
+                    formObject.setCaption("Label111", "I/ We hereby declare that the particulars stated above are correct to the best of my/ our knowledge.");
+                    formObject.setCaption("Label121", "Place");
+                    formObject.setCaption("Label123", "Name");
+                    formObject.setCaption("Label122", "Date");
+                    formObject.setCaption("Label124", "Designation");
+
+//15.2 form
+                    formObject.setCaption("Label126", "Certificate of authorization for carring out periodical inspection and testing of Lifts.");
+                    formObject.setCaption("Label127", "(This certificate is to be renewed annually and must be returned to the Chief Inspector at the appropriate time)");
+                    formObject.setCaption("Label133", "Authorization No.");
+                    formObject.setCaption("Label128", "Shri/Messers");
+                    formObject.setCaption("Label134", "is/are hereby authorized to carry out the periodical inspection and testing of the lifts within the State of Gujarat. This certificate of authorization is issued subject to compliance set on the reverse. ");
+                    formObject.setCaption("Label132", "Date");
+                    formObject.setCaption("Label129", "Chief Inspector of Lifts and Escalators,");
+                    formObject.setCaption("Label130", "Gujarat State ,");
+                    formObject.setCaption("Label131", "Gandhinagar .");
+                    formObject.setCaption("Label135", "Authorization valid upto the date");
+                    formObject.setCaption("Label136", "Initial of Chief Inspector of Lifts and Escalators");
+
+//15.3 form    
+                    formObject.setCaption("Label137", "Certificate of authorization for carrying out periodical inspection and testing of escalators.");
+                    formObject.setCaption("Label138", "(This certificate is to be renewed annually and must be returned to the Chief Inspector at the appropriate time)");
+                    formObject.setCaption("Label140", "Authorization No.");
+                    formObject.setCaption("Label139", "Shri/Messers");
+                    formObject.setCaption("Label141", "is/are hereby  authorized to carry out the erection and maintenance of escalators within the State of Gujarat. This certificate of authorization is issued subject to compliance with the conditions set on the reverse.");
+                    formObject.setCaption("Label146", "Date");
+                    formObject.setCaption("Label142", "Chief Inspector of Lifts and Escalators,");
+                    formObject.setCaption("Label143", "Gujarat State ,");
+                    formObject.setCaption("Label145", "Gandhinagar .");
+                    formObject.setCaption("Label147", "Authorization valid upto the date");
+                    formObject.setCaption("Label148", "Initial of Chief Inspector of Lifts and Escalators");
+
+                }
+                if (lang_type.equalsIgnoreCase("Gujarati")) {
+
+                    formObject.setTop("Frame123", 1168);
+                    formObject.setCaption("Label18", "ચીફ ઇલેક્ટ્રીકલ ઇન્સ્પેક્ટર");
+                    formObject.setCaption("Label19", "અને");
+                    formObject.setCaption("Label20", "કલેકટર ઇલેક્ટ્રિસીટી ડ્યુટી");
+                    formObject.setCaption("Label21", "એનર્જી એન્ડ પેટ્રોકેમિકલ ડિપાર્ટમેન્ટ, ગુજરાત સરકાર");
+                    formObject.setCaption("Label144", "એજન્સી અધિકૃતિ માટે અરજી કરે છે");
+
+                    formObject.setCaption("Label1", "ફાઇલ નં.");
+                    formObject.setCaption("Label2", "આના પર સોંપેલ");
+                    formObject.setCaption("Label3", "ફાઇલ સ્થિતિ");
+
+//13.1 form
+                    formObject.setCaption("Label4", "અરજદાર નું પૂરું નામ (સંસ્થા)");
+                    formObject.setCaption("Label5", "3. વ્યવસાયનું સરનામું");
+                    formObject.setCaption("Frame14", "2. કાનૂની સ્થિતિ");
+                    formObject.setCaption("Label112", "2.1. વ્યક્તિગત પેઢી અથવા કંપની");
+                    formObject.setCaption("Label113", "2.2. નોંધણી નં.");
+                    formObject.setCaption("Frame6", "2.3. ભાગીદારનું નામ અથવા ડિરેક્ટર્સ");
+                    formObject.setCaption("Label6", "4. અધિકૃતિનું હવામાન પ્રમાણપત્ર ભૂતકાળમાં સમાન નામમાં જારી કરવામાં આવ્યું હતું. જો એમ હોય તો, અધિકૃતતાની પ્રમાણપત્રની સંખ્યા અને તારીખ આપો.");
+                    formObject.setCaption("Label7", "5. લિફ્ટ્સ / એસ્કેલેટરના ઉત્થાન અથવા જાળવણીને લગતી વિગતો. લિફ્ટ્સ / એસ્કેલેટર્સની વિગત ઉભી કરવી અથવા જાળવણી કરવી.");
+                    formObject.setCaption("Label10", "6. ઇલેક્ટ્રિકલ કોન્ટ્રાક્ટરના લાયસન્સની નોંધણી નંબર.");
+                    formObject.setCaption("Label8", "7. સોલવેન્સીનું પ્રમાણપત્ર શામેલ છે.");
+                    formObject.setCaption("viewSolvencyCertificate", "જુઓ");
+                    formObject.setCaption("validSolvencyCertificate", "માન્ય");
+                    formObject.setCaption("Label9", "8. કાર્યરત સમગ્ર કર્મચારીઓની વિગતો.");
+                    formObject.setCaption("Label11", "9. મશીનરી સાથે વર્કશોપની વિગતો.");
+                    formObject.setCaption("Label12", "10. પરીક્ષણ સાધનોની વિગતો");
+                    formObject.setCaption("Label13", "11. સુરક્ષા ગેજેટ્સ / સાધનોની વિગતો.");
+                    formObject.setCaption("Label14", "12. વાહનોની સુવિધાઓની વિગતો.");
+                    formObject.setCaption("Label15", "13. ફી ચુકવણી વિગતો (જોડાયેલ ચલણ)");
+                    formObject.setCaption("Label150", "જુઓ");
+                    formObject.setCaption("CheckBox2", "માન્ય");
+                    formObject.setCaption("Label16", "14. રીમાર્કસ");
+                    formObject.setCaption("Label22", "હું / અમે આ મુજબ જાહેર કર્યું છે કે ઉપર જણાવેલ વિગતો મારા / અમારા જ્ઞાનના શ્રેષ્ઠ છે.");
+                    formObject.setCaption("Label23", "પ્લેસ");
+                    formObject.setCaption("Label27", "તારીખ");
+                    formObject.setCaption("Label114", "નામ");
+                    formObject.setCaption("Label117", "હોદ્દો");
+                    formObject.setCaption("Label24", "એ.");
+                    formObject.setCaption("Label25", "બી.");
+                    formObject.setCaption("Label26", "સી.");
+                    formObject.setCaption("Label28", "ડી.");
+                    formObject.setCaption("Label80", "ઈ.");
+                    formObject.setCaption("Label81", "એફ.");
+                    formObject.setCaption("Label115", "જી.");
+                    formObject.setCaption("Label116", "એચ.");
+
+// 13.2
+                    formObject.setCaption("Label29", "લિફ્ટ્સની ઉત્થાન અને જાળવણી માટે અધિકૃત પ્રમાણપત્ર.");
+                    formObject.setCaption("Label30", "(આ પ્રમાણપત્ર વાર્ષિક ધોરણે રિન્યૂ કરવામાં આવે છે અને યોગ્ય સમયે મુખ્ય નિરીક્ષકને પરત ફરવું આવશ્યક છે)");
+                    formObject.setCaption("Label118", "અધિકૃતતા નંબર");
+                    formObject.setCaption("Label31", "શ્રી / મેસર્સ");
+                    formObject.setCaption("Label32", "ગુજરાત રાજ્યમાં લિફ્ટ્સનું નિર્માણ અને જાળવણી હાથ ધરવા માટે અધિકૃત છે. અધિકૃતિનું આ પ્રમાણપત્ર રિવર્સ પર સેટ કરેલી શરતો સાથે પાલન કરવાને પાત્ર છે.");
+                    formObject.setCaption("Label103", "તારીખ");
+                    formObject.setCaption("Label64", "લિફ્ટ્સ અને એસ્કેલેટર્સના ચીફ ઇન્સ્પેક્ટર,");
+                    formObject.setCaption("Label88", "ગુજરાત રાજ્ય,");
+                    formObject.setCaption("Label91", "ગાંધીનગર");
+                    formObject.setCaption("Label33", "અધિકૃતતા તારીખ સુધી માન્ય");
+                    formObject.setCaption("Label57", "લિફ્ટ્સ અને એસ્કેલેટર્સના મુખ્ય નિરીક્ષકની શરૂઆત");
+
+//13.3
+                    formObject.setCaption("Label35", "એસ્કેલેટરના નિર્માણ અને જાળવણી માટે વ્યક્તિનું અધિકૃતકરણનું પ્રમાણીકરણ.");
+                    formObject.setCaption("Label37", "(આ પ્રમાણપત્ર વાર્ષિક ધોરણે રિન્યૂ કરવામાં આવે છે અને યોગ્ય સમયે મુખ્ય નિરીક્ષકને પરત ફરવું જ જોઈએ) \"");
+                    formObject.setCaption("Label119", "અધિકૃતતા નંબર");
+                    formObject.setCaption("Label63", "શ્રી / મેસર્સ");
+                    formObject.setCaption("Label120", "ગુજરાત રાજ્યમાં એસ્કેલેટર્સના નિર્માણ અને જાળવણીને અમલમાં મૂકવા માટે અધિકૃત છે. અધિકૃતિનું આ પ્રમાણપત્ર રિવર્સ પર સેટ કરેલી શરતો સાથે પાલન કરવાને પાત્ર છે.");
+                    formObject.setCaption("Label40", "તારીખ");
+                    formObject.setCaption("Label36", "લિફ્ટ્સ અને એસ્કેલેટર્સના ચીફ ઇન્સ્પેક્ટર,");
+                    formObject.setCaption("Label38", "ગુજરાત રાજ્ય,");
+                    formObject.setCaption("Label39", "ગાંધીનગર .");
+                    formObject.setCaption("Label41", "અધિકૃતતા તારીખ સુધી માન્ય");
+                    formObject.setCaption("Label42", "લિફ્ટ્સ અને એસ્કેલેટર્સના મુખ્ય નિરીક્ષકની શરૂઆત");
+
+//form 14.1
+                    formObject.setCaption("Label17", "અરજદાર નું પૂરું નામ (સંસ્થા)");
+                    formObject.setCaption("Label34", "3. વ્યવસાયનું સરનામું");
+                    formObject.setCaption("Frame8", "2. કાનૂની સ્થિતિ");
+                    formObject.setCaption("Label45", "2.1. વ્યક્તિગત પેઢી અથવા કંપની");
+                    formObject.setCaption("Label46", "2.2. નોંધણી નં.");
+                    formObject.setCaption("Frame10", "2.3. ભાગીદારનું નામ અથવા ડિરેક્ટર્સ");
+                    formObject.setCaption("Label43", "4. અધિકૃતિનું હવામાન પ્રમાણપત્ર ભૂતકાળમાં સમાન નામમાં જારી કરવામાં આવ્યું હતું. જો એમ હોય તો, અધિકૃતતાની પ્રમાણપત્રની સંખ્યા અને તારીખ આપો.");
+                    formObject.setCaption("Label55", "5. લિફ્ટ્સ / એસ્કેલેટરના જાળવણીને લગતી વિગતો. લિફ્ટ્સ / એસ્કેલેટર્સની વિગતો ફર્નિચર કરવામાં આવશે.");
+                    formObject.setCaption("Label44", "6. ઇલેક્ટ્રિકલ કોન્ટ્રાક્ટરના લાયસન્સની નોંધણી નંબર.");
+                    formObject.setCaption("Label56", "7. સોલવેન્સીનું પ્રમાણપત્ર શામેલ છે.");
+                    formObject.setCaption("Label151", "જુઓ");
+                    formObject.setCaption("CheckBox3", "માન્ય");
+                    formObject.setCaption("Label58", "8. કાર્યરત સમગ્ર કર્મચારીઓની વિગતો.");
+                    formObject.setCaption("Label59", "9. મશીનરી સાથે વર્કશોપની વિગતો.");
+                    formObject.setCaption("Label60", "10. પરીક્ષણ સાધનોની વિગતો");
+                    formObject.setCaption("Label61", "11. સુરક્ષા ગેજેટ્સ / સાધનોની વિગતો.");
+                    formObject.setCaption("Label62", "12. વાહનોની સુવિધાઓની વિગતો.");
+                    formObject.setCaption("Label65", "13. ફી ચુકવણી વિગતો (જોડાયેલ ચલણ)");
+                    formObject.setCaption("Label152", "જુઓ");
+                    formObject.setCaption("CheckBox4", "માન્ય");
+                    formObject.setCaption("Label66", "14. રીમાર્કસ");
+                    formObject.setCaption("Label67", "હું / અમે આ મુજબ જાહેર કર્યું છે કે ઉપર જણાવેલ વિગતો મારા / અમારા જ્ઞાનના શ્રેષ્ઠ છે.");
+                    formObject.setCaption("Label68", "પ્લેસ");
+                    formObject.setCaption("Label69", "તારીખ");
+                    formObject.setCaption("Label70", "નામ");
+                    formObject.setCaption("Label71", "હોદ્દો");
+
+// 14.2
+                    formObject.setCaption("Label72", "લિફ્ટ્સની જાળવણી માટે અધિકૃતનું પ્રમાણપત્ર.");
+                    formObject.setCaption("Label73", "(આ પ્રમાણપત્ર વાર્ષિક ધોરણે રિન્યૂ કરવામાં આવે છે અને યોગ્ય સમયે મુખ્ય નિરીક્ષકને પરત ફરવું આવશ્યક છે)");
+                    formObject.setCaption("Label79", "અધિકૃતતા નંબર");
+                    formObject.setCaption("Label74", "શ્રી / મેસર્સ");
+                    formObject.setCaption("Label82", "ગુજરાત રાજ્યમાં લિફ્ટ્સનું નિર્માણ અને જાળવણી હાથ ધરવા માટે અધિકૃત છે. અધિકૃતિનું આ પ્રમાણપત્ર રિવર્સ પર સેટ કરેલી શરતો સાથે પાલન કરવાને પાત્ર છે.");
+                    formObject.setCaption("Label78", "તારીખ");
+                    formObject.setCaption("Label75", "લિફ્ટ્સ અને એસ્કેલેટર્સના ચીફ ઇન્સ્પેક્ટર,");
+                    formObject.setCaption("Label76", "ગુજરાત રાજ્ય,");
+                    formObject.setCaption("Label77", "ગાંધીનગર");
+                    formObject.setCaption("Label83", "અધિકૃતતા તારીખ સુધી માન્ય");
+                    formObject.setCaption("Label84", "લિફ્ટ્સ અને એસ્કેલેટર્સના મુખ્ય નિરીક્ષકની શરૂઆત");
+//14.3
+                    formObject.setCaption("Label85", "એસ્કેલેટર્સના જાળવણી માટે અધિકૃત પ્રમાણપત્ર.");
+                    formObject.setCaption("Label86", "(આ પ્રમાણપત્ર વાર્ષિક ધોરણે રિન્યૂ કરવામાં આવે છે અને યોગ્ય સમયે મુખ્ય નિરીક્ષકને પરત ફરવું જ જોઈએ) \"");
+                    formObject.setCaption("Label89", "અધિકૃતતા નંબર");
+                    formObject.setCaption("Label87", "શ્રી / મેસર્સ");
+                    formObject.setCaption("Label90", "ગુજરાત રાજ્યમાં એસ્કેલેટર્સના નિર્માણ અને જાળવણીને અમલમાં મૂકવા માટે અધિકૃત છે. અધિકૃતિનું આ પ્રમાણપત્ર રિવર્સ પર સેટ કરેલી શરતો સાથે પાલન કરવાને પાત્ર છે.");
+                    formObject.setCaption("Label95", "તારીખ");
+                    formObject.setCaption("Label92", "લિફ્ટ્સ અને એસ્કેલેટર્સના ચીફ ઇન્સ્પેક્ટર,");
+                    formObject.setCaption("Label93", "ગુજરાત રાજ્ય,");
+                    formObject.setCaption("Label94", "ગાંધીનગર .");
+                    formObject.setCaption("Label96", "અધિકૃતતા તારીખ સુધી માન્ય");
+                    formObject.setCaption("Label97", "લિફ્ટ્સ અને એસ્કેલેટર્સના મુખ્ય નિરીક્ષકની શરૂઆત");
+
+                    //15.1 form    
+                    formObject.setCaption("Label98", "1. અરજદારનું સંપૂર્ણ નામ");
+                    formObject.setCaption("Frame83", "2. કાનૂની સ્થિતિ");
+                    formObject.setCaption("Label102", "2.1. વ્યક્તિગત પેઢી અથવા કંપની");
+                    formObject.setCaption("Label104", "2.2. નોંધણી નં.");
+                    formObject.setCaption("Frame84", "2.3. ભાગીદારનું નામ અથવા ડિરેક્ટર્સ અને સરનામું");
+                    formObject.setCaption("Label99", "3. ઓફિસ સરનામું");
+                    formObject.setCaption("Label125", "3.1 ફોન નંબર");
+                    formObject.setCaption("Label100", "4. અધિકૃતિનું હવામાન પ્રમાણપત્ર ભૂતકાળમાં સમાન નામમાં જારી કરવામાં આવ્યું હતું. જો એમ હોય તો, અધિકૃતતાની પ્રમાણપત્રની સંખ્યા અને તારીખ આપો.");
+                    formObject.setCaption("Label109", "5. તકનીકી લાયકાતો અને અનુભવની વિગત. (જોડાયેલ સાક્ષીઓની નકલ)");
+                    formObject.setCaption("Label101", "6. કાર્યરત ટેકનિકલ અને મંત્રી કર્મચારીની વિગતો.");
+                    formObject.setCaption("Label110", "7. ફી ચુકવણી વિગતો (જોડાયેલ ચલણ).");
+                    formObject.setCaption("Label111", "હું / અમે આ મુજબ જાહેર કર્યું છે કે ઉપર જણાવેલ વિગતો મારા / અમારા જ્ઞાનના શ્રેષ્ઠ છે.");
+                    formObject.setCaption("Label121", "પ્લેસ");
+                    formObject.setCaption("Label123", "નામ");
+                    formObject.setCaption("Label122", "તારીખ");
+                    formObject.setCaption("Label124", "હોદ્દો");
+
+//15.2 form
+                    formObject.setCaption("Label126", "લિફ્ટ્સની સામયિક નિરીક્ષણ અને પરીક્ષણ માટે અધિકૃતનું પ્રમાણપત્ર.");
+                    formObject.setCaption("Label127", "(આ સર્ટિફિકેટ વાર્ષિક ધોરણે રિન્યૂ કરવામાં આવે છે અને યોગ્ય સમયે મુખ્ય નિરીક્ષકને પાછું આપવું આવશ્યક છે)");
+                    formObject.setCaption("Label133", "અધિકૃતતા નંબર");
+                    formObject.setCaption("Label128", "શ્રી / મેસર્સ");
+                    formObject.setCaption("Label134", "ગુજરાત રાજ્યની અંદરની લિફ્ટ્સની સામયિક નિરીક્ષણ અને પરીક્ષણ હાથ ધરવા માટે અધિકૃત છે. અધિકૃતિનું આ પ્રમાણપત્ર રિવર્સ ઉપર સેટ કરેલ પાલનને આધારે જારી કરવામાં આવે છે.");
+                    formObject.setCaption("Label132", "તારીખ");
+                    formObject.setCaption("Label129", "લિફ્ટ્સ અને એસ્કેલેટર્સના ચીફ ઇન્સ્પેક્ટર,");
+                    formObject.setCaption("Label130", "ગુજરાત રાજ્ય,");
+                    formObject.setCaption("Label131", "ગાંધીનગર");
+                    formObject.setCaption("Label135", "અધિકૃતતા તારીખ સુધી માન્ય");
+                    formObject.setCaption("Label136", "લિફ્ટ્સ અને એસ્કેલેટર્સના મુખ્ય નિરીક્ષકની શરૂઆત");
+
+//15.3 form    
+                    formObject.setCaption("Label137", "એસ્કેલેટર્સની સામયિક નિરીક્ષણ અને પરીક્ષણ માટે અધિકૃતનું પ્રમાણપત્ર.");
+                    formObject.setCaption("Label138", "(આ સર્ટિફિકેટ વાર્ષિક ધોરણે રિન્યૂ કરવામાં આવે છે અને યોગ્ય સમયે મુખ્ય નિરીક્ષકને પાછું આપવું આવશ્યક છે)");
+                    formObject.setCaption("Label140", "અધિકૃતતા નંબર");
+                    formObject.setCaption("Label139", "શ્રી / મેસર્સ");
+                    formObject.setCaption("Label141", "ગુજરાત રાજ્યમાં એસ્કેલેટર્સના નિર્માણ અને જાળવણીને અમલમાં મૂકવા માટે અધિકૃત છે. અધિકૃતિનું આ પ્રમાણપત્ર રિવર્સ પર સેટ કરેલી શરતો સાથે પાલન કરવાને પાત્ર છે.");
+                    formObject.setCaption("Label146", "તારીખ");
+                    formObject.setCaption("Label142", "લિફ્ટ્સ અને એસ્કેલેટર્સના ચીફ ઇન્સ્પેક્ટર,");
+                    formObject.setCaption("Label143", "ગુજરાત રાજ્ય,");
+                    formObject.setCaption("Label145", "ગાંધીનગર");
+                    formObject.setCaption("Label147", "અધિકૃતતા તારીખ સુધી માન્ય");
+                    formObject.setCaption("Label148", "લિફ્ટ્સ અને એસ્કેલેટર્સના મુખ્ય નિરીક્ષકની શરૂઆત");
+
+                }
+            }
+            //Start for full name copy code 
+            if (pEvent.getSource().getName().equalsIgnoreCase("fullname_13_14_15")) {
+                fullname = formObject.getNGValue("fullname_13_14_15");
+                formObject.setNGValue("Text50", fullname);
+                formObject.setNGValue("Text13", fullname);
+                formObject.setNGValue("Text58", fullname);
+                formObject.setNGValue("Text64", fullname);
+                formObject.setNGValue("Text78", fullname);
+                formObject.setNGValue("Text12", fullname);
+                formObject.setNGValue("Text14", fullname);
+                formObject.setNGValue("Text60", fullname);
+                formObject.setNGValue("Text62", fullname);
+                formObject.setNGValue("Text80", fullname);
+                formObject.setNGValue("Text82", fullname);
+            }
+   //end
+
+            // Authorizatiom No. Copy Code
+            if (pEvent.getSource().getName().equalsIgnoreCase("auth_no_131415_23")) {
+                auth_no = formObject.getNGValue("auth_no_131415_23");
+                formObject.setNGValue("Text61", auth_no);
+                formObject.setNGValue("Text63", auth_no);
+                formObject.setNGValue("Text81", auth_no);
+                formObject.setNGValue("Text53", auth_no);
+                formObject.setNGValue("Text83", auth_no);
+            }
+   //End Authorization No Code
+
+            //Place copy code
+            if (pEvent.getSource().getName().equalsIgnoreCase("place_131415_1")) {
+                place = formObject.getNGValue("place_131415_1");
+                formObject.setNGValue("Text56", place);
+                formObject.setNGValue("Text76", place);
+            }
+   //end place code
+
+            //Start Designation Copy Code
+            if (pEvent.getSource().getName().equalsIgnoreCase("design_131415_1")) {
+                designation = formObject.getNGValue("design_131415_1");
+                formObject.setNGValue("Text59", designation);
+                formObject.setNGValue("Text79", designation);
+            }
+            //End Designation Copy Code
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("auth_certi_issu_131415_1")) {
+                auth_isu_certi = formObject.getNGValue("auth_certi_issu_131415_1");
+                formObject.setNGValue("Text25", auth_isu_certi);
+                formObject.setNGValue("Text71", auth_isu_certi);
+            }
+            if (pEvent.getSource().getName().equalsIgnoreCase("")) {
+                erec_mainte_lif_esca = formObject.getNGValue("erec_mainte_lif_esca_1314_1");
+                formObject.setNGValue("Text26", erec_mainte_lif_esca);
+            }
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("reg_ele_cont_lic_1314_1")) {
+                reg_ele_cont_lic = formObject.getNGValue("reg_ele_cont_lic_1314_1");
+                formObject.setNGValue("Text28", reg_ele_cont_lic);
+            }
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("file_status")) {
+
+                file_status = formObject.getNGValue("file_status");
+                System.out.println("status values-------------->" + file_status);
+                if (activityName.equalsIgnoreCase("StartEvent1")) {
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_auth_details where roletype = 'JEI_AEI'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("----Select----")) {
+                        formObject.addItem("assignto", "");
+                    }
+                }
+                if (activityName.equalsIgnoreCase("JEI_AEI")) {
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_auth_details where roletype = 'DYCEI'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("Documents Not Completed") || file_status.equalsIgnoreCase("Query Sent To Applicant")) {
+                        formObject.addItem("assigned_to", "USER");
+                    }
+                    if (file_status.equalsIgnoreCase("Not Approved")
+                            || (file_status.equalsIgnoreCase("Approved"))) {
+                        formObject.addItem("assigned_to", "Admin");
+
+                    }
+
+                }
+
+                if (activityName.equalsIgnoreCase("DYCEI")) {
+
+                    System.out.println("previous stage--->" + q_prevs_stage + "file_status--->" + file_status + "hjuihj---->" + q_prevs_stage);
+                    if (file_status.equalsIgnoreCase("File In Processing")) {
+                        Query = "select username from ng_auth_details where roletype = 'Div_Sub_Officer'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                    if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                        Query = "select username from ng_auth_details where roletype = 'JEI_AEI'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("File In Processing/Inspection")) {
+                        Query = "select username from ng_auth_details where roletype = 'CEI_HEAD'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                }
+
+                if (activityName.equalsIgnoreCase("Div_Sub_Officer")) {
+                    if (file_status.equalsIgnoreCase("Inspection Done")) {
+                        Query = "select username from ng_auth_details where roletype = 'DYCEI'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                }
+                if (activityName.equalsIgnoreCase("CEI_HEAD")) {
+                    if (file_status.equalsIgnoreCase("Approved")) {
+                        Query = "select username from ng_auth_details where roletype = 'JEI_AEI'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("Documents Not Completed")) {
+                        Query = "select username from ng_auth_details where roletype = 'JEI_AEI'";
+                        objGeneral.setAssign(Query);
+                    }
+                    if (file_status.equalsIgnoreCase("Not Approved")) {
+                        Query = "select username from ng_auth_details where roletype = 'JEI_AEI'";
+                        objGeneral.setAssign(Query);
+                    }
+
+                }
+
+                if (file_status.equalsIgnoreCase("")) {
+                    formObject.clear("assigned_to");
+                }
+            }
+
+// if (pEvent.getSource().getName().equalsIgnoreCase("Combo4")){
+//     SelfCheck = formObject.getNGValue("Combo4");
+//    System.out.println("coming up to here ----->" + SelfCheck);
+//     if (SelfCheck.equalsIgnoreCase("Self")){
+//         formObject.setCaption("Label149", "28.1 Purchase deed of Land");
+//         formObject.setCaption("Label150", "28.2 Construction permission of New Building");
+//         formObject.setCaption("Label153", "28.3 Plan approval of Building");
+//         formObject.setCaption("Label154", "28.4 Supply of Electricity bill at the time of Construction");
+//         formObject.setCaption("Label155", "28.5 Valuation Certificate If Old Building");
+//         formObject.setVisible("Label153", true);
+//         formObject.setVisible("Label154", true);
+//         formObject.setVisible("Label155", true);
+//         
+//         formObject.setVisible("CheckBox1", true);
+//         formObject.setVisible("Label156", true);
+//        
+//         formObject.setVisible("CheckBox2",true);
+//         formObject.setVisible("Label157", true);
+//         
+//         formObject.setVisible("CheckBox6", true);
+//         formObject.setVisible("Label159", true);
+//         
+//         formObject.setVisible("CheckBox7",true);
+//         formObject.setVisible("Label160", true);
+//         
+//         formObject.setVisible("CheckBox8",true);
+//         formObject.setVisible("Label161", true);
+//         
+//         
+//         formObject.setVisible("CheckBox9", false);
+//         formObject.setVisible("Label162", false);
+//         formObject.setVisible("CheckBox10", false);
+//         formObject.setVisible("Label163", false);
+//         
+//         
+//     }
+//      if (SelfCheck.equalsIgnoreCase("Purchased from other party")){
+//         formObject.setCaption("Label149", "28.1 Purchased deed of the property with breakup of purchase price of land");
+//         formObject.setCaption("Label150", "28.2 Purchased deed of the property with breakup of purchase price of building");
+//         formObject.setVisible("Label153", false);
+//         formObject.setVisible("Label154", false);
+//         formObject.setVisible("Label155", false);
+//         
+//         formObject.setVisible("CheckBox9", true);
+//         formObject.setVisible("Label162", true);
+//         formObject.setVisible("CheckBox9", true);
+//         formObject.setVisible("Label162", true);
+//         
+//         formObject.setVisible("CheckBox10", false);
+//         formObject.setVisible("Label163", false);
+//         formObject.setVisible("CheckBox10", false);
+//         formObject.setVisible("Label163", false);
+//         
+//         
+//         
+//         formObject.setVisible("CheckBox1", false);
+//         formObject.setVisible("Label156", false);
+//         formObject.setVisible("CheckBox2",false);
+//         formObject.setVisible("Label157", false);
+//         formObject.setVisible("CheckBox6", false);
+//         formObject.setVisible("Label159", false);
+//         formObject.setVisible("CheckBox7",false);
+//         formObject.setVisible("Label160", false);
+//         formObject.setVisible("CheckBox8",false);
+//         formObject.setVisible("Label161", false);
+//         
+//     }
+//     if (SelfCheck.equalsIgnoreCase("Rented from Other party")){
+//         formObject.setCaption("Label149", "28.1 Details of previous use from the date of completion of construction till date");
+//         formObject.setCaption("Label150", "28.2 Rent agreement");
+//         formObject.setVisible("Label153", false);
+//         formObject.setVisible("Label154", false);
+//         formObject.setVisible("Label155", false);
+//         
+//         formObject.setVisible("CheckBox9", false);
+//         formObject.setVisible("Label162", false);
+//         formObject.setVisible("CheckBox9", false);
+//         formObject.setVisible("Label162", false);
+//         
+//         formObject.setVisible("CheckBox10",true);
+//         formObject.setVisible("Label163", true);
+//         formObject.setVisible("CheckBox10",true);
+//         formObject.setVisible("Label163", true);
+//         
+//         
+//         formObject.setVisible("CheckBox1", false);
+//         formObject.setVisible("Label156", false);
+//         formObject.setVisible("CheckBox2",false);
+//         formObject.setVisible("Label157", false);
+//         formObject.setVisible("CheckBox6", false);
+//         formObject.setVisible("Label159", false);
+//         formObject.setVisible("CheckBox7",false);
+//         formObject.setVisible("Label160", false);
+//         formObject.setVisible("CheckBox8",false);
+//         formObject.setVisible("Label161", false);
+//         
+//     }
+//    
+////     if (SelfCheck.equalsIgnoreCase("Self3")){
+////         formObject.setVisible("Label153", true);
+////         formObject.setVisible("Label149", false);
+////         formObject.setVisible("Label150", false);
+////     }
+//     
+// }
+            //code for enable or disable tab 
+            if (pEvent.getSource().getName().equalsIgnoreCase("Combo3")) {
+
+                typeOfAgencies = formObject.getNGValue("Combo3");
+                System.out.println("coming up to here ----->" + typeOfAgencies);
+
+                if (typeOfAgencies.equalsIgnoreCase("Erection and maintenance")) {
+
+                    formObject.setSheetVisible("Tab1", 0, true);
+                    formObject.setSheetVisible("Tab1", 1, true);
+                    formObject.setSheetVisible("Tab1", 2, true);
+
+                    formObject.setSheetVisible("Tab1", 3, false);
+                    formObject.setSheetVisible("Tab1", 4, false);
+                    formObject.setSheetVisible("Tab1", 5, false);
+
+                    formObject.setSheetVisible("Tab1", 6, false);
+                    formObject.setSheetVisible("Tab1", 7, false);
+                    formObject.setSheetVisible("Tab1", 8, false);
+
+                    // code for process label setting
+                    //  formObject.setNGValue("Label144", "Application for New Supervisor Exemption");
+                }
+
+                if (typeOfAgencies.equalsIgnoreCase("Maintenance")) {
+
+                    formObject.setSheetVisible("Tab1", 3, true);
+                    formObject.setSheetVisible("Tab1", 4, true);
+                    formObject.setSheetVisible("Tab1", 5, true);
+
+                    formObject.setSheetVisible("Tab1", 0, false);
+                    formObject.setSheetVisible("Tab1", 1, false);
+                    formObject.setSheetVisible("Tab1", 2, false);
+
+                    formObject.setSheetVisible("Tab1", 6, false);
+                    formObject.setSheetVisible("Tab1", 7, false);
+                    formObject.setSheetVisible("Tab1", 8, false);
+
+                    // formObject.setNGValue("Label144", "Application for New Wireman Exemption");
+                }
+
+                if (typeOfAgencies.equalsIgnoreCase("Inspection and Testing")) {
+
+                    formObject.setSheetVisible("Tab1", 6, true);
+                    formObject.setSheetVisible("Tab1", 7, true);
+                    formObject.setSheetVisible("Tab1", 8, true);
+
+                    formObject.setSheetVisible("Tab1", 0, false);
+                    formObject.setSheetVisible("Tab1", 1, false);
+                    formObject.setSheetVisible("Tab1", 2, false);
+
+                    formObject.setSheetVisible("Tab1", 3, false);
+                    formObject.setSheetVisible("Tab1", 4, false);
+                    formObject.setSheetVisible("Tab1", 5, false);
+
+                    // formObject.setNGValue("Label144", "Application for New Contractor License");
+                }
+            }
+
+        }
+
+        if (pEvent.getType().name().equalsIgnoreCase("MOUSE_CLICKED")) {
+            
+            //PDF Generation
+            String agencyType;
+            String file_noforcertificate;
+            System.out.println("------Mouse Clicked---------");
+            if (pEvent.getSource().getName().equalsIgnoreCase("Button2")) {
+                 agencyType = formObject.getNGValue("Combo5");
+                 System.out.println("------Button Clicked---------");
+                 file_noforcertificate = formObject.getNGValue("file_no");
+                 formObject.setNGValue("Label38", formObject.getNGValue("Hello"));
+                 formObject.setNGValue("Label38", formObject.getNGValue("Option1"));
+                 
+                 if(agencyType.equalsIgnoreCase("Erection and Maintenance")){
+                     if(formObject.getNGValue("Option1").equalsIgnoreCase("false")){
+                         ElectricalTemplate obj = new ElectricalTemplate("D:\\Newgen\\Server\\Certificate\\Exemption\\Wireman\\" + file_noforcertificate + ".pdf", "");
+                    obj.pdfcreation();
+
+                    file_noforcertificate = "\\Exemption\\Wireman\\" + file_noforcertificate;
+
+                    HashMap<Integer, String> hm = new HashMap<Integer, String>();  // not nullable HashMap
+                    throw new ValidatorException(new CustomExceptionHandler("Error Message", file_noforcertificate,
+                            "MOUSE_CLICKED", hm));
+                     }
+                 }
+            }
+            
+            
+            
+            
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("CheckBox1")) {
+                String check1 = formObject.getNGValue("CheckBox1");
+                if (check1.equalsIgnoreCase("false")) {
+                    list.add("one");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+                        formObject.setNGFocus("Text42");
+                    }
+                } else {
+                    list.remove("one");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+
+                    }
+                }
+            }
+
+                       if (pEvent.getSource().getName().equalsIgnoreCase("CheckBox2")) {
+                String check1 = formObject.getNGValue("CheckBox2");
+                if (check1.equalsIgnoreCase("false")) {
+                    list.add("two");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+                        formObject.setNGFocus("Text42");
+                    }
+                } else {
+                    list.remove("two");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+
+                    }
+                }
+            }
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("CheckBox5")) {
+                String check11 = formObject.getNGValue("CheckBox5");
+                if (check11.equalsIgnoreCase("false")) {
+                    list.add("three");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+                        formObject.setNGFocus("Text42");
+                    }
+                } else {
+
+                    list.remove("three");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+
+                    }
+                }
+            }
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("CheckBox6")) {
+                String check11 = formObject.getNGValue("CheckBox6");
+                if (check11.equalsIgnoreCase("false")) {
+                    list.add("four");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+                        formObject.setNGFocus("Text42");
+                    }
+                } else {
+
+                    list.remove("four");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+
+                    }
+                }
+            }
+
+            if (pEvent.getSource().getName().equalsIgnoreCase("CheckBox7")) {
+                String check11 = formObject.getNGValue("CheckBox7");
+                if (check11.equalsIgnoreCase("false")) {
+                    list.add("five");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+                      formObject.setNGFocus("Text42");
+                    }
+                } else {
+
+                    list.remove("five");
+                    formObject.clear("Combo4");
+                    for (int i = 0; i < list.size(); i++) {
+                        formObject.addItem("Combo4", list.get(i));
+
+                    }
+                }
+            }
+            if (pEvent.getSource().getName().equalsIgnoreCase("btn_cghs_upload")) {
+            }
+        }
+    }
+
+    @Override
+    public void formLoaded(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        System.out.println(" -------------------Intiation Workstep Loaded from formloaded.----------------");
+        // TODO Auto-generated method stub
+        System.out.println("form Loaded called");
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.println("formObject :" + formObject);
+        System.out.println("formConfig :" + formConfig);
+        try {
+
+            activityName = formObject.getWFActivityName();
+            System.out.println("#####################ActivityName##############################3" + activityName);
+            //capturing system fields----starts
+            engineName = formConfig.getConfigElement("EngineName");
+            sessionId = formConfig.getConfigElement("DMSSessionId");
+            folderId = formConfig.getConfigElement("FolderId");
+            serverUrl = formConfig.getConfigElement("ServletPath");
+            //ServletUrl = serverUrl + "/servlet/ExternalServlet";
+            processInstanceId = formConfig.getConfigElement("ProcessInstanceId");
+            workItemId = formConfig.getConfigElement("WorkitemId");
+            userName = formConfig.getConfigElement("UserName");
+            processDefId = formConfig.getConfigElement("ProcessDefId");
+            System.out.println("ProcessInstanceId===== " + processInstanceId);
+            System.out.println("Activityname=====" + activityName);
+            System.out.println("CabinetName====" + engineName);
+            System.out.println("sessionId====" + sessionId);
+            System.out.println("Username====" + userName);
+            System.out.println("workItemId====" + workItemId);
+
+        } catch (Exception e) {
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void formPopulated(FormEvent arg0) {
+        // TODO Auto-generated method stub
+        try {
+            objGeneral = new General();
+            System.out.println("----------------------Intiation Workstep Loaded from form populated.---------------------------");
+            formObject = FormContext.getCurrentInstance().getFormReference();
+            formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+            System.out.println("printing my activity name------->" + activityName);
+            if (activityName.equalsIgnoreCase("StartEvent1")) {
+
+                formObject.addItem("file_status", "File In Processing");
+                formObject.setVisible("Button1", true);
+
+            }
+            if (activityName.equalsIgnoreCase("Admin")) {
+                if (file_status.equalsIgnoreCase("Approved")) {
+                    formObject.addItem("file_status", "Approved");
+                    formObject.setVisible("Button1", true);
+
+                }
+            }
+
+            if (activityName.equalsIgnoreCase("JEI_AEI")) {
+                if (file_status.equalsIgnoreCase("File In Processing")) {
+                    formObject.addItem("file_status", "File In Processing");
+                }
+
+                if (file_status.equalsIgnoreCase("Documents Not Completed") || (file_status.equalsIgnoreCase("Query Sent To Applicant"))) {
+                    formObject.addItem("file_status", "Query Sent To Applicant");
+                }
+                //                 if(file_status.equalsIgnoreCase("Inspection Report not Completed")){
+                //                   formObject.addItem("file_status", "Inspection Report not Completed");
+                //                   formObject.addItem("file_status", "Query Sent To Applicant");
+                //               }
+                if (file_status.equalsIgnoreCase("Approved")) {
+                    formObject.addItem("file_status", "Approved");
+                }
+                if (file_status.equalsIgnoreCase("Not Approved")) {
+                    formObject.addItem("file_status", "Not Approved");
+                }
+            }
+            System.out.println("activity name" + activityName);
+            if (activityName.equalsIgnoreCase("DYCEI")) {
+                // formObject.clear("file_status");
+                System.out.println("coming inside rituraj");
+                if (file_status.equalsIgnoreCase("File In Processing") || (file_status.equalsIgnoreCase("Documents Not Completed"))) {
+                    formObject.addItem("file_status", "File In Processing");
+                    formObject.addItem("file_status", "Documents Not Completed");
+                }
+                if (file_status.equalsIgnoreCase("Inspection Done") || (file_status.equalsIgnoreCase("File In Processing/Inspection"))) {
+                    formObject.addItem("file_status", "File In Processing/Inspection");
+                }
+
+            }
+            if (activityName.equalsIgnoreCase("Div_Sub_Officer")) {
+
+                if (file_status.equalsIgnoreCase("File In Processing") || (file_status.equalsIgnoreCase("Inspection Done"))) {
+                    formObject.addItem("file_status", "Inspection Done");
+
+                }
+            }
+            if (activityName.equalsIgnoreCase("CEI_HEAD")) {
+                //formObject.clear("file_status");
+                if (file_status.equalsIgnoreCase("File In Processing/Inspection") || file_status.equalsIgnoreCase("Approved") || file_status.equalsIgnoreCase("Not Approved") || file_status.equalsIgnoreCase("Documents Not Completed")) {
+                    formObject.addItem("file_status", "Approved");
+                    formObject.addItem("file_status", "Not Approved");
+                    formObject.addItem("file_status", "Documents Not Completed");
+                }
+            }
+
+            //              if(activityName.equalsIgnoreCase("StartEvent1")){
+            //                 //formObject.clear("file_status");
+            //                if(typeOfAgencies.equalsIgnoreCase("Erection and maintenance") ){
+            //                   formObject.setSheetVisible("Tab1", 0, true);
+            //                     formObject.setSheetVisible("Tab1", 1, true);
+            //                     formObject.setSheetVisible("Tab1", 2, true);
+            //                     
+            //                     formObject.setSheetVisible("Tab1", 3, false);
+            //                     formObject.setSheetVisible("Tab1", 4, false);
+            //                     formObject.setSheetVisible("Tab1", 5, false);
+            //                    
+            //                     formObject.setSheetVisible("Tab1", 6, false);
+            //                     formObject.setSheetVisible("Tab1", 7, false);
+            //                     formObject.setSheetVisible("Tab1", 8, false);
+            //             }
+            //              
+            //              
+            //            }
+        //    objGeneral.getDocIndex(processInstanceId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception in FieldValueBagSet::::" + e.getMessage());
+
+        }
+    }
+
+    @Override
+    public void saveFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void saveFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+    }
+
+    @Override
+    public void submitFormCompleted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+
+    }
+
+    @Override
+    public void submitFormStarted(FormEvent arg0) throws ValidatorException {
+        // TODO Auto-generated method stub
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+        System.out.print("-------------------submitform started---------");
+        formObject.setNGValue("q_prevs_stage", activityName);
+        formObject.getNGValue("q_prevs_stage");
+        formObject.getNGValue("file_status");
+        formObject.setNGValue("q_prevs_status", file_status);
+        System.out.println("value of file status---------" + file_status);
+
+    }
+
+    @Override
+    public void initialize() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+}

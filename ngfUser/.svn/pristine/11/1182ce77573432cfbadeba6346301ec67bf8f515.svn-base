@@ -1,0 +1,52 @@
+package com.newgen.omniforms.user;
+
+/**
+ *
+ * @author Rituraj
+ */
+
+import com.newgen.eipa.eipahead;
+
+import com.newgen.eipa.head;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.context.FormContext;
+import com.newgen.omniforms.listener.FormListener;
+
+public class eipa implements IFormListenerFactory{
+    
+    
+      public FormListener getListener() {
+        // TODO Auto-generated method stub
+
+        String sActivityName = null;
+        String sProcessName = null;
+        FormListener objActivity = null;
+       // FormReference objFormReference = FormContext.getCurrentInstance().getFormReference();
+        //sActivityName = objFormReference.getWFActivityName().trim();
+        
+        FormConfig formConfig = FormContext.getCurrentInstance().getFormConfig();
+        sActivityName = formConfig.getConfigElement("ActivityName");
+        sProcessName = formConfig.getConfigElement("ProcessName");
+        System.out.println("**********sActivityName :"
+                + sActivityName);
+
+        if (sActivityName.equalsIgnoreCase("Start") || sActivityName.equalsIgnoreCase("StartEvent1")){
+        System.out.println("Apply:Start");
+            return new head();
+        }
+        else if ((sActivityName.equalsIgnoreCase("AEI"))
+                || (sActivityName.equalsIgnoreCase("Field Inspector"))
+                || (sActivityName.equalsIgnoreCase("CEI"))
+                || (sActivityName.equalsIgnoreCase("Applicant")))
+                {
+
+            System.out.println("Apply:by next level");
+            return new head();
+        }
+
+
+
+        return null;
+    }
+    
+}

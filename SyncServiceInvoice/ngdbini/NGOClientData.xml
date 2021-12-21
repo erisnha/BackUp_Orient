@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ClientInfo>
+	<ProviderUrl></ProviderUrl>
+	<jndiServerName></jndiServerName>
+	<jndiServerPort></jndiServerPort>
+	<JndiContextFactory></JndiContextFactory>
+	<ClientLookUpName>ejb:omnidocs_ejb/omnidocs_ejb/NGOClientServiceHandlerBean!com.newgen.omni.jts.txn.NGOClientServiceHandlerHome</ClientLookUpName>
+	<AdminLookUpName>ejb:omnidocs_ejb/omnidocs_ejb/NGOAdminServiceHandlerBean!com.newgen.omni.jts.txn.NGOAdminServiceHandlerHome</AdminLookUpName>
+	<UrlPackagePrefix></UrlPackagePrefix>
+</ClientInfo>

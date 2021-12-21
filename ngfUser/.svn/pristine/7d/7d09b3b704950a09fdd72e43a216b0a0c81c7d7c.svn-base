@@ -1,0 +1,185 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+//FORM III -- Annexure XIV -- CERTIFICATE OF AUTHORISATION FOR MAINTENANCE OF ESCALATORS
+package com.newgen.common;
+import java.io.FileOutputStream;
+import java.util.Date;
+
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.List;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+/**
+ *
+ * @author Rituraj
+ */
+public class MEsclatorsTemplate {
+
+
+    private static String FILE = "d://Certificates//[D]-- FORM III -- Annexure XIV -- CERTIFICATE OF AUTHORISATION FOR MAINTENANCE OF ESCALATORS.pdf";
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.BOLD);
+//    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+//            Font.NORMAL, BaseColor.RED);
+//    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+//            Font.BOLD);
+//    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+//            Font.BOLD);
+
+    public MEsclatorsTemplate(String args) {
+        FILE = args;
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.open();
+           
+          
+            addContent(document);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private static void addTitlePage(Document document)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 1);
+        // Lets write a big header
+       
+        document.add(preface);
+        // Start a new page
+        document.newPage();
+    }
+
+    private static void addContent(Document document) throws DocumentException {
+        Anchor anchor = new Anchor("First Chapter", catFont);
+        Font regular = new Font(FontFamily.HELVETICA, 10);
+        Font bold = new Font(FontFamily.HELVETICA, 10, Font.BOLD);
+        Paragraph paragraph = new Paragraph("FORM II",FontFactory.getFont(FontFactory.HELVETICA,12, Font.UNDERLINE|Font.BOLD, BaseColor.BLACK));
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        Paragraph paragraph1 = new Paragraph("(Annexure XIII)",FontFactory.getFont(FontFactory.HELVETICA,12, Font.UNDERLINE|Font.BOLD, BaseColor.BLACK));
+        paragraph1.setAlignment(Element.ALIGN_CENTER);
+        document.add(paragraph);
+        document.add(paragraph1);
+        Paragraph paragraph3 = new Paragraph("GUJARAT STATE",FontFactory.getFont(FontFactory.HELVETICA,12, Font.UNDERLINE|Font.BOLD, BaseColor.BLACK));
+        paragraph3.setAlignment(Element.ALIGN_CENTER);
+        document.add(paragraph3);
+        Paragraph paragraph33= new Paragraph("\n CERTIFICATE OF AUTHORISATION FOR MAINTENANCE OF ESCALATORS",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        paragraph33.setAlignment(Element.ALIGN_CENTER);
+//        paragraph33.setUnderline(0.1f, -2f); //0.1 thick, -2 y-location
+//        chunk.setAlignment(Element.ALIGN_CENTER);
+        document.add(paragraph33);
+        
+        document.add(new Paragraph("  ")); 
+        document.add(new Paragraph("")); 
+        Paragraph paragraph2 = new Paragraph("(This certificate is to be renewed annually and must  returned to Chief Inspector at the appropriate time) ",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        paragraph2.setAlignment(Element.ALIGN_LEFT);
+        document.add(paragraph2);
+        Chunk chunk1 = new Chunk("Authorization No........................................................................................................................................................................................",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+//        document.add(p);
+        Chunk chunk2 = new Chunk("Shri/Messers....................................................................................................................................................................................................................",FontFactory.getFont(FontFactory.HELVETICA,8, Font.BOLD, BaseColor.BLACK));
+//        document.add(p15);
+        Chunk chunk3 = new Chunk("is/are hereby authorized to carry out the erection and maintenance of escalators within State of Gujarat.This certificate of authorization is issued in subject to compliance with the conditions set on the reverse. ",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+//        document.add(p16);
+        Paragraph p = new Paragraph(); 
+        p.add(chunk1); p.add(chunk2); p.add(chunk3);
+        document.add(p);
+        document.add(new Paragraph("  ")); 
+        document.add(new Paragraph("")); 
+        
+        Chunk glue = new Chunk(new VerticalPositionMark());
+        Paragraph p8 = new Paragraph("The...................Day of .....................", FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        p8.add(new Chunk(glue));
+        p8.add("Chief Inspector Of Lifts & Escalators,\n"
+                + "                                                                                                                                                                                           Gujarat State,\n "
+                + "                                                                                                                                                                                           Gandhinagar \n\n\n" );
+        document.add(p8);
+
+        
+        PdfPTable table = createTable1();
+        document.add(table);
+        table = createTable1();
+        table.setSpacingBefore(5);
+        table.setSpacingAfter(5);
+        
+        Paragraph p10= new Paragraph(" \n\n\n                                                                               CONDITIONS",FontFactory.getFont(FontFactory.HELVETICA,10, Font.NORMAL, BaseColor.BLACK));
+        document.add(p10);
+        Chunk chunk4 = new Chunk("1.    Every contract for maintenance of a escalators undertaken by the holder of this certificate of authorization shall be in writing and the holder thereof shall be responsible for the proper maintenance of the escalators and its installation for which the contract has been made.\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Chunk chunk5 = new Chunk("2.    The report of periodical inspection and tests of the escalators and its installation shall be recorded in a register to be maintained for the purpose of inspection by the holder of the certificate of registration and every such report shall be duly signed by the person making the inspection and tests.\n \n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Chunk chunk6 = new Chunk("      The report shall contain sufficient details so as to give a clear indication of the condition of the important component parts of the escalators installation and of their fitness for safe working of the escalators. If required by the chief Inspector, such report shall be kept in a form approved by him for the purpose.\n \n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Paragraph p22 = new Paragraph(); 
+        Chunk chunk8 = new Chunk("      If as a result of inspection and tests, any defect or breach of rules as may affect the safe working of the escalators is found in the escalators installation, the owner or agent thereof shall be intimated forthwith about the same by holder of the certificate of authorization and a copy of such intimation shall also be forwarded to the Chief Inspector.\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Chunk chunk9 = new Chunk("3.    The holder of this certificate of authorization shall maintain a register of technical personnel employed by him for erection and maintenance of escalators and register shall be produced for inspection on demand by the Chief Inspector or his any other person authorized by him in this behalf.\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Chunk chunk10 = new Chunk("4.   Any change in the address of the place of business of the holder of this certificate of authorization shall be communicated to the Chief Inspector within two weeks of such change.Any change of agent or manager, if any shall be similarity notified.\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Chunk chunk11 = new Chunk("5.   This certificate shall be returned to the Chief Inspector for renewal along with the application for the purpose and the original challan of the payment of the renewal fee.\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        Chunk chunk12 = new Chunk("6.   The occurrence of any fatal Or non fatal accident to any of the employees of the holder of this certificate of authorization during erection or maintenance shall be reported in writing to the Chief Inspector within 24 hours of the occurrence of such accident.",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+       Chunk chunk14 = new Chunk("7.    The holder of this certificate of authorization shall not make any contract for the maintenance of  the escalators, which is not having the working licence.\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, BaseColor.BLACK));
+        
+
+
+        p22.add(chunk4); p22.add(chunk5); p22.add(chunk6); p22.add(chunk8); p22.add(chunk9); p22.add(chunk10); p22.add(chunk11); p22.add(chunk12); p22.add(chunk14);
+        document.add(p22);
+                document.close();
+
+    }
+
+    public static PdfPTable createTable1() throws DocumentException {
+        
+        
+        PdfPTable table = new PdfPTable(2); //3 columns
+        table.setWidthPercentage(95);
+//        table.setWidths(new int[]{1, 4});
+//        table.setWidths(new int[]{2, 1, 1});
+//        PdfPCell cell;
+        
+            PdfPCell cell1 = new PdfPCell(new Paragraph("Authorization Valid Upto",FontFactory.getFont(FontFactory.HELVETICA,10, Font.NORMAL, BaseColor.BLACK)));
+            PdfPCell cell2 = new PdfPCell(new Paragraph("Initial of Chief Inspector of escalators And Escalators",FontFactory.getFont(FontFactory.HELVETICA,10, Font.NORMAL, BaseColor.BLACK)));
+            PdfPCell cell3 = new PdfPCell(new Paragraph(" "));
+            PdfPCell cell4 = new PdfPCell(new Paragraph(" "));
+            PdfPCell cell5 = new PdfPCell(new Paragraph(" "));
+            PdfPCell cell6 = new PdfPCell(new Paragraph(" "));
+            PdfPCell cell7 = new PdfPCell(new Paragraph(" "));
+            PdfPCell cell8 = new PdfPCell(new Paragraph(" "));
+            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell4);
+            table.addCell(cell5);
+            table.addCell(cell6);
+            table.addCell(cell7);
+            table.addCell(cell8);
+        return table;
+    }
+
+    
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+}
+    
+    
+

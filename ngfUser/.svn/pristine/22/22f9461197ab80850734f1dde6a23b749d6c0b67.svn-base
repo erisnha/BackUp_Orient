@@ -1,0 +1,242 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.newgen.common;
+
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ *
+ * @author Newgen1
+ */
+public class ElectricalTemplate {
+    
+//    public static final String FONT = "D:/HARL.TTF";
+    private String FILE = null;
+    
+    private static String licNo = null;
+    
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.NORMAL);
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.BOLD);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+            Font.NORMAL);
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8,
+            Font.BOLD);
+    private static Font font2 = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+            Font.BOLD | Font.UNDERLINE);
+    Font font = null;
+    public static String timeStamp;
+    public static String timeStamp1;
+    
+
+    public ElectricalTemplate(String file, String licNo){
+        this.FILE = file;   
+        this.licNo = licNo;
+        timeStamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        timeStamp1 = new SimpleDateFormat("dd MMMM yyyy").format(new Date());
+
+    }
+    
+    public void pdfcreation() {
+        try {
+            //font = FontFactory.getFont(FONT, "Cp1250", BaseFont.EMBEDDED);
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.open();
+            addMetaData(document);
+            addTitlePage(document);
+            addContent(document);
+            createTable(document);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // iText allows to add metadata to the PDF which can be viewed in your Adobe
+    // Reader
+    // under File -> Properties
+    private static void addMetaData(Document document) {
+        document.addTitle("My first PDF");
+        document.addSubject("Using iText");
+        document.addKeywords("Java, PDF, iText");
+        document.addAuthor("Lars Vogel");
+        document.addCreator("Lars Vogel");
+    }
+
+    private static void addTitlePage(Document document)
+            throws DocumentException, BadElementException, IOException {
+
+        Paragraph fileno = new Paragraph();
+        addEmptyLine(fileno, 5);
+        fileno.add(new Paragraph(licNo, font2));
+        fileno.setIndentationLeft(370);
+        document.add(fileno);
+        Image image2 = Image.getInstance("d:\\Newgen\\Server\\resources\\logo2.jpg");
+        //image2.setAbsolutePosition(0, 0);
+        image2.setAlignment(Image.MIDDLE);
+        image2.scaleAbsoluteHeight(20);
+        image2.scaleAbsoluteWidth(10);
+        image2.scalePercent(60);
+        document.add(image2);
+
+        Paragraph preface = new Paragraph();
+        
+        addEmptyLine(preface, 0);
+        
+        preface.add(new Paragraph("GOVERNMENT OF GUJARAT", smallBold));
+       
+        preface.setIndentationLeft(210);
+
+        document.add(preface);
+        
+    }
+
+    private static void addContent(Document document) throws DocumentException {
+
+        String name = "Chetan Kumar";
+        String contractor = "BHADRA ELECTRONICS ENGINEERS";
+        String district = "PATAN";
+        //Font font1 = FontFactory.getFont(FONT, "Cp1250", BaseFont.EMBEDDED, 16);
+        Paragraph header = new Paragraph();
+        addEmptyLine(header, 1);
+        header.add(new Paragraph("GOVERNMENT OF GUJARAT", catFont));
+        header.setIndentationLeft(180);
+        document.add(header);
+        
+        Paragraph header2 = new Paragraph();
+        header2.add(new Paragraph("LICENSE", catFont));
+        header2.setIndentationLeft(230);
+        document.add(header2);
+        
+        Paragraph header3 = new Paragraph();
+        header3.add(new Paragraph("TO", catFont));
+        header3.setIndentationLeft(245);
+        document.add(header3);
+        
+        Paragraph header4 = new Paragraph();
+        header4.add(new Paragraph("ELECTRICAL CONTRACTORS", catFont));
+        header4.setIndentationLeft(180);
+        document.add(header4);
+        
+
+        Paragraph subtitle = new Paragraph();
+        addEmptyLine(subtitle, 1);
+        subtitle.add(new Paragraph(
+                "(Authorised by Government Notification, E & P Deptt.,",
+                redFont));
+        subtitle.add(new Paragraph("No GU/2017/ELA/11-2012/2401/K,dt. " +timeStamp1, redFont));
+        subtitle.setIndentationLeft(120);
+        document.add(subtitle);
+
+        Chunk chunk1 = new Chunk("M/s.   " , catFont);
+        Chunk chunk2 = new Chunk(contractor, font2);
+        Chunk chunk3 = new Chunk("  Dist- " , catFont);
+        Chunk chunk4 = new Chunk(district , font2);
+        Chunk chunk5 = new Chunk("  is hereby authorised to carry out Electrical Installation Works in the Gujarat State, subject to the conditions mentioned in the Regulation issued by the Government of Gujarat under Government notification, Energy Petrochemical Department,No. GU/ 2013/ 37/ ELA/ 11/ 2012/ 2401/ K Dated "+timeStamp1 , catFont);
+        Paragraph p = new Paragraph();
+        addEmptyLine(p,1 ); 
+        p.add(chunk1);
+        p.add(chunk2);
+        p.add(chunk3);
+        p.add(chunk4);
+        p.add(chunk5);
+        p.setIndentationLeft(40);
+        addEmptyLine(p, 4);
+        p.add(new Paragraph("Energy & Petrochemicals Department,                                                                                   President", subFont));
+        p.add(new Paragraph("Gujarat State,Gandhinagar,                                                                                                    Licensing Board", subFont));
+        p.add(new Paragraph("Issue Date:"+timeStamp+"                                                                                                           Gandhinagar", subFont));
+        document.add(p);
+
+        Paragraph last = new Paragraph();
+        addEmptyLine(last, 2);
+        last.add(new Paragraph("Secretary", subFont));
+        last.add(new Paragraph("Licensing Board", subFont));
+        last.add(new Paragraph("Gandhinagar", subFont));
+        last.setIndentationLeft(400);
+        addEmptyLine(last, 2);
+        document.add(last);
+
+        
+        
+        document.setPageSize(PageSize.LETTER);
+        document.setMargins(36, 72, 108, 180);
+        document.setMarginMirroring(false);
+        Rectangle rect = new Rectangle(550, 750, 50, 10);
+        rect.enableBorderSide(1);
+        rect.enableBorderSide(2);
+        rect.enableBorderSide(4);
+        rect.enableBorderSide(8);
+        //rect.setBorder(2);
+        rect.setBorder(Rectangle.BOX);
+        rect.setBorderWidth(2);
+        rect.setBorderColor(BaseColor.BLACK);
+        document.add(rect);
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+    private static void createTable(Document document)
+            throws BadElementException, DocumentException {
+        
+        
+         PdfPTable table = new PdfPTable(3);
+        table.setWidths(new int[]{ 1, 1, 1});
+        PdfPCell cell;
+          
+        cell = new PdfPCell(new Phrase("Date of Renewal "));
+       
+        table.addCell(cell);
+        table.addCell("Date of Expiry");
+        table.addCell("Secretary's Initials");
+      
+      
+        table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         table.addCell(" ");
+         
+        document.add(table);
+        document.close();
+        }
+}
+ 
+    
+    
+

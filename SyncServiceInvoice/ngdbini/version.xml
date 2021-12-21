@@ -1,0 +1,10 @@
+<!--Label Information for prouct Build-->
+<patch-label-properties>
+	<product_name>OmniDocs9.1</product_name>
+	<product_version>9.1</product_version>
+	<date_of_build>16-05-2017</date_of_build>
+	<build_person>Brijesh Sharma</build_person>
+	<build_number>8</build_number>
+	<label>OD_9.1.0_16052017_QA_Rel_Build_9</label>
+		
+</patch-label-properties>

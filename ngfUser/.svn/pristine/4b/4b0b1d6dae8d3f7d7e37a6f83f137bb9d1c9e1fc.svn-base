@@ -1,0 +1,245 @@
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.newgen.common;
+
+/**
+ *
+ * @author awc-awc
+ */
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import com.newgen.omniforms.FormConfig;
+import com.newgen.omniforms.FormReference;
+import com.newgen.omniforms.context.FormContext;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.Principal;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
+
+import com.newgen.EDE.Head;
+import com.newgen.omniforms.user.EDE;
+import com.newgen.omniforms.listener.FormListener;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+public class Template extends HttpServlet {
+
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
+            Font.BOLD);
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.NORMAL, BaseColor.RED);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+            Font.BOLD);
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+            Font.BOLD);
+ FormReference formObject = null;
+ FormConfig formConfig = null;
+ String connection_no =null,registration_no=null,genset_capacity=null,name=null,address=null,district=null,state=null,pincode=null ,restaddrs=null;
+    
+    
+    private static void addTitlePage(Document document)
+            throws DocumentException {
+        Paragraph preface = new Paragraph();
+        // We add one empty line
+        addEmptyLine(preface, 1);
+        // Lets write a big header
+
+        document.add(preface);
+        // Start a new page
+        document.newPage();
+    }
+
+    public void addContent(Document document) throws DocumentException {
+       
+   //code done by chetan  
+        formObject = FormContext.getCurrentInstance().getFormReference();
+        formConfig = FormContext.getCurrentInstance().getFormConfig();
+            
+            name=formObject.getNGValue("applicant_name");
+            address=formObject.getNGValue("applicant_add");
+//            initialaddrs= address.substring(0, 20);
+//            restaddrs= address.substring(20);
+            state=formObject.getNGValue("state");
+            district=formObject.getNGValue("district");
+            pincode=formObject.getNGValue("pincode");
+            restaddrs=state +","+ district +","+"Pin-"+ pincode ;
+            connection_no=formObject.getNGValue("connection_no_p2");
+            registration_no=formObject.getNGValue("p3_registration_no");
+            genset_capacity=formObject.getNGValue("p3_gensetenergycap");
+            System.out.println("value of connction_no---"+connection_no+ "value of registration_no---"+registration_no+ "value of capacity-----"+genset_capacity);
+        
+        //
+        
+        Anchor anchor = new Anchor("First Chapter", catFont);
+        Font regular = new Font(Font.FontFamily.HELVETICA, 12);
+        Font bold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Paragraph paragraph = new Paragraph("FORM F*");
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        Paragraph paragraph1 = new Paragraph("(See Rule 11(2))");
+        paragraph1.setAlignment(Element.ALIGN_CENTER);
+        document.add(paragraph);
+        document.add(paragraph1);
+        Chunk underline = new Chunk("CERTIFICATE OF ELIGIBILITY FOR EXEMPTION FROM PAYMENT OF ELECTRICITY DUTY");
+        underline.setUnderline(0.1f, -2f); //0.1 thick, -2 y-location
+        document.add(underline);
+        document.add(new Paragraph("  "));
+        document.add(new Paragraph(""));
+        Paragraph paragraph2 = new Paragraph("This is to certify that "+name+"'is a new industrial undertaking' entitled to exemption from payment of electricity duty under clause(vii) of sub-section(2) of section (3) of Gujrat Electricity Duty Act,1958 for the energy consumed in respect of premises used for industrial purpose (except the energy consumed for residence, commerce, sport club, library, canteen, or such other purpose) with effect from 05th July ,2016 to 11th February ,2021 (For Industrial Purpose from following sources.)");
+
+        document.add(paragraph2);
+        document.add(new Paragraph("  "));
+        document.add(new Paragraph(""));
+        PdfPTable table = new PdfPTable(3);
+        table.setWidths(new int[]{1, 5, 5});
+        PdfPCell cell;
+
+
+        table.addCell("(1)");
+        table.addCell("Connection No.");
+        table.addCell(connection_no);
+
+
+        // Second column data
+        table.addCell("(2)");
+        table.addCell("Generating Set Capacity");
+        table.addCell(genset_capacity);
+
+        table.addCell("(3)");
+        table.addCell("Generating Set Registration No");
+
+
+        table.addCell(registration_no);
+        // Third Column data
+        table.addCell("(4)");
+        table.addCell("Other Sources");
+
+
+        table.addCell("Not Applicable");
+        document.add(table);
+
+        Paragraph p1 = new Paragraph("The Aforeside exemption from payment of electricity  duty shall be available subject to the  following terms and condition,namely: ", bold);
+        p1.add(new Chunk("", regular));
+        document.add(p1);
+        document.add(new Paragraph("  "));
+
+        // point starts from here--------
+        Paragraph point1 = new Paragraph("(1)  If consumer is indulged or found in theft of energy during the period of exemption thebenefit of exemption shall be withdrawn  for the said period");
+        document.add(point1);
+        Paragraph point2 = new Paragraph("(2)  Where the consumer has installed any generating sets,it shall be mandatory for him to operate fully the said sets in accordance with the instruction issued by the collector of Electricity Duty,Gandhinagar and by the State Government from time to time ,irrespective of whether it is connected with grid or not.");
+        document.add(point2);
+        Paragraph point3a = new Paragraph("(3)  (a) The Power generated by such generating sets,If sold or transferred to any other consumer within the state in accordance with the provision of the Electricity ACT ,2003 and the rules made there under,shall be subject to payment of electricity duty to be collected through respective distribution company.");
+        document.add(point3a);
+        Paragraph point3b = new Paragraph("(3)  (b) If such generating sets sells or transfer the power out of the statein accordance with the provison of the Electricity Act, 2003 and the rules made thereunder,the electricity duty exemption certificate shall automatically stand cancelled with effect from such sell or transfer.");
+        document.add(point3b);
+        Paragraph point4 = new Paragraph("(4)  (b) If during the period of exemption the ownership of the beneficiries has been changed the No Object Certificate from the Collector of Electricity Duty , Gandhinagar should be obtained within 15 days from such change,failing which exemption should be liable to be withdrawn with immediate effect.");
+        document.add(point4);
+        Paragraph point5 = new Paragraph("(5)  (b) Subject to condition No 3 ,the energy for which exemption is granted shall not be sold,transferred or allowed to be used by any person or undertaking .");
+        document.add(point5);
+        //points ends here
+        document.add(new Paragraph("  "));
+        document.add(new Paragraph(""));
+        // footer starts here
+        Paragraph f1 = new Paragraph("No./G/EX/NIU/Gandhinagar/46.07.2016");
+
+        document.add(f1);
+        /* Paragraph f2 = new Paragraph("Office of the Collector of Electricity Duty");
+         f2.add(new Chunk("", regular));
+         f2.setAlignment(Element.ALIGN_LEFT);
+         document.add(f2);*/
+        Chunk glue21 = new Chunk(new VerticalPositionMark());
+        Paragraph f21 = new Paragraph("Office of the Collector of Electricity Duty");
+        f21.add(new Chunk(glue21));
+        f21.add("(P.N.GANDHI)");
+        document.add(f21);
+        Chunk glue = new Chunk(new VerticalPositionMark());
+        Paragraph p11 = new Paragraph("7th Floor,Block No.18,Udhyog Bhavan");
+        p11.add(new Chunk(glue));
+        p11.add("Collector of Electricity Duty");
+        document.add(p11);
+        Chunk glue1 = new Chunk(new VerticalPositionMark());
+        Paragraph p111 = new Paragraph("Sector-11,Gandhinagar. PIN 382010");
+        p111.add(new Chunk(glue1));
+        p111.add("Gandhinagar");
+        document.add(p111);
+        document.add(new Paragraph("  "));
+          document.add(new Paragraph("  "));
+        Paragraph footer1 = new Paragraph("To,", bold);
+        footer1.add(new Chunk("", regular));
+        document.add(footer1);
+        //Dynamic name
+        Paragraph footer2 = new Paragraph(address, bold);
+        footer2.add(new Chunk("", regular));
+        document.add(footer2);
+        //change line for address(chetan)
+         Paragraph footer3 = new Paragraph(restaddrs, bold);
+        footer3.add(new Chunk("", regular));
+        document.add(footer3);
+        
+        // Last paragraph start here-----
+        document.add(new Paragraph(" "));
+
+        Paragraph last = new Paragraph("Copy To :-", bold);
+        last.add(new Chunk("", regular));
+        document.add(last);
+        Paragraph l1 = new Paragraph("1.  Executive Engineer,U.G.V.C.L Divison officer.'VIJ SEVA SADAN' Near Railway Crossing,B/h.Govt,Press Pethapur Road,gandhinagar-382041.For Information and necessary action. Electricity duty shall be levied @ 25% on entire consumption of all the electrical connections inclusing lighting connection from 10th Dec ,2015 to 11 Feb ,2016 and adjustment shall be done before refunding the amount as per the certificate.");
+        document.add(l1);
+        Paragraph l2 = new Paragraph("2.  Electricty Duty Inspector,Gandhinagar for verification of the correctness of the adjustment/recovery allowed by the licensee on account of this certificate and submit his report thereof.");
+        document.add(l2);
+        Paragraph l3 = new Paragraph("3.  Office order file");
+        document.add(l3);
+        Paragraph l4 = new Paragraph("4.  Case File");
+        document.add(l4);
+        document.close();
+//throw new ValidatorException(new FacesMessage("D:\\Newgen\\Server\\Certificate\\"+file_noforcertificate+".pdf","Template"));
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
+
+    public void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+
+        System.out.println("Insidedowload");
+        String filepath = "D:\\Newgen\\Server\\Certificate";
+        String filename = "CED-A-Utl-T-10-05-17-111.pdf";
+        ServletOutputStream out = res.getOutputStream();
+
+        java.io.FileInputStream fileInputStream = new java.io.FileInputStream(filepath + filename);
+
+        int i;
+        while ((i = fileInputStream.read()) != -1) {
+            out.write(i);
+        }
+        fileInputStream.close();
+
+    }
+}
